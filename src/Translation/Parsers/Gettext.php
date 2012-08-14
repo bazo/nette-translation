@@ -29,7 +29,7 @@ class Gettext implements Parser
 	{
 		$f = @fopen($file, 'rb');
 		if(@filesize($file) < 10)
-			\InvalidArgumentException("'$file' is not a gettext file.");
+			throw new \InvalidArgumentException("'$file' is not a gettext file.");
 
 		$endian = FALSE;
 		$read = function($bytes) use ($f, $endian){
@@ -82,11 +82,11 @@ class Gettext implements Parser
 
 				$original = explode(Strings::chr(0x00), $original);
 				$translation = explode(Strings::chr(0x00), $translation);
-				$this->dictionary[is_array($original) ? $original[0] : $original]['original'] = $original;
-				$this->dictionary[is_array($original) ? $original[0] : $original]['translation'] = $translation;
+				$dictionary[is_array($original) ? $original[0] : $original]['original'] = $original;
+				$dictionary[is_array($original) ? $original[0] : $original]['translation'] = $translation;
 			}
 		}
-		return $this->dictionary;
+		return $dictionary;
 	}
 	
 	private function parseMetadata($input)
@@ -102,5 +102,4 @@ class Gettext implements Parser
 			$this->metadata[trim($tmp[0])] = count($tmp) > 2 ? ltrim(strstr($metadata, $pattern), $pattern) : $tmp[1];
 		}
 	}
-
 }

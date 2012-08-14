@@ -1,5 +1,7 @@
 <?php
 namespace Translation\Providers;
+
+use Translation\Parsers\Parser;
 /**
  *
  * @author martin.bazik
@@ -14,8 +16,21 @@ abstract class Base implements Provider
 		$context,
 			
 		/** @var array<string|array> */
-		$dictionary = array()
+		$dictionary = array(),
+		
+		/** @var Parser */	
+		$parser,
+			
+		/** @var array<string> */	
+		$dirs
 	;
+	
+	function __construct($dirs, Parser $parser)
+	{
+		$this->dirs = $dirs;
+		$this->parser = $parser;
+	}
+
 	
 	public function setLang($lang)
 	{

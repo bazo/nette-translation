@@ -9,18 +9,17 @@ namespace Translation\Providers;
  */
 class Gettext extends Base
 {
-	/** @var array */
-	protected $dirs = array();
 
-	/** @var string */
-	protected $lang = "en";
+	
+	private 
+		/** @var bool */	
+		$loaded = FALSE,
+			
+		$metadata = array()
+	;
 
-	/** @var array<string|array> */
-	protected $dictionary = array();
-
-	/** @var bool */
-	private $loaded = FALSE;
-
+	
+	
 	/**
 	 * Load data
 	 */
@@ -33,12 +32,13 @@ class Gettext extends Base
 			{
 				if(file_exists($dir . "/" . $this->lang . ".mo"))
 				{
-					$this->parseFile($dir . "/" . $this->lang . ".mo");
-					$file[] = $dir . "/" . $this->lang . ".mo";
+					$dictionary = $this->parser->parse($dir . "/" . $this->lang . ".mo");
+					$this->dictionary = array_merge($this->dictionary, $dictionary);
+					$this->metadata = array_merge($this->metadata, $this->parser->getMetadata());
+					$files[] = $dir . "/" . $this->lang . ".mo";
 				}
 			}
 
-			
 			$this->loaded = TRUE;
 		}
 	}

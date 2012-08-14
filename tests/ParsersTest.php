@@ -30,7 +30,7 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 	public function testGettextFileParsing()
 	{
 		$parser = new Parsers\Gettext;
-		$dictionary = $parser->parse(__DIR__.'/data/dict.mo');
+		$dictionary = $parser->parse(__DIR__.'/data/sk.mo');
 		
 		$this->assertTrue(is_array($dictionary));
 		
