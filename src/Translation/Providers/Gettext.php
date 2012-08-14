@@ -34,31 +34,6 @@ class Gettext
 	public static $cache = self::CACHE_DISABLE;
 
 	/**
-	 * Constructor
-	 *
-	 * @param array $dirs
-	 * @param string $lang
-	 */
-	public function __construct(array $dirs = NULL, $lang = NULL)
-	{
-		if(count($dirs) > 0)
-			$this->dirs = $dirs;
-		if(empty($dirs))
-		{
-			$dir = Environment::getVariable('langDir');
-			if(empty($dir))
-				throw new \InvalidStateException("Languages dir must be defined");
-			$this->dirs[] = $dir;
-		}
-
-		$this->lang = $lang;
-		if(empty($lang))
-			$this->lang = Environment::getVariable('lang');
-		if(empty($this->lang))
-			throw new \InvalidStateException("Languages must be defined");
-	}
-
-	/**
 	 * Load data
 	 */
 	protected function loadDictonary()
@@ -114,81 +89,6 @@ class Gettext
 		$this->metadata = $metadata;
 		return $this;
 	}
-
-	/**
-	 * Parse dictionary file
-	 *
-	 * @param string $file file path
-	 */
-	public function parseFile($file)
-	{
-		$f = @fopen($file, 'rb');
-		if(@filesize($file) < 10)
-			\InvalidArgumentException("'$file' is not a gettext file.");
-
-		$endian = FALSE;
-		$read = function($bytes) use ($f, $endian){
-					$data = fread($f, 4 * $bytes);
-					return $endian === FALSE ? unpack('V' . $bytes, $data) : unpack('N' . $bytes, $data);
-				};
-
-		$input = $read(1);
-		if(String::lower(substr(dechex($input[1]), -8)) == "950412de")
-			$endian = FALSE;
-		elseif(String::lower(substr(dechex($input[1]), -8)) == "de120495")
-			$endian = TRUE;
-		else
-			throw new \InvalidArgumentException("'$file' is not a gettext file.");
-
-		$input = $read(1);
-
-		$input = $read(1);
-		$total = $input[1];
-
-		$input = $read(1);
-		$originalOffset = $input[1];
-
-		$input = $read(1);
-		$translationOffset = $input[1];
-
-		fseek($f, $originalOffset);
-		$orignalTmp = $read(2 * $total);
-		fseek($f, $translationOffset);
-		$translationTmp = $read(2 * $total);
-
-		for($i = 0; $i < $total; ++$i)
-		{
-			if($orignalTmp[$i * 2 + 1] != 0)
-			{
-				fseek($f, $orignalTmp[$i * 2 + 2]);
-				$original = @fread($f, $orignalTmp[$i * 2 + 1]);
-			} else
-				$original = "";
-
-			if($translationTmp[$i * 2 + 1] != 0)
-			{
-				fseek($f, $translationTmp[$i * 2 + 2]);
-				$translation = fread($f, $translationTmp[$i * 2 + 1]);
-				if($original === "")
-				{
-					$this->parseMetadata($translation);
-					continue;
-				}
-
-				$original = explode(String::chr(0x00), $original);
-				$translation = explode(String::chr(0x00), $translation);
-				$this->dictionary[is_array($original) ? $original[0] : $original]['original'] = $original;
-				$this->dictionary[is_array($original) ? $original[0] : $original]['translation'] = $translation;
-			}
-		}
-	}
-
-	/**
-	 * Metadata parser
-	 *
-	 * @param string $input
-	 */
-	
 
 	/**
 	 * Translates the given string.
@@ -272,56 +172,9 @@ class Gettext
 		return 1;
 	}
 
-	/**
-	 * Get translations strings
-	 *
-	 * @return array
-	 */
-	public function getStrings()
-	{
-		$this->loadDictonary();
+	
 
-		$result = array();
-
-		$storage = Environment::getSession(self::SESSION_NAMESPACE);
-		if(isset($storage->newStrings))
-		{
-			foreach(array_keys($storage->newStrings) as $original)
-			{
-				if(trim($original) != "")
-				{
-					$result[$original] = FALSE;
-				}
-			}
-		}
-
-		foreach($this->dictionary as $original => $data)
-		{
-			if(trim($original) != "")
-			{
-				$result[$original] = $data['translation'];
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Set translation string(s)
-	 *
-	 * @param string|array $message original string(s)
-	 * @param string|array $string translation string(s)
-	 */
-	public function setTranslation($message, $string)
-	{
-		$this->loadDictonary();
-		$space = Environment::getSession(self::SESSION_NAMESPACE);
-		if(isset($space->newStrings) && array_key_exists($message, $space->newStrings))
-			$message = $space->newStrings[$message];
-
-		$this->dictionary[is_array($message) ? $message[0] : $message]['original'] = (array)$message;
-		$this->dictionary[is_array($message) ? $message[0] : $message]['translation'] = (array)$string;
-	}
+	
 
 	/**
 	 * Save dictionary

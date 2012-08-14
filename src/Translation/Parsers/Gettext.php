@@ -10,9 +10,21 @@ class Gettext implements Parser
 {
 
 	private
-		$dictionary
+		$dictionary,
+			
+		$metadata
 	;
 	
+	public function getDictionary()
+	{
+		return $this->dictionary;
+	}
+
+	public function getMetadata()
+	{
+		return $this->metadata;
+	}
+
 	public function parse($file)
 	{
 		$f = @fopen($file, 'rb');

@@ -6,4 +6,5 @@ namespace Translation\Providers;
  */
 interface Provider
 {
+	function setLang($lang);
 }
