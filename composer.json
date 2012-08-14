@@ -1,0 +1,29 @@
+{
+    "name": "bazo/nette-translation",
+    "type": "nette-addon",
+    "description": "Nette gettext translation addon",
+    "keywords": ["nette", "gettext", "translation"],
+    "homepage": "https://github.com/bazo/nette-translation",
+    "authors": [
+        {
+            "name": "Martin Bažík",
+            "email": "martin@bazo.sk",
+            "homepage": "http://bazo.sk"
+        }
+    ],
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/bazo/gettext-extractor"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+		"symfony/console": "*",
+		"bazo/gettext-extractor": "dev-master",
+		"nikic/php-parser": "dev-master"
+    },
+	"autoload": {
+        "psr-0": { "Translation": "src/" }
+    }
+}
