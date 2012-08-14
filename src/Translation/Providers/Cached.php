@@ -1,5 +1,7 @@
 <?php
 namespace Translation\Providers;
+
+use Nette\Caching\Cache;
 /**
  *
  * @author martin.bazik
@@ -7,24 +9,19 @@ namespace Translation\Providers;
 class Cached extends Base
 {
 	protected
-		$lang,
-			
-		$context,
-			
-		$provider
+		/** @var Provider */	
+		$provider,
+		
+		/** @var Cache */	
+		$cache
 	;
 	
-	public function setLang($lang)
+	function __construct(Provider $provider, Cache $cache)
 	{
-		$this->lang = $lang;
-		return $this;
+		$this->provider = $provider;
+		$this->cache = $cache;
 	}
 	
-	public function setContext($context)
-	{
-		$this->context = $context;
-		return $this;
-	}
 	
 	/*
 	 * 

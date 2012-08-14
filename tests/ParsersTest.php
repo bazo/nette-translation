@@ -8,6 +8,15 @@ namespace Translation;
 class ParsersTest extends \PHPUnit_Framework_TestCase
 {
 	
+	private
+		$expectedIniNeon = array(
+			'customer' => 'zákazník',
+			'order' => 'objednávka',
+			'new' => 'nový',
+			'old' => 'starý'
+		);
+
+
 	protected function setUp()
     {
 		
@@ -16,15 +25,19 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 	public function testIniFileParsing()
 	{
 		$parser = new Parsers\Ini;
-		$dictionary = $parser->parse(__DIR__.'/data/dict.ini');
+		$dictionary = $parser->parse(__DIR__.'/data/sk.ini');
+
 		$this->assertTrue(is_array($dictionary));
+		$this->assertEquals($this->expectedIniNeon, $dictionary);
 	}
 	
 	public function testNeonFileParsing()
 	{
 		$parser = new Parsers\Neon;
-		$dictionary = $parser->parse(__DIR__.'/data/dict.neon');
+		$dictionary = $parser->parse(__DIR__.'/data/sk.neon');
+		
 		$this->assertTrue(is_array($dictionary));
+		$this->assertEquals($this->expectedIniNeon, $dictionary);
 	}
 	
 	public function testGettextFileParsing()

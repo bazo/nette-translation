@@ -27,6 +27,10 @@ abstract class Base implements Provider
 	
 	function __construct($dirs, Parser $parser)
 	{
+		if(is_string($dirs))
+		{
+			$dirs = array($dirs);
+		}
 		$this->dirs = $dirs;
 		$this->parser = $parser;
 	}
@@ -47,5 +51,10 @@ abstract class Base implements Provider
 	public function translate($message, $count = NULL)
 	{
 		return $message;
+	}
+	
+	protected function loadDictionary()
+	{
+		
 	}
 }
