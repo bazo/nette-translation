@@ -34,7 +34,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	{
 		
 		//var_dump(realpath($this->dataDir.'/header.latte'));exit;
-		
+		/*
 		$parameters = array(
 			'command' => 'translation:extract',
 			'--m' => 'test:test prd:prd',
@@ -45,5 +45,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
 		$output = new \Symfony\Component\Console\Output\ConsoleOutput;
 		$this->app->find('translation:extract')->run($input, $output);
+		 * 
+		 */
 	}
 }

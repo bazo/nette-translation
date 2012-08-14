@@ -1,0 +1,23 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"POT-Creation-Date: 2011-04-27T17:31:44+02:00\n"
+"PO-Revision-Date: 2012-08-14 19:11+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Last-Translator: Martin Bazik <martin@bazo.sk>\n"
+
+msgid "customer"
+msgstr "zákazník"
+
+msgid "order"
+msgstr "objednávka"
+
+msgid "new"
+msgstr "nový"
+
+msgid "old"
+msgstr "starý"

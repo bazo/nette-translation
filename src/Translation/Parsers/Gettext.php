@@ -94,6 +94,7 @@ class Gettext implements Parser
 		$input = trim($input);
 
 		$input = preg_split('/[\n,]+/', $input);
+		
 		foreach($input as $metadata)
 		{
 			$pattern = ': ';

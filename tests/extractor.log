@@ -1,6 +1,6 @@
-Scanning 'C:\Users\martin.bazik\Documents\My Web Sites\nette-translation\tests/data/header.latte'
-Extracting data from file C:\Users\martin.bazik\Documents\My Web Sites\nette-translation\tests/data/header.latte
-Processing file C:\Users\martin.bazik\Documents\My Web Sites\nette-translation\tests/data/header.latte
+Scanning 'H:\inetpub\nette-translation\tests/data/header.latte'
+Extracting data from file H:\inetpub\nette-translation\tests/data/header.latte
+Processing file H:\inetpub\nette-translation\tests/data/header.latte
   Filter PHP applied
   Filter NetteLatte applied
 Output file 'php://stdout' created

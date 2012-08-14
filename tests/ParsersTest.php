@@ -31,6 +31,28 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 	{
 		$parser = new Parsers\Gettext;
 		$dictionary = $parser->parse(__DIR__.'/data/dict.mo');
+		
 		$this->assertTrue(is_array($dictionary));
+		
+		$expected = array(
+			"customer" => array(
+				"original" => array (0 => "customer"),
+				"translation" => array (0 => "zákazník")
+			),
+			"new" => array(
+				"original" => array (0 => "new"),
+				"translation" => array (0 => "nový")  
+			),
+			"old" => array(
+				"original" => array(0 => "old"),
+				"translation" => array(0 => "starý")
+			),
+			"order" => array (
+				"original" => array (0 => "order"),
+				"translation" => array (0 => "objednávka")
+			)
+		);
+		
+		$this->assertEquals($expected, $dictionary);
 	}
 }
