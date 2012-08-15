@@ -37,4 +37,36 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 		$translator->setLang('sk');
 		$this->assertEquals($translation, $translator->translate($message));
 	}
+	
+	/** @dataProvider messagesProvider */
+	public function testTranslateWithNeon($message, $translation)
+	{
+		$parser = new Parsers\Neon;
+		
+		$dirs = array(
+			__DIR__.'/data'
+		);
+		
+		$provider = new Providers\Neon($dirs, $parser);
+		
+		$translator = new Translator($provider);
+		$translator->setLang('sk');
+		$this->assertEquals($translation, $translator->translate($message));
+	}
+	
+	/** @dataProvider messagesProvider */
+	public function testTranslateWithIni($message, $translation)
+	{
+		$parser = new Parsers\Ini;
+		
+		$dirs = array(
+			__DIR__.'/data'
+		);
+		
+		$provider = new Providers\Ini($dirs, $parser);
+		
+		$translator = new Translator($provider);
+		$translator->setLang('sk');
+		$this->assertEquals($translation, $translator->translate($message));
+	}
 }

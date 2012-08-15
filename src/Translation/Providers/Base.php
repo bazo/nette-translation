@@ -50,11 +50,14 @@ abstract class Base implements Provider
 	
 	public function translate($message, $count = NULL)
 	{
-		return $message;
+		$this->loadDictionary();
+
+		$translation = $this->dictionary[$message];
+		
+		return $translation;
 	}
 	
 	protected function loadDictionary()
 	{
-		
 	}
 }
