@@ -19,13 +19,22 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 		)
 	;
 
-
 	protected function setUp()
     {
 		$this->outputDir = __DIR__.'/output';
 		
 		$this->potOutput = $this->outputDir.'/dict.pot';
 		$this->poOutput = $this->outputDir.'/dict.po';
+		
+		$inputFile = __DIR__.'/data/filesToScan/default.latte';
+		
+		$extractor = new Extraction\NetteExtractor;
+		$this->data = $extractor->scan($inputFile);
+    }
+	
+	public function tearDown()
+	{
+		parent::tearDown();
 		
 		if(file_exists($this->potOutput))
 		{
@@ -36,12 +45,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 		{
 			unlink($this->poOutput);
 		}
-		
-		$inputFile = __DIR__.'/data/filesToScan/default.latte';
-		
-		$extractor = new Extraction\NetteExtractor;
-		$this->data = $extractor->scan($inputFile);
-    }
+	}
 	
 	public function testGettextBuilderBuildPot()
 	{
