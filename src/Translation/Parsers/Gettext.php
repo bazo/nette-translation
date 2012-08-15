@@ -249,13 +249,8 @@ class Gettext implements Parser
 
 	private static function deleteQuotes($string)
 	{
-		//replace the first quote
-		$string = substr_replace($string, '', 0, 1);
-		//replace the second quote
-		$string = substr_replace($string, '', strlen($string) - 2, 1);
-		//normalize string
 		$string = Strings::normalize($string);
-		//fix encoding
+		$string = str_replace('"', '', $string);
 		$string = Strings::fixEncoding($string);
 		return $string;
 	}

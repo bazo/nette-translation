@@ -45,7 +45,6 @@ class Gettext extends Base
 		}
 	}
 
-
 	/**
 	 * Translates the given string.
 	 *
@@ -56,7 +55,6 @@ class Gettext extends Base
 	public function translate($message, $form = 1)
 	{
 		$this->loadDictonary();
-
 		$message = (string)$message;
 		$message_plural = NULL;
 		if(is_array($form) && $form !== NULL)
@@ -120,12 +118,6 @@ class Gettext extends Base
 		}
 		return 1;
 	}
-
-	
-
-	
-
-	
 
 	/**
 	 * Sets a new language
