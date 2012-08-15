@@ -34,7 +34,7 @@ class Gettext extends Base
 			{
 				if(file_exists($dir . "/" . $this->lang . ".mo"))
 				{
-					$dictionary = $this->parser->parse($dir . "/" . $this->lang . ".mo");
+					$dictionary = $this->parser->parseMo($dir . "/" . $this->lang . ".mo");
 					$this->dictionary = array_merge($this->dictionary, $dictionary);
 					$this->metadata = array_merge($this->metadata, $this->parser->getMetadata());
 					$files[] = $dir . "/" . $this->lang . ".mo";

@@ -59,4 +59,9 @@ abstract class Base implements Provider
 	protected function loadDictionary()
 	{
 	}
+	
+	public function getDictionary()
+	{
+		return $this->dictionary;
+	}
 }

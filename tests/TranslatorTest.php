@@ -28,6 +28,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
           array('old', 'starý')
         );
     }
+	
 	/** @dataProvider messagesProvider */
 	public function testTranslateWithGettext($message, $translation)
 	{
