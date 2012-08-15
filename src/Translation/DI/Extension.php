@@ -7,8 +7,13 @@ namespace Translation\DI;
  */
 class Extension extends \Nette\Config\CompilerExtension
 {
-	/** @var array */
-	public $defaults = array();
+	public 
+		/** @var array */	
+		$defaults = array(
+			'dictionartFolders' => array('%appDir%/l10n'),
+			'provider' => 'gettext'
+		)
+	;
 
 	/**
 	 * Processes configuration data
@@ -20,6 +25,11 @@ class Extension extends \Nette\Config\CompilerExtension
 		$builder = $this->getContainerBuilder();
 		
 		$config = $this->getConfig($this->defaults);
+		
+	}
+	
+	public static function register()
+	{
 		
 	}
 	
