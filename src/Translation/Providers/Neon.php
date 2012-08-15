@@ -10,6 +10,12 @@ class Neon extends Base
 		$dictionaryLoaded
 	;
 	
+	public function __construct($dirs)
+	{
+		parent::__construct($dirs);
+		$this->parser = new \Translation\Parsers\Neon;
+	}
+	
 	protected function loadDictionary()
 	{
 		if(!$this->dictionaryLoaded)

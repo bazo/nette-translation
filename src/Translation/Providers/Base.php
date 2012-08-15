@@ -25,14 +25,13 @@ abstract class Base implements Provider
 		$dirs
 	;
 	
-	function __construct($dirs, Parser $parser)
+	function __construct($dirs)
 	{
 		if(is_string($dirs))
 		{
 			$dirs = array($dirs);
 		}
 		$this->dirs = $dirs;
-		$this->parser = $parser;
 	}
 
 	

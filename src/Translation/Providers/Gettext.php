@@ -9,8 +9,6 @@ namespace Translation\Providers;
  */
 class Gettext extends Base
 {
-
-	
 	private 
 		/** @var bool */	
 		$loaded = FALSE,
@@ -18,7 +16,11 @@ class Gettext extends Base
 		$metadata = array()
 	;
 
-	
+	public function __construct($dirs)
+	{
+		parent::__construct($dirs);
+		$this->parser = new \Translation\Parsers\Gettext;
+	}
 	
 	/**
 	 * Load data
