@@ -1,8 +1,8 @@
 <?php
 
-namespace Translation\Extractor\Filters;
+namespace Translation\Extraction\Filters;
 
-use Translation\Extractor\Extractor;
+use Translation\Extraction\Extractor;
 
 /**
  * Extractor

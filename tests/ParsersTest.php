@@ -14,18 +14,21 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 			'order' => 'objednávka',
 			'new' => 'nový',
 			'old' => 'starý'
-		);
+		),
+			
+		$dataDir	
+	;
 
 
 	protected function setUp()
     {
-		
+		$this->dataDir = __DIR__.'/data/dictionaries';
     }
 	
 	public function testIniFileParsing()
 	{
 		$parser = new Parsers\Ini;
-		$dictionary = $parser->parse(__DIR__.'/data/sk.ini');
+		$dictionary = $parser->parse($this->dataDir.'/sk.ini');
 
 		$this->assertTrue(is_array($dictionary));
 		$this->assertEquals($this->expectedIniNeon, $dictionary);
@@ -34,7 +37,7 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 	public function testNeonFileParsing()
 	{
 		$parser = new Parsers\Neon;
-		$dictionary = $parser->parse(__DIR__.'/data/sk.neon');
+		$dictionary = $parser->parse($this->dataDir.'/sk.neon');
 		
 		$this->assertTrue(is_array($dictionary));
 		$this->assertEquals($this->expectedIniNeon, $dictionary);
@@ -43,7 +46,7 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 	public function testGettextFileParsing()
 	{
 		$parser = new Parsers\Gettext;
-		$dictionary = $parser->parse(__DIR__.'/data/sk.mo');
+		$dictionary = $parser->parse($this->dataDir.'/sk.mo');
 		
 		$this->assertTrue(is_array($dictionary));
 		

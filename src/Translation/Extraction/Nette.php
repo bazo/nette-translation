@@ -1,6 +1,6 @@
 <?php
 
-namespace Translation\Extractor;
+namespace Translation\Extraction;
 
 /**
  * GettextExtractor
@@ -24,7 +24,7 @@ namespace Translation\Extractor;
  * @author Ondřej Vodáček
  * @package Nette Extras
  */
-class Nette extends Extractor
+class NetteExtractor extends Extractor
 {
 
 	/**

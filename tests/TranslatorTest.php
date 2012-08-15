@@ -7,10 +7,16 @@ namespace Translation;
  */
 class TranslatorTest extends \PHPUnit_Framework_TestCase
 {
-	
+	private
+		$dirs
+	;
+
+
 	protected function setUp()
     {
-		
+		$this->dirs = array(
+			__DIR__.'/data/dictionaries'
+		);
     }
 	
 	public function messagesProvider()
@@ -25,44 +31,33 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 	/** @dataProvider messagesProvider */
 	public function testTranslateWithGettext($message, $translation)
 	{
-		$parser = new Parsers\Gettext;
-		
-		$dirs = array(
-			__DIR__.'/data'
-		);
-		
-		$provider = new Providers\Gettext($dirs, $parser);
+		$provider = new Providers\Gettext($this->dirs);
 		
 		$translator = new Translator($provider);
 		$translator->setLang('sk');
+		
 		$this->assertEquals($translation, $translator->translate($message));
 	}
 	
 	/** @dataProvider messagesProvider */
 	public function testTranslateWithNeon($message, $translation)
 	{
-		$dirs = array(
-			__DIR__.'/data'
-		);
-		
-		$provider = new Providers\Neon($dirs);
+		$provider = new Providers\Neon($this->dirs);
 		
 		$translator = new Translator($provider);
 		$translator->setLang('sk');
+		
 		$this->assertEquals($translation, $translator->translate($message));
 	}
 	
 	/** @dataProvider messagesProvider */
 	public function testTranslateWithIni($message, $translation)
 	{
-		$dirs = array(
-			__DIR__.'/data'
-		);
-		
-		$provider = new Providers\Ini($dirs);
+		$provider = new Providers\Ini($this->dirs);
 		
 		$translator = new Translator($provider);
 		$translator->setLang('sk');
+		
 		$this->assertEquals($translation, $translator->translate($message));
 	}
 }

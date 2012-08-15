@@ -1,5 +1,5 @@
 <?php
-namespace Translation\Extractor\Filters;
+namespace Translation\Extraction\Filters;
 
 /**
  * Extractor

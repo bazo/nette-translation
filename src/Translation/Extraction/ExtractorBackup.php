@@ -23,7 +23,7 @@ namespace Translation\Extractor;
  * @author Karel Klima
  * @author Ondřej Vodáček
  */
-class Extractor
+class ExtractorBackup
 {
 
 	const LOG_FILE = 'extractor.log';

@@ -80,13 +80,6 @@ class Gettext extends Base
 				$message = (is_array($message) && $plural !== NULL && isset($message[$plural])) ? $message[$plural] : $message;
 		} else
 		{
-			if(!Environment::getHttpResponse()->isSent() || Environment::getSession()->isStarted())
-			{
-				$space = Environment::getSession(self::SESSION_NAMESPACE);
-				if(!isset($space->newStrings))
-					$space->newStrings = array();
-				$space->newStrings[$message] = empty($message_plural) ? array($message) : array($message, $message_plural);
-			}
 			if($form > 1 && !empty($message_plural))
 				$message = $message_plural;
 		}
