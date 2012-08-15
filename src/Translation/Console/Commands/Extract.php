@@ -86,7 +86,7 @@ class Extract extends Console\Command\Command
 			}
 		}
 
-		$extractor = new \Gettext\Extractor\Nette($log);
+		$extractor = new \Translation\Extractor\Nette($log);
 		$extractor->setupForms()->setupDataGrid();
 		if ($keywords !== null) {
 			foreach ($keywords as $value) {
