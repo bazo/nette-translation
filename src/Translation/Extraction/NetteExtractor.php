@@ -1,7 +1,6 @@
 <?php
-
 namespace Translation\Extraction;
-
+use Translation\Extraction\Filters;
 /**
  * GettextExtractor
  *
@@ -32,9 +31,9 @@ class NetteExtractor extends Extractor
 	 *
 	 * @param string|bool $logToFile
 	 */
-	public function __construct($logToFile = FALSE)
+	public function __construct()
 	{
-		parent::__construct($logToFile);
+		parent::__construct();
 
 		// Clean up...
 		$this->removeAllFilters();
@@ -46,7 +45,7 @@ class NetteExtractor extends Extractor
 				->setFilter('latte', 'PHP')
 				->setFilter('latte', 'NetteLatte');
 
-		$this->addFilter('NetteLatte', new \Gettext\Extractor\Filters\NetteLatte);
+		$this->addFilter('NetteLatte', new Filters\NetteLatte);
 
 		$this->getFilter('PHP')
 				->addFunction('translate');

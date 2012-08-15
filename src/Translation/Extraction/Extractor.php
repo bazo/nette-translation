@@ -25,7 +25,6 @@ use Translation\Extraction\Filters;
  */
 class Extractor
 {
-
 	const ESCAPE_CHARS = '"';
 	const OUTPUT_PO = 'PO';
 	const OUTPUT_POT = 'POT';
@@ -34,30 +33,28 @@ class Extractor
 	const PLURAL = 'plural';
 	const LINE = 'line';
 	const FILE = 'file';
+	
+	protected
+		/** @var array */
+		$inputFiles = array(),
 
+		/** @var array */
+		$filters = array(
+			'php' => array('PHP')
+		),
 
-	/** @var array */
-	protected $inputFiles = array();
+		/** @var array */
+		$filterStore = array(),
 
-	/** @var array */
-	protected $filters = array(
-		'php' => array('PHP')
-	);
+		/** @var array */
+		$data = array(),
 
-	/** @var array */
-	protected $filterStore = array();
-
-	/** @var array */
-	protected $comments = array(
-		'Keys exported by Extractor'
-	);
-
-
-	/** @var array */
-	protected $data = array();
-
-	/** @var string */
-	protected $outputMode = self::OUTPUT_PO;
+		/** @var string */
+		$outputMode = self::OUTPUT_PO,
+		
+		/** @var \Translation\Builders\Builder */	
+		$builder
+	;
 
 	public function __construct()
 	{
@@ -73,7 +70,7 @@ class Extractor
 	protected function throwException($message)
 	{
 		$message = $message ? $message : 'Something unexpected occured';
-		throw new Exception($message);
+		throw new \Exception($message);
 	}
 
 	/**
@@ -163,6 +160,41 @@ class Extractor
 		return $this->data;
 	}
 
+	public function addMessages(array $messages, $file)
+	{
+		foreach($messages as $message)
+		{
+			$key = '';
+			if(isset($message[self::CONTEXT]))
+			{
+				$key .= $message[self::CONTEXT];
+			}
+			$key .= chr(4);
+			$key .= $message[self::SINGULAR];
+			$key .= chr(4);
+			if(isset($message[self::PLURAL]))
+			{
+				$key .= $message[self::PLURAL];
+			}
+			if($key === chr(4) . chr(4))
+			{
+				continue;
+			}
+			$line = $message[self::LINE];
+			if(!isset($this->data[$key]))
+			{
+				unset($message[self::LINE]);
+				$this->data[$key] = $message;
+				$this->data[$key]['files'] = array();
+			}
+			$this->data[$key]['files'][] = array(
+				self::FILE => $file,
+				self::LINE => $line
+			);
+		}
+		return $this;
+	}
+	
 	/**
 	 * Gets an instance of a Extractor filter
 	 *
@@ -215,72 +247,9 @@ class Extractor
 		return $this;
 	}
 
-	/**
-	 * Adds a comment to the top of the output file
-	 *
-	 * @param string $value
-	 * @return self
-	 */
-	public function addComment($value)
+	public function save($outputFile)
 	{
-		$this->comments[] = $value;
+		$this->builder->save($outputFile, $this->data);
 		return $this;
-	}
-
-	/**
-	 * Gets a value of a meta key
-	 *
-	 * @param string $key
-	 */
-	public function getMeta($key)
-	{
-		return isset($this->meta[$key]) ? $this->meta[$key] : NULL;
-	}
-
-	/**
-	 * Sets a value of a meta key
-	 *
-	 * @param string $key
-	 * @param string $value
-	 * @return self
-	 */
-	public function setMeta($key, $value)
-	{
-		$this->meta[$key] = $value;
-		return $this;
-	}
-
-	protected function addMessages(array $messages, $file)
-	{
-		foreach($messages as $message)
-		{
-			$key = '';
-			if(isset($message[self::CONTEXT]))
-			{
-				$key .= $message[self::CONTEXT];
-			}
-			$key .= chr(4);
-			$key .= $message[self::SINGULAR];
-			$key .= chr(4);
-			if(isset($message[self::PLURAL]))
-			{
-				$key .= $message[self::PLURAL];
-			}
-			if($key === chr(4) . chr(4))
-			{
-				continue;
-			}
-			$line = $message[self::LINE];
-			if(!isset($this->data[$key]))
-			{
-				unset($message[self::LINE]);
-				$this->data[$key] = $message;
-				$this->data[$key]['files'] = array();
-			}
-			$this->data[$key]['files'][] = array(
-				self::FILE => $file,
-				self::LINE => $line
-			);
-		}
 	}
 }
