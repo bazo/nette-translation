@@ -8,8 +8,10 @@ namespace Translation;
 class ExtractorTest extends \PHPUnit_Framework_TestCase
 {
 	private
-		/** @var Extractor\Extractor */	
-		$extractor
+		/** @var Extraction\Extractor */	
+		$extractor,
+			
+		$dataDir
 	;
 	
 	protected function setUp()
@@ -22,5 +24,6 @@ class ExtractorTest extends \PHPUnit_Framework_TestCase
 	
 	public function testExtractPhpFile()
 	{
+		$data = $this->extractor->scan($this->dataDir);
 	}
 }

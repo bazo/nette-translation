@@ -26,7 +26,6 @@ use Translation\Extraction\Filters;
 class Extractor
 {
 
-	const LOG_FILE = 'extractor.log';
 	const ESCAPE_CHARS = '"';
 	const OUTPUT_PO = 'PO';
 	const OUTPUT_POT = 'POT';
@@ -60,11 +59,6 @@ class Extractor
 	/** @var string */
 	protected $outputMode = self::OUTPUT_PO;
 
-	/**
-	 * Log setup
-	 *
-	 * @param string|bool $logToFile Bool or path of custom log file
-	 */
 	public function __construct()
 	{
 		$this->addFilter('PHP', new Filters\PHP);
@@ -79,7 +73,6 @@ class Extractor
 	protected function throwException($message)
 	{
 		$message = $message ? $message : 'Something unexpected occured';
-		$this->log($message);
 		throw new Exception($message);
 	}
 
@@ -98,10 +91,9 @@ class Extractor
 		}
 		foreach($resource as $item)
 		{
-			$this->log("Scanning '$item'");
 			$this->_scan($item);
 		}
-		$this->_extract($this->inputFiles);
+		return $this->_extract($this->inputFiles);
 		return $this;
 	}
 
@@ -153,8 +145,6 @@ class Extractor
 				$this->throwException('ERROR: Input file is not readable: ' . $inputFile);
 			}
 
-			$this->log('Extracting data from file ' . $inputFile);
-
 			$fileExtension = pathinfo($inputFile, PATHINFO_EXTENSION);
 			foreach($this->filters as $extension => $filters)
 			{
@@ -162,13 +152,10 @@ class Extractor
 				if($fileExtension !== $extension)
 					continue;
 
-				$this->log('Processing file ' . $inputFile);
-
 				foreach($filters as $filterName)
 				{
 					$filter = $this->getFilter($filterName);
 					$filterData = $filter->extract($inputFile);
-					$this->log('  Filter ' . $filterName . ' applied');
 					$this->addMessages($filterData, $inputFile);
 				}
 			}
