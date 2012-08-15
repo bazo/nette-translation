@@ -6,7 +6,7 @@ use Translation\Extraction\Extractor;
  *
  * @author Ondřej Vodáček
  */
-abstract class GettextExtractor_Filters_FilterTest extends \PHPUnit_Framework_TestCase {
+abstract class FilterTest extends \PHPUnit_Framework_TestCase {
 
 	/** @var AFilter */
 	protected $object;
