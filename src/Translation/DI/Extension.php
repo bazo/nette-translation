@@ -50,7 +50,7 @@ class Extension extends \Nette\Config\CompilerExtension
 	
 	public static function createTranslator(Container $container)
 	{
-		return new \Translation\Translator($container->{$this->prefix()}->provider);
+		return new \Translation\Translator($container->translation->provider);
 	}
 	
 	public static function register(Configurator $configurator)
