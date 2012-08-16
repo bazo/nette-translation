@@ -79,6 +79,8 @@ class Gettext
 		}
 		$output[] = '';
 
+		var_dump($data);
+		
 		foreach($data as $message)
 		{
 			foreach($message['files'] as $file)

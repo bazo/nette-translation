@@ -5,7 +5,7 @@ namespace Translation;
  *
  * @author martin.bazik
  */
-class Plurals
+class Langs
 {
 	private static 
 		$plurals = array(
@@ -140,5 +140,10 @@ class Plurals
 	public static function getPluralRule($iso)
 	{
 		return self::$plurals[$iso];
+	}
+	
+	public static function verifyLang($iso)
+	{
+		return array_key_exists($iso, self::$plurals);
 	}
 }

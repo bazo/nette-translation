@@ -24,7 +24,10 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		
 		$extractCommand = new Console\Commands\Extract;
 		
+		$createVersionCommand = new Console\Commands\CreateLangFile;
+		
 		$app->add($extractCommand);
+		$app->add($createVersionCommand);
 		
 		$this->app = $app;
 		
@@ -59,6 +62,24 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		$this->app->find('translation:extract')->run($input, $output);
 		
 		$this->assertFileExists($this->outputFile);
+		 
+	}
+	
+	public function testCreateCommandRuns()
+	{
+		//var_dump(realpath($this->dataDir.'/header.latte'));exit;
+		
+		$parameters = array(
+			'command' => 'translation:createVersion',
+			'--o' => $this->outputFolder,
+			'lang' => $this->lang
+		);
+		
+		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
+		$output = new \Symfony\Component\Console\Output\ConsoleOutput;
+		$this->app->find('translation:createVersion')->run($input, $output);
+		
+		//$this->assertFileExists($this->outputFile);
 		 
 	}
 }

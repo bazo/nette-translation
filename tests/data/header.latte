@@ -1,81 +1,19 @@
-<header>
-	<h1 title="Jobzine"><a n:href=":buzz:homepage:default" title="Jobzine"><span>Jobzine</span></a></h1>
-	<a name="logo" id="logo"></a>
-	
-	<div id="user-panel">
-		<a n:href=":buzz:homepage:">
-			<img n:if="$me->getProfilePicture() !== null" src="{$me->getProfilePictureThumb()->getId()|image:$control}" width="50" height="50"  alt="{$me->getName()} {$me->getSurname()}" title="{$me->getName()} {$me->getSurname()}"/>
-			<img n:if="$me->getProfilePicture() == null" src="{$baseUri}/images/phantom_thumb.jpg" width="50" height="50"  alt="{$me->getName()} {$me->getSurname()}" title="{$me->getName()} {$me->getSurname()}" />
-		</a>
-	</div>
-
-	<div id="toolbar">
-		<a n:href=":buzz:messages:" title="{_'Správy'}">
-			<span n:class="(int)$me->unreadMessagesNotifications > 0 ? active, 'icon messages'">
-			<sub id="message-notification" data-needs_invalidation={if (int)$me->unreadMessagesNotifications > 0} "true" {else}"false"{/if}>
-				{(int)$me->unreadMessagesNotifications}
-			</sub>
-			</span>
-		</a>
-
-		<a n:href=":buzz:homepage:" title="{_'Notifikácie'}">
-			<span n:class="(int)$me->notifications > 0 ? active, 'icon notifications'">
-				<sub id="buzz-notification" data-needs_invalidation={if (int)$me->notifications > 0} "true" {else}"false"{/if}>
-					{(int)$me->notifications}
-				</sub>
-			</span>
-		</a>
-    </div>
-	
-	{form formOmniSearch}
-		{input search, placeholder => 'hľadaj'}
-		{input btnSubmit, value => 'hľadaj'}
-		{input link}
-	{/form}
-	<div id="navi">
-		<nav>
-			<ul>
-				<li><a n:class="$presenter->parseModule($presenter->name) === $presenter->parseModule(':buzz:homepage:') ? active" n:href=":buzz:homepage: webName => null">Buzz<span></span></a></li>
-				<li><a n:class="$presenter->parseModule($presenter->name) === $presenter->parseModule(':profile:homepage:') ? active" n:href=":profile:homepage: webName => $me->getWebName()">Vizitka<span></span></a></li>
-				<li><a n:class="$presenter->parseModule($presenter->name) === $presenter->parseModule(':magazine:homepage:') ? active" n:href=":magazine:homepage: webName => null">Magazín<span></span></a></li>
-			</ul>
-		</nav>
-
-		<nav id="set">
-			<div class="socialHeader">
-				<a n:href=":buzz:socialPower:" class="txtSoc">Social<span>Power</span> <strong>{$me->getKarma()}</strong></a>
-			<div class="quest bubTip2" onclick='$(".bubTip2").tipsy("show"); return false;' >?</div>
-		</div>
+{_'Správy'}
+{_'Notifikácie'}
 			
-			{*if $presenter->getModule() === 'buzz'}
-				<a n:href=":buzz:settings:" title="{_'Nastavenia Buzzu'}" class="greenBtn">*}
-			{if $presenter->getModule() === 'profile'}
-				<a n:if="!$me->isFirstTimeInProfile()" n:href="exportPdf!" title="{_'Vytlačiť pdf'}" class="greenBtn padd">
-					{_'Vytlačiť pdf'}
-				</a>
-			{elseif $presenter->getModule() === 'magazine'}
-				<a n:if="$me->hasMagazine()" class="ajax greenBtn padd" n:href="showSetup!" title="{_'Nastavenia Magazínu'}">
-					upraviť magazín
-				</a>
-			{/if}
+{_'Nastavenia Buzzu'}
+{_'Vytlačiť pdf'}
 
-			<ul>
-				<li id="name"><a href="#" class="fsur"><div id="nameTrim">{$me->name} {$me->surname}</div><span></span></a>
-					<ul>
-						<li><a n:href=":buzz:settings:" class="bgNone">{_'Nastavenia'}</a></li>
-						<li id="lock"><a n:href="logout webName => null" class="bgNone">{_'Odhlásenie'}</a></li>
-					</ul>
-				</li>
-			</ul>
-		</nav>
-	</div>
-	
-	{snippet recentMessages}
-		{include 'messages.latte' recentMessages => $recentMessages}
-	{/snippet}
-	
-	{snippet recentNotifications}
-		{include 'notifications.latte' notifications => $notifications}
-	{/snippet}
-	
-</header>
+{_'Nastavenia Magazínu'}
+
+{_'Nastavenia'}
+{_'Odhlásenie'}
+
+{_'A message!'}
+{_p'context', 'Another message!'}
+{_n'I see %d little indian!', 'I see %d little indians!', 3|printf:3}
+{_np'context', 'I see %d little indian!', 'I see %d little indians!', $number |printf:$number}
+
+{_$foo}
+{_p'context', $bar}
+{_np$baz, 'I see %d little indian!', 'I see %d little indians!', 3}

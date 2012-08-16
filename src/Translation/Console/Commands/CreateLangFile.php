@@ -44,15 +44,10 @@ class CreateLangFile extends Console\Command\Command
 	protected function configure()
     {
         $this
-            ->setName('translation:extract')
+            ->setName('translation:createVersion')
             ->setDescription('extracts tokens from files')
 			->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
 			->addOption('o', null, InputOption::VALUE_OPTIONAL, 'output folder')
-			->addOption('f', null, InputOption::VALUE_OPTIONAL, 'file to extract, can be specified several times')
-			->addOption('k', null, InputOption::VALUE_OPTIONAL, "add FUNCTION to filters, format is: \n FILTER:FUNCTION_NAME:SINGULAR,PLURAL,CONTEXT \n default FILTERs are PHP and NetteLatte
-						\n for SINGULAR, PLURAL and CONTEXT '0' means not set
-						\n can be specified several times")
-			->addOption('m', null, InputOption::VALUE_OPTIONAL, 'set meta header')	
         ;
     }
 	
@@ -62,92 +57,34 @@ class CreateLangFile extends Console\Command\Command
 		
 		$lang = $input->getArgument('lang');
 		
-		//$output = 'php://stdout';
-		$keywords = null;
-		$meta = null;
-
-		$outputFolder = $input->getOption('o');
+		if(!\Translation\Langs::verifyLang($lang))
+		{
+			$output->writeln(sprintf('<error>Language %s is not a valid language</error>', $lang));
+		}
 		
+		$outputFolder = $input->getOption('o');
 		if($outputFolder === null)
 		{
 			$outputFolder = $this->outputFolder;
 		}
 		
-		$files = $input->getOption('f');
+		$inputFile = $outputFolder.'/template.pot';
+		$outputFile = $outputFolder.'/'.$lang.'po';
 		
-		if($files === null)
-		{
-			$files = $this->extractDirs;
-		}
+		$parser = new \Translation\Parsers\Gettext;
 		
-		$k = $input->getOption('k');
-		$m = $input->getOption('m');
+		$poParser = new \Translation\Parsers\POParser;
 		
-		if (!isset($files)) {
-			$output->writeln('No input files given.');
-			exit;
-		}
+		$data = $poParser->parse($inputFile);
 		
-		if ($k) 
-		{
-			$keywords = array();
-			if (is_string($k)) 
-			{
-				$k = array($k);
-			}
-			foreach ($k as $value) {
-				$filter = $function = $params = null;
-				list ($filter, $function, $params) = explode(':', $value);
-				$params = explode(',', $params);
-				foreach ($params as &$param) {
-					$param = (int)$param;
-					if ($param === 0) {
-						$param = null;
-					}
-				}
-				$keywords[] = array(
-					'filter' => $filter,
-					'function' => $function,
-					'singular' => isset($params[0]) ? $params[0] : null,
-					'plural' => isset($params[1]) ? $params[1] : null,
-					'context' => isset($params[2]) ? $params[2] : null
-				);
-			}
-		}
+		var_dump($data);exit;
 		
-		if (isset($m)) {
-			if (is_string($m)) {
-				$m = array($m);
-			}
-			$key = $value = null;
-			foreach ($m as $m) {
-				list($key, $value) = explode(':', $m, 2);
-				$meta[$key] = $value;
-			}
-		}
-
-		$extractor = new \Translation\Extraction\NetteExtractor;
+		$pluralRule = \Translation\Langs::getPluralRule($lang);
+		
 		$builder = new \Translation\Builders\Gettext;
+		$builder->setMeta('Language', $pluralRule);
+		$builder->buildPo($outputFile, $data);
 		
-		$extractor->setupForms()->setupDataGrid();
-		
-		if ($keywords !== null) {
-			foreach ($keywords as $value) {
-				$extractor->getFilter($value['filter'])
-						->addFunction($value['function'], $value['singular'], $value['plural'], $value['context']);
-			}
-		}
-		if ($meta) {
-			foreach ($meta as $key => $value) {
-				$builder->setMeta($key, $value);
-			}
-		}
-		$data = $extractor->scan($files);
-		
-		$outputFile = $outputFolder.'/template.pot';
-		
-		$builder->buildPot($outputFile, $data);
-		
-		$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFile));
+		$output->writeln(sprintf('<info>Created language file for lang: %s. Output saved in: %s.</info>', $lang, $outputFile));
 	}
 }
