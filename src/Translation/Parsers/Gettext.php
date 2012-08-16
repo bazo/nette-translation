@@ -64,16 +64,16 @@ class Gettext implements Parser
 		$translationOffset = $input[1];
 
 		fseek($f, $originalOffset);
-		$orignalTmp = $read(2 * $total);
+		$originalTmp = $read(2 * $total);
 		fseek($f, $translationOffset);
 		$translationTmp = $read(2 * $total);
 
 		for($i = 0; $i < $total; ++$i)
 		{
-			if($orignalTmp[$i * 2 + 1] != 0)
+			if($originalTmp[$i * 2 + 1] != 0)
 			{
-				fseek($f, $orignalTmp[$i * 2 + 2]);
-				$original = @fread($f, $orignalTmp[$i * 2 + 1]);
+				fseek($f, $originalTmp[$i * 2 + 2]);
+				$original = @fread($f, $originalTmp[$i * 2 + 1]);
 			} else
 				$original = "";
 
@@ -89,6 +89,7 @@ class Gettext implements Parser
 
 				$original = explode(Strings::chr(0x00), $original);
 				$translation = explode(Strings::chr(0x00), $translation);
+				
 				$dictionary[is_array($original) ? $original[0] : $original]['original'] = $original;
 				$dictionary[is_array($original) ? $original[0] : $original]['translation'] = $translation;
 			}
