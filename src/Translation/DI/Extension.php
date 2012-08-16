@@ -15,7 +15,13 @@ class Extension extends \Nette\Config\CompilerExtension
 		$defaults = array(
 			'provider' => 'gettext',
 			'scanFile' => '%appDir%',
-			'localizationFolder' => '%appDir%/l10n/'
+			'localizationFolder' => '%appDir%/l10n/',
+			'meta' => array(
+				'Project-Id-Version' => '',
+				'PO-Revision-Date' => '',
+				'Last-Translator' => '',
+				'Language-Team' => ''
+			)
 		)
 	;
 

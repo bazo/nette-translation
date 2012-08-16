@@ -21,7 +21,9 @@ class Gettext
 		$comments = array('Keys exported by Extractor'),
 			
 		$meta = array(
-			'Content-Type' => 'text/plain; charset=UTF-8'
+			'Content-Type' => 'text/plain; charset=UTF-8',
+			'X-Poedit-SourceCharset' => 'UTF-8',
+			'Content-Transfer-Encoding' => '8bit'
 		)
 	;
 	
