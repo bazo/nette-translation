@@ -50,7 +50,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 		$translator = new Translator($provider);
 		$translator->setLang('sk');
 		
-		$this->assertEquals($translation, $translator->translate($message));
+		$this->assertEquals($translation, $translator->translate($message, $count));
 	}
 	
 	/** @dataProvider messagesProvider */

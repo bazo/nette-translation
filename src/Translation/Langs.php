@@ -110,7 +110,7 @@ class Langs
 			'ru' => 'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);', 
 			'sco' => 'nplurals=2; plural=(n != 1);', 
 			'si' => 'nplurals=2; plural=(n != 1);', 
-			'sk' => 'nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;', 
+			'sk' => 'nplurals=3; plural=(n==1) ? 0 : ((n>=2 && n<=4) ? 1 : 2);', 
 			'sl' => 'nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);', 
 			'so' => 'nplurals=2; plural=n != 1;', 
 			'son' => 'nplurals=2; plural=(n != 1);', 

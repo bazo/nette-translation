@@ -1,7 +1,6 @@
 <?php
 namespace Translation\Providers;
 
-
 /**
  * Translator
  *
@@ -9,10 +8,10 @@ namespace Translation\Providers;
  */
 class Gettext extends Base
 {
-	private 
-		/** @var bool */	
+
+	private
+		/** @var bool */
 		$loaded = FALSE,
-			
 		$metadata = array()
 	;
 
@@ -21,13 +20,13 @@ class Gettext extends Base
 		parent::__construct($dirs);
 		$this->parser = new \Translation\Parsers\Gettext;
 	}
-	
+
 	/**
 	 * Sets a new language
 	 */
 	public function setLang($lang)
 	{
-		if($this->lang === $lang)
+		if ($this->lang === $lang)
 			return;
 
 		$this->lang = $lang;
@@ -35,18 +34,18 @@ class Gettext extends Base
 		$this->loaded = FALSE;
 		$this->loadDictonary();
 	}
-	
+
 	/**
 	 * Load data
 	 */
 	protected function loadDictonary()
 	{
-		if(!$this->loaded)
+		if (!$this->loaded)
 		{
 			$files = array();
-			foreach($this->dirs as $dir)
+			foreach ($this->dirs as $dir)
 			{
-				if(file_exists($dir . "/" . $this->lang . ".mo"))
+				if (file_exists($dir . "/" . $this->lang . ".mo"))
 				{
 					$dictionary = $this->parser->parseMo($dir . "/" . $this->lang . ".mo");
 					$this->dictionary = array_merge($this->dictionary, $dictionary);
@@ -66,56 +65,18 @@ class Gettext extends Base
 	 * @param int $form plural form (positive number)
 	 * @return string
 	 */
-	public function translate($message, $form = 1)
+	public function translate($message, $count = 1)
 	{
 		$this->loadDictonary();
-		$message = (string)$message;
-		$message_plural = NULL;
-		if(is_array($form) && $form !== NULL)
-		{
-			$message_plural = current($form);
-			$form = end($form);
-		}
-		if(!is_int($form) || $form === NULL)
-		{
-			$form = 1;
-		}
+		$message = (string) $message;
+
+		$entry = $this->dictionary[$message];
 		
-		if(!empty($message) && isset($this->dictionary[$message]))
-		{
-			$tmp = preg_replace('/([a-z]+)/', '$$1', "n=$form;" . $this->metadata['Plural-Forms']);
-			eval($tmp);
-
-			$message = $this->dictionary[$message]['translation'];
-			if(!empty($message))
-			{
-				$message = (is_array($message) && $plural !== NULL && isset($message[$plural])) ? $message[$plural] : $message;
-			}
-		} else
-		{
-			if($form > 1 && !empty($message_plural))
-				$message = $message_plural;
-		}
-
-		if(is_array($message))
-			$message = current($message);
-
-		$args = func_get_args();
-		if(count($args) > 1)
-		{
-			array_shift($args);
-			if(is_array(current($args)) || current($args) === NULL)
-				array_shift($args);
-
-			if(count($args) == 1 && is_array(current($args)))
-				$args = current($args);
-
-			$message = str_replace(array("%label", "%name", "%value"), array("#label", "#name", "#value"), $message);
-			if(count($args) > 0 && $args != NULL)
-				$message = vsprintf($message, $args);
-			$message = str_replace(array("#label", "#name", "#value"), array("%label", "%name", "%value"), $message);
-		}
-		return $message;
+		$tmp = preg_replace('/([a-z]+)/', '$$1', "n=$count;" . $this->metadata['Plural-Forms']);
+		eval($tmp);
+		
+		$translation = $entry['translation'][$plural];
+		return $translation;
 	}
 
 	/**
@@ -127,10 +88,11 @@ class Gettext extends Base
 	{
 		$this->loadDictonary();
 
-		if(isset($this->metadata['Plural-Forms']))
+		if (isset($this->metadata['Plural-Forms']))
 		{
-			return (int)substr($this->metadata['Plural-Forms'], 9, 1);
+			return (int) substr($this->metadata['Plural-Forms'], 9, 1);
 		}
 		return 1;
 	}
+
 }

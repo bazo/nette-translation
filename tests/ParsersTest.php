@@ -50,6 +50,21 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue(is_array($dictionary));
 		
 		$expected = array(
+			'Another message!' => array (
+				'original' => array (0 => 'Another message!'),
+				'translation' => array (0 => 'dalsia sprava')
+			),
+			'I see %d little indian!' => array(
+				'original'=> array(
+					0 => 'I see %d little indian!',
+					1 => 'I see %d little indians!'
+				),
+				'translation' => array(
+				  0 => 'vidim %d maleho indiana',
+				  1 => 'vidim %d malych indianov',
+				  2 => 'vidim %d malych indianov'
+				)
+			),
 			'customer' => array(
 				'original' => array (0 => 'customer'),
 				'translation' => array (0 => 'zákazník')
@@ -65,17 +80,6 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 			'order' => array (
 				'original' => array (0 => 'order'),
 				'translation' => array (0 => 'objednávka')
-			),
-			'I see %d little indian!' => array(
-				'original'=> array(
-					0 => 'I see %d little indian!',
-					1 => 'I see %d little indians!'
-				),
-				'translation' => array(
-				  0 => 'vidim %d maleho indiana',
-				  1 => 'vidim %d malych indianov',
-				  2 => 'vidim %d malych indianov'
-				)
 			)
 		);
 		

@@ -29,7 +29,7 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 		return $this;
 	}
 		
-	public function translate($message, $count = NULL)
+	public function translate($message, $count = 1)
 	{
 		return $this->provider->translate($message, $count);
 	}
