@@ -97,9 +97,11 @@ class PHPFilterTest extends FilterTest
 	{
 		$messages = $this->object->extract($this->file);
 
+		
+		
 		$this->assertContains(array(
 			Extractor::LINE => 22,
-			Extractor::SINGULAR => "A\r\nmessage!"
+			Extractor::SINGULAR => "A\nmessage!"
 				), $messages);
 	}
 

@@ -2,7 +2,7 @@
 namespace Translation\Extraction\Filters;
 
 use Translation\Extraction\Extractor;
-
+use Nette\Utils\Strings;
 /**
  * GettextExtractor
  *
@@ -116,12 +116,13 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 			foreach($message[Extractor::SINGULAR] as $value)
 			{
 				$tmp = $message;
-				$tmp[Extractor::SINGULAR] = $value;
+				$tmp[Extractor::SINGULAR] = Strings::normalize($value);
 				$this->data[] = $tmp;
 			}
 		}
 		else
 		{
+			$message['singular'] = Strings::normalize($message['singular']);
 			$this->data[] = $message;
 		}
 	}
