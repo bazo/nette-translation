@@ -71,7 +71,7 @@ class Extension extends \Nette\Config\CompilerExtension
 	public static function createConsoleCommandCreateLangFile($config)
 	{
 		$command = new \Translation\Console\Commands\CreateLangFile;
-		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
+		$command->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
 	
