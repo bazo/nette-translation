@@ -103,4 +103,15 @@ class Gettext implements Parser
 			$this->metadata[trim($tmp[0])] = count($tmp) > 2 ? ltrim(strstr($metadata, $pattern), $pattern) : $tmp[1];
 		}
 	}
+
+	/**
+	 *
+	 * @param string $filename
+	 * @return GettextResponse
+	 */
+	public function parsePO($filename)
+	{
+		$parser = new POParser;
+		return $parser->parse($filename);
+	}
 }

@@ -153,4 +153,4 @@ class GettextCompiler
 
 		file_put_contents($file, $po);
 	}
-}
+	}
