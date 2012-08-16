@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument,
  *
  * @author martin.bazik
  */
-class Extract extends Console\Command\Command
+class Compile extends Console\Command\Command
 {
 
 	private
@@ -48,6 +48,7 @@ class Extract extends Console\Command\Command
             ->setDescription('extracts tokens from files')
 			->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
 			->addOption('o', null, InputOption::VALUE_OPTIONAL, 'output folder')
+			->addOption('l', null, InputOption::VALUE_OPTIONAL, 'log file, default is stderr')
 			->addOption('f', null, InputOption::VALUE_OPTIONAL, 'file to extract, can be specified several times')
 			->addOption('k', null, InputOption::VALUE_OPTIONAL, "add FUNCTION to filters, format is: \n FILTER:FUNCTION_NAME:SINGULAR,PLURAL,CONTEXT \n default FILTERs are PHP and NetteLatte
 						\n for SINGULAR, PLURAL and CONTEXT '0' means not set
@@ -62,9 +63,12 @@ class Extract extends Console\Command\Command
 		
 		$lang = $input->getArgument('lang');
 		
+		//$output = 'php://stdout';
+		$log = 'php://stderr';
 		$keywords = null;
 		$meta = null;
 
+		$log = $input->getOption('l');
 		$outputFolder = $input->getOption('o');
 		
 		if($outputFolder === null)
@@ -125,7 +129,7 @@ class Extract extends Console\Command\Command
 			}
 		}
 
-		$extractor = new \Translation\Extraction\NetteExtractor;
+		$extractor = new \Translation\Extraction\NetteExtractor($log);
 		$builder = new \Translation\Builders\Gettext;
 		
 		$extractor->setupForms()->setupDataGrid();
@@ -143,10 +147,10 @@ class Extract extends Console\Command\Command
 		}
 		$data = $extractor->scan($files);
 		
-		$outputFile = $outputFolder.'/template.pot';
+		$outputFile = $outputFolder.'/'.$lang.'.po';
 		
-		$builder->buildPot($outputFile, $data);
+		$builder->buildPo($outputFile, $data);
 		
-		$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFile));
+		$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFolder));
 	}
 }

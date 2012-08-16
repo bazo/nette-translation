@@ -20,7 +20,9 @@ class Gettext
 		/** @var array */
 		$comments = array('Keys exported by Extractor'),
 			
-		$meta = array()
+		$meta = array(
+			'Content-Type' => 'text/plain; charset=UTF-8'
+		)
 	;
 	
 	/**

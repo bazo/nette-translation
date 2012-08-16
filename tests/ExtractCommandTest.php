@@ -30,7 +30,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		
 		$this->dataDir = __DIR__.'/data';
 		$this->outputFolder = __DIR__.'/output';
-		$this->outputFile = $this->outputFolder.'/'.$this->lang.'.po';
+		$this->outputFile = $this->outputFolder.'/template.pot';
     }
 	
 	protected function tearDown()
@@ -38,7 +38,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		parent::tearDown();
 		if(file_exists($this->outputFile))
 		{
-			unlink($this->outputFile);
+			//unlink($this->outputFile);
 		}
 	}
 	

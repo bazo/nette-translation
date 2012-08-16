@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument,
  *
  * @author martin.bazik
  */
-class Extract extends Console\Command\Command
+class CreateLangFile extends Console\Command\Command
 {
 
 	private
@@ -62,6 +62,7 @@ class Extract extends Console\Command\Command
 		
 		$lang = $input->getArgument('lang');
 		
+		//$output = 'php://stdout';
 		$keywords = null;
 		$meta = null;
 
