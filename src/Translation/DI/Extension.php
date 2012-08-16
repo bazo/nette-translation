@@ -40,6 +40,10 @@ class Extension extends \Nette\Config\CompilerExtension
 		
 		$builder->addDefinition($this->prefix('translator'))
 			->setFactory('Translation\DI\Extension::createTranslator', array('@container'));
+		
+		$builder->addDefinition($this->prefix('consoleCommandExtract'))
+			->setClass('Translation\Console\Commands\Extract')
+			->addTag('consoleCommand');
 	}
 	
 	public static function createProvider($config)
