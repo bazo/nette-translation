@@ -47,7 +47,7 @@ class Extract extends Console\Command\Command
         $this
             ->setName('translation:extract')
             ->setDescription('extracts tokens from files')
-			->addOption('o', null, InputOption::VALUE_OPTIONAL, 'output file, default output is stdout', 'php://stdout')
+			->addOption('o', null, InputOption::VALUE_OPTIONAL, 'output file, default output is stdout')
 			->addOption('l', null, InputOption::VALUE_OPTIONAL, 'log file, default is stderr')
 			->addOption('f', null, InputOption::VALUE_OPTIONAL, 'file to extract, can be specified several times')
 			->addOption('k', null, InputOption::VALUE_OPTIONAL, "add FUNCTION to filters, format is: \n FILTER:FUNCTION_NAME:SINGULAR,PLURAL,CONTEXT \n default FILTERs are PHP and NetteLatte
