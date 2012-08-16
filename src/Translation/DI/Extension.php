@@ -53,9 +53,9 @@ class Extension extends \Nette\Config\CompilerExtension
 		return new \Translation\Translator($container->{$this->prefix()}->provider);
 	}
 	
-	public static function register(Configurator $config)
+	public static function register(Configurator $configurator)
 	{
-		$config->onCompile[] = function (Configurator $config, Compiler $compiler) {
+		$configurator->onCompile[] = function (Configurator $configurator, Compiler $compiler) {
 			$compiler->addExtension('translation', new Extension);
 		};
 	}
