@@ -23,6 +23,20 @@ class Gettext extends Base
 	}
 	
 	/**
+	 * Sets a new language
+	 */
+	public function setLang($lang)
+	{
+		if($this->lang === $lang)
+			return;
+
+		$this->lang = $lang;
+		$this->dictionary = array();
+		$this->loaded = FALSE;
+		$this->loadDictonary();
+	}
+	
+	/**
 	 * Load data
 	 */
 	protected function loadDictonary()
@@ -35,7 +49,9 @@ class Gettext extends Base
 				if(file_exists($dir . "/" . $this->lang . ".mo"))
 				{
 					$dictionary = $this->parser->parseMo($dir . "/" . $this->lang . ".mo");
+					var_dump(__METHOD__,$this->parser);
 					$this->dictionary = array_merge($this->dictionary, $dictionary);
+					//var_dump($this->parser);exit;
 					$this->metadata = array_merge($this->metadata, $this->parser->getMetadata());
 					$files[] = $dir . "/" . $this->lang . ".mo";
 				}
@@ -66,16 +82,20 @@ class Gettext extends Base
 		{
 			$form = 1;
 		}
-
+		
+		//var_dump($message, $this->dictionary, $this->metadata);
+		//exit;
+		
 		if(!empty($message) && isset($this->dictionary[$message]))
 		{
 			$tmp = preg_replace('/([a-z]+)/', '$$1', "n=$form;" . $this->metadata['Plural-Forms']);
 			eval($tmp);
 
-
 			$message = $this->dictionary[$message]['translation'];
 			if(!empty($message))
+			{
 				$message = (is_array($message) && $plural !== NULL && isset($message[$plural])) ? $message[$plural] : $message;
+			}
 		} else
 		{
 			if($form > 1 && !empty($message_plural))
@@ -118,19 +138,4 @@ class Gettext extends Base
 		}
 		return 1;
 	}
-
-	/**
-	 * Sets a new language
-	 */
-	public function setLang($lang)
-	{
-		if($this->lang === $lang)
-			return;
-
-		$this->lang = $lang;
-		$this->dictionary = array();
-		$this->loaded = FALSE;
-		$this->loadDictonary();
-	}
-
 }

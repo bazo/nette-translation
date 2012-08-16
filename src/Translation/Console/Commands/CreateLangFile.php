@@ -52,7 +52,7 @@ class CreateLangFile extends Command
 		$pluralRule = \Translation\Langs::getPluralRule($lang);
 		
 		$builder = new \Translation\Builders\Gettext;
-		$builder->setMeta('Language', $pluralRule);
+		$builder->setMeta('Plural-Forms', $pluralRule);
 		$builder->buildPo($outputFile, $data);
 		
 		$output->writeln(sprintf('<info>Created language file for lang: %s. Output saved in: %s.</info>', $lang, $outputFile));

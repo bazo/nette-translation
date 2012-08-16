@@ -1,6 +1,6 @@
 <?php
 namespace Translation\Parsers;
-
+use Nette\Utils\Strings;
 /**
  * POParser
  *
@@ -8,6 +8,15 @@ namespace Translation\Parsers;
  */
 class POParser implements Parser
 {
+
+	private
+		$metadata
+	;
+
+	public function getMetadata()
+	{
+		return $this->metadata;
+	}
 
 	private function cleanHelper($x)
 	{
@@ -39,14 +48,8 @@ class POParser implements Parser
 		// read .po file
 		$fc = file_get_contents($file);
 		// normalize newlines
-		$fc = str_replace(array(
-			"\r\n",
-			"\r"
-				), array(
-			"\n",
-			"\n"
-				), $fc);
-
+		$fc = Strings::normalize($fc);
+		
 		// results array
 		$hash = array();
 		// temporary array
@@ -56,21 +59,41 @@ class POParser implements Parser
 		$fuzzy = false;
 
 		// iterate over lines
-		foreach(explode("\n", $fc) as $line)
+		$lines = explode("\n", $fc); 
+		
+		$comments = array();
+		$metadata = array();
+		
+		foreach($lines as $line)
 		{
-			$line = trim($line);
+			$line = Strings::trim($line);
+			
 			if($line === '')
+			{
+				$hash[] = $temp;
+				$temp = array();
+				$state = null;
+				$fuzzy = false;
 				continue;
+			}
 
+			if($this->isMetadata($line))
+			{
+				$line = str_replace(array('\n', '"'), '', $line);
+				$meta = self::extractMetadata($line);
+			    $metadata[$meta['property']] = $meta['value'];
+			}
+			
 			list ($key, $data) = explode(' ', $line, 2);
-
 			switch($key)
 			{
-				case '#,' : // flag...
-					$fuzzy = in_array('fuzzy', preg_split('/,\s*/', $data));
-				case '#' : // translator-comments
-				case '#.' : // extracted-comments
 				case '#:' : // reference...
+					$temp['files'][] = $data;
+				case '#,' : // flag...
+					$fuzzy = /*$data === 'fuzzy' ? true : false;*/in_array('fuzzy', preg_split('/,\s*/', $data));
+				case '#' : // translator-comments
+					$comments[] = $data;
+				case '#.' : // extracted-comments
 				case '#|' : // msgid previous-untranslated-string
 					// start a new entry
 					if(sizeof($temp) && array_key_exists('msgid', $temp) && array_key_exists('msgstr', $temp))
@@ -82,18 +105,20 @@ class POParser implements Parser
 						$fuzzy = false;
 					}
 					break;
-				case 'msgctxt' :
-				// context
-				case 'msgid' :
-				// untranslated-string
-				case 'msgid_plural' :
-					// untranslated-string-plural
+				case 'msgctxt' : // context
+					$temp[$key] = $data;
 					$state = $key;
-					$temp[$state] = $data;
 					break;
-				case 'msgstr' :
-					// translated-string
-					$state = 'msgstr';
+				case 'msgid' : // untranslated-string
+					$state = $key;
+					$temp[$key] = $data;
+					break;
+				case 'msgid_plural' : // untranslated-string-plural
+					$state = $key;
+					$temp[$key] = $data;
+					break;
+				case 'msgstr' : // translated-string
+					$state = $key;
 					$temp[$state][] = $data;
 					break;
 				default :
@@ -127,7 +152,10 @@ class POParser implements Parser
 
 		// add final entry
 		if($state == 'msgstr')
+		{
 			$hash[] = $temp;
+		}
+		
 
 		// Cleanup data, merge multiline entries, reindex hash for ksort
 		$temp = $hash;
@@ -144,25 +172,25 @@ class POParser implements Parser
 				}
 			}
 			
-			/**
-			 * added by me
-			 */
-			
-			$newEntry = $this->convertEntry($entry);
-			
 			$hash[$entry['msgid']] = $entry;
 		}
-
+		$this->metadata = $metadata;
 		return $hash;
 	}
 
-	private function convertEntry($entry)
-	{
-		$newEntry = array(
-			'files' => array()
-		);
-		
-		//if()
-	}
+	private function isMetadata($line)
+    {
+		if(substr($line, 0, 1) == '"') return true;
+		else return false;
+    }
+	
+	private function extractMetadata($line)
+    {
+		$meta = array();
+		$parts = explode(':', $line, 2 );
+		$meta['property'] = Strings::trim($parts[0]);
+		$meta['value'] = Strings::trim($parts[1]);
+		return $meta;
+    }
 	
 }

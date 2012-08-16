@@ -16,4 +16,5 @@ class Context
 	const PLURAL = 'msgid_plural';//'plural';
 	const LINE = 'line';
 	const FILE = 'file';
+	const TRANSLATION = 'msgstr';
 }

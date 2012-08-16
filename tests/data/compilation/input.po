@@ -1,15 +1,17 @@
-# Gettext keys exported by GettextTranslator and Translation Panel
-# Created: 2011-03-28 01:45:00
+# Keys exported by Extractor
 msgid ""
 msgstr ""
-"Project-Id-Version: 1\n"
-"POT-Creation-Date: 2011-03-27T23:09:16+02:00\n"
-"PO-Revision-Date: 2011-03-28 01:45+0200\n"
+"POT-Creation-Date: 2012-08-16T19:55:44+03:00\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sk\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Project-Id-Version: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Martin Bazik <martin@bazo.sk>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 msgid "customer"
 msgstr "zákazník"
@@ -22,3 +24,20 @@ msgstr "starý"
 
 msgid "order"
 msgstr "objednávka"
+
+msgctxt "context"
+msgid "Another message!"
+msgstr ""
+
+msgid "I see %d little indian!"
+msgid_plural "I see %d little indians!"
+msgstr[0] "vidim %d maleho indiana"
+msgstr[1] "vidim %d malych indianov"
+msgstr[2] "vidim %d malych indianov"
+
+msgctxt "context"
+msgid "I see %d little indian!"
+msgid_plural "I see %d little indians!"
+msgstr[0] "vidim %d maleho indiana"
+msgstr[1] "vidim %d malych indianov"
+msgstr[2] "vidim %d malych indianov"

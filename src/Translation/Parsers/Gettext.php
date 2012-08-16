@@ -13,11 +13,17 @@ class Gettext implements Parser
 {
 
 	private
-		$metadata
+		$metadata,
+			
+		$dictionary
 	;
 
 	public function getMetadata()
 	{
+		if($this->metadata === null)
+		{
+			return array();
+		}
 		return $this->metadata;
 	}
 
@@ -77,7 +83,8 @@ class Gettext implements Parser
 				$translation = fread($f, $translationTmp[$i * 2 + 1]);
 				if($original === "")
 				{
-					$this->parseMetadata($translation);
+					$this->metadata = $this->parseMetadata($translation);
+					var_dump(__METHOD__,$this->metadata);
 					continue;
 				}
 
@@ -87,21 +94,21 @@ class Gettext implements Parser
 				$dictionary[is_array($original) ? $original[0] : $original]['translation'] = $translation;
 			}
 		}
+		$this->dictionary = $dictionary;
 		return $dictionary;
 	}
 
 	private function parseMetadata($input)
 	{
-		$input = trim($input);
-
-		$input = preg_split('/[\n,]+/', $input);
-
-		foreach($input as $metadata)
+		$input = Strings::trim($input);
+		$lines = explode("\n", $input);
+		foreach($lines as $line)
 		{
 			$pattern = ': ';
-			$tmp = preg_split("($pattern)", $metadata);
-			$this->metadata[trim($tmp[0])] = count($tmp) > 2 ? ltrim(strstr($metadata, $pattern), $pattern) : $tmp[1];
+			$tmp = explode($pattern, $line, 2);
+			$metadata[$tmp[0]] = $tmp[1];
 		}
+		return $metadata;
 	}
 
 	/**
@@ -112,6 +119,8 @@ class Gettext implements Parser
 	public function parsePO($filename)
 	{
 		$parser = new POParser;
-		return $parser->parse($filename);
+		$data = $parser->parse($filename);
+		$this->metadata = $parser->getMetadata();
+		return $data;
 	}
 }

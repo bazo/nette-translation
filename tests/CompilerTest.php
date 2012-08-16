@@ -27,7 +27,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		$this->outputMo =  $this->dataDir.'/output.mo';
 		$this->outputPo =  $this->dataDir.'/output.po';
     }
-	
+	/*
 	protected function tearDown()
 	{
 		if(file_exists($this->outputMo))
@@ -40,6 +40,8 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 			unlink($this->outputPo);
 		}
 	}
+	 * 
+	 */
 	/*
 	public function testCompilePoToMo()
 	{
@@ -49,7 +51,9 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertFileExists($this->outputMo);
 	}
-	
+	 * 
+	 */
+	/*
 	public function testDecompileMoToPo()
 	{
 		$inputFile = $this->dataDir.'/input.mo';
@@ -69,7 +73,6 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
     }
 	
 	/** @dataProvider messagesProvider */
-	/*
 	public function testMoFileUsable($message, $translation)
 	{
 		$inputFile = $this->dataDir.'/input.po';
@@ -84,8 +87,6 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals($translation, $translator->translate($message));
 	}
-	 * 
-	 */
 	
 	public function testDontThrowWarning()
 	{
