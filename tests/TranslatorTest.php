@@ -20,17 +20,30 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 	
 	public function messagesProvider()
-    {
-        return array(
-          array('customer', 'zákazník'),
-          array('order', 'objednávka'),
-          array('new', 'nový'),
-          array('old', 'starý')
-        );
-    }
+	{
+		return array(
+			array('customer', 'zákazník'),
+			array('order', 'objednávka'),
+			array('new', 'nový'),
+			array('old', 'starý'),
+		);
+	}
 	
-	/** @dataProvider messagesProvider */
-	public function testTranslateWithGettext($message, $translation)
+	public function gettextMessagesProvider()
+	{
+		return array(
+			array('customer', 'zákazník'),
+			array('order', 'objednávka'),
+			array('new', 'nový'),
+			array('old', 'starý'),
+			array('I see %d little indian!', 'vidim %d maleho indiana', 1),
+			array('I see %d little indian!', 'vidim %d malych indianov', 2),
+			array('I see %d little indian!', 'vidim %d malych indianov', 5)
+		);
+	}
+	
+	/** @dataProvider gettextMessagesProvider */
+	public function testTranslateWithGettext($message, $translation, $count = 1)
 	{
 		$provider = new Providers\Gettext($this->dirs);
 		

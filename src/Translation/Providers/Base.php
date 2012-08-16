@@ -51,9 +51,11 @@ abstract class Base implements Provider
 	{
 		$this->loadDictionary();
 
-		$translation = $this->dictionary[$message];
-		
-		return $translation;
+		if(isset($this->dictionary[$message]))
+		{
+			return $this->dictionary[$message];
+		}
+		return $message;
 	}
 	
 	protected function loadDictionary()
