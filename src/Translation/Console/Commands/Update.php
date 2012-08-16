@@ -73,7 +73,7 @@ class Update extends Console\Command\Command
 		
 		if($outputFolder === null)
 		{
-			$outputFolder = $this->outputFile;
+			$outputFolder = $this->outputFolder;
 		}
 		
 		$files = $input->getOption('f');
