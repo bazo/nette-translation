@@ -42,7 +42,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 	}
 	 * 
 	 */
-	/*
+	
 	public function testCompilePoToMo()
 	{
 		$inputFile = $this->dataDir.'/input.po';
@@ -51,8 +51,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		
 		$this->assertFileExists($this->outputMo);
 	}
-	 * 
-	 */
+
 	/*
 	public function testDecompileMoToPo()
 	{
@@ -62,6 +61,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		$this->assertFileExists($this->outputPo);
 	}
 	*/
+	
 	public function messagesProvider()
     {
         return array(
@@ -86,10 +86,5 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		$translator->setLang('output');
 
 		$this->assertEquals($translation, $translator->translate($message));
-	}
-	
-	public function testDontThrowWarning()
-	{
-		
 	}
 }
