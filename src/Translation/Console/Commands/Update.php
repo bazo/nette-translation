@@ -10,13 +10,11 @@ use Symfony\Component\Console\Input\InputArgument,
  *
  * @author martin.bazik
  */
-class Update extends Console\Command\Command
+class Update extends Command
 {
 
 	private
-		$extractDirs,
-			
-		$outputFolder
+		$extractDirs
 	;
 	
 	public function getExtractDirs()
@@ -30,17 +28,6 @@ class Update extends Console\Command\Command
 		return $this;
 	}
 
-	public function getOutputFolder()
-	{
-		return $this->outputFolder;
-	}
-
-	public function setOutputFolder($outputFolder)
-	{
-		$this->outputFolder = $outputFolder;
-		return $this;
-	}
-		
 	protected function configure()
     {
         $this

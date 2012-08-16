@@ -10,37 +10,9 @@ use Symfony\Component\Console\Input\InputArgument,
  *
  * @author martin.bazik
  */
-class CreateLangFile extends Console\Command\Command
+class CreateLangFile extends Command
 {
 
-	private
-		$extractDirs,
-			
-		$outputFolder
-	;
-	
-	public function getExtractDirs()
-	{
-		return $this->extractDirs;
-	}
-
-	public function setExtractDirs($extractDirs)
-	{
-		$this->extractDirs = $extractDirs;
-		return $this;
-	}
-
-	public function getOutputFolder()
-	{
-		return $this->outputFolder;
-	}
-
-	public function setOutputFolder($outputFolder)
-	{
-		$this->outputFolder = $outputFolder;
-		return $this;
-	}
-		
 	protected function configure()
     {
         $this

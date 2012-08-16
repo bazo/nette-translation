@@ -52,6 +52,10 @@ class Extension extends \Nette\Config\CompilerExtension
 			->setFactory('Translation\DI\Extension::createConsoleCommandExtract', array($config))
 			->addTag('consoleCommand');
 		
+		$builder->addDefinition($this->prefix('consoleCommandCreateLangFile'))
+			->setFactory('Translation\DI\Extension::createConsoleCommandCreateLangFile', array($config))
+			->addTag('consoleCommand');
+		
 		$builder->addDefinition($this->prefix('consoleCommandUpdate'))
 			->setFactory('Translation\DI\Extension::createConsoleCommandUpdate', array($config))
 			->addTag('consoleCommand');
@@ -60,6 +64,13 @@ class Extension extends \Nette\Config\CompilerExtension
 	public static function createConsoleCommandExtract($config)
 	{
 		$command = new \Translation\Console\Commands\Extract;
+		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
+		return $command;
+	}
+	
+	public static function createConsoleCommandCreateLangFile($config)
+	{
+		$command = new \Translation\Console\Commands\CreateLangFile;
 		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
