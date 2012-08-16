@@ -14,7 +14,8 @@ class Extension extends \Nette\Config\CompilerExtension
 		/** @var array */	
 		$defaults = array(
 			'dictionaryFolders' => array('%appDir%/l10n'),
-			'provider' => 'gettext'
+			'provider' => 'gettext',
+			'templateFile' => '%appDir%/l10n/template.pot'
 		)
 	;
 
@@ -42,8 +43,15 @@ class Extension extends \Nette\Config\CompilerExtension
 			->setFactory('Translation\DI\Extension::createTranslator', array('@container'));
 		
 		$builder->addDefinition($this->prefix('consoleCommandExtract'))
-			->setClass('Translation\Console\Commands\Extract')
+			->setFactory('Translation\DI\Extension::createConsoleCommandExtract', array($config))
 			->addTag('consoleCommand');
+	}
+	
+	public static function createConsoleCommandExtract($config)
+	{
+		$command = new \Translation\Console\Commands\Extract;
+		$command->setExtractDirs('%appDir%')->setOutputFile($config['templateFile']);
+		return $command;
 	}
 	
 	public static function createProvider($config)

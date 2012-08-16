@@ -13,7 +13,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 			
 		$dataDir,
 			
-		$outputDir	
+		$outputFile
 	;
 	
 	protected function setUp()
@@ -27,25 +27,34 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		$this->app = $app;
 		
 		$this->dataDir = __DIR__.'/data';
-		$this->outputDir = __DIR__.'/output';
+		$this->outputFile = __DIR__.'/output/template.pot';
     }
+	
+	protected function tearDown()
+	{
+		parent::tearDown();
+		if(file_exists($this->outputFile))
+		{
+			unlink($this->outputFile);
+		}
+	}
 	
 	public function testExtractCommandRuns()
 	{
-		
 		//var_dump(realpath($this->dataDir.'/header.latte'));exit;
-		/*
+		
 		$parameters = array(
 			'command' => 'translation:extract',
 			'--m' => 'test:test prd:prd',
 			'--f' => $this->dataDir.'/header.latte',
-			//'--o' => 'php://stdout'
+			'--o' => $this->outputFile
 		);
 		
 		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
 		$output = new \Symfony\Component\Console\Output\ConsoleOutput;
 		$this->app->find('translation:extract')->run($input, $output);
-		 * 
-		 */
+		
+		$this->assertFileExists($this->outputFile);
+		 
 	}
 }

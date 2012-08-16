@@ -13,6 +13,35 @@ use Symfony\Component\Console\Input\InputArgument,
 class Extract extends Console\Command\Command
 {
 
+	private
+		$extractDirs,
+			
+		$outputFile
+	;
+	
+	public function getExtractDirs()
+	{
+		return $this->extractDirs;
+	}
+
+	public function setExtractDirs($extractDirs)
+	{
+		$this->extractDirs = $extractDirs;
+		return $this;
+	}
+
+	public function getOutputFile()
+	{
+		return $this->outputFile;
+	}
+
+	public function setOutputFile($outputFile)
+	{
+		$this->outputFile = $outputFile;
+		return $this;
+	}
+
+		
 	protected function configure()
     {
         $this
@@ -39,7 +68,19 @@ class Extract extends Console\Command\Command
 
 		$log = $input->getOption('l');
 		$outputFile = $input->getOption('o');
+		
+		if($outputFile === null)
+		{
+			$outputFile = $this->outputFile;
+		}
+		
 		$files = $input->getOption('f');
+		
+		if($files === null)
+		{
+			$files = $this->extractDirs;
+		}
+		
 		$k = $input->getOption('k');
 		$m = $input->getOption('m');
 		
@@ -87,7 +128,10 @@ class Extract extends Console\Command\Command
 		}
 
 		$extractor = new \Translation\Extraction\NetteExtractor($log);
+		$builder = new \Translation\Builders\Gettext;
+		
 		$extractor->setupForms()->setupDataGrid();
+		
 		if ($keywords !== null) {
 			foreach ($keywords as $value) {
 				$extractor->getFilter($value['filter'])
@@ -96,12 +140,13 @@ class Extract extends Console\Command\Command
 		}
 		if ($meta) {
 			foreach ($meta as $key => $value) {
-				$extractor->setMeta($key, $value);
+				$builder->setMeta($key, $value);
 			}
 		}
-		$extractor->scan($files);
-		$extractor->save($outputFile);
+		$data = $extractor->scan($files);
 		
-		$output->writeln('done');
+		$builder->buildPot($outputFile, $data);
+		
+		$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFile));
 	}
 }

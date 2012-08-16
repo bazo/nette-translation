@@ -91,7 +91,6 @@ class Extractor
 			$this->_scan($item);
 		}
 		return $this->_extract($this->inputFiles);
-		return $this;
 	}
 
 	/**
