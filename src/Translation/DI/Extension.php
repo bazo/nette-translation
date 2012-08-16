@@ -1,5 +1,8 @@
 <?php
 namespace Translation\DI;
+use Nette\Config\Configurator;
+use Nette\DI\Container;
+use Nette\Config\Compiler;
 /**
  * Extension
  *
@@ -10,11 +13,17 @@ class Extension extends \Nette\Config\CompilerExtension
 	public 
 		/** @var array */	
 		$defaults = array(
-			'dictionartFolders' => array('%appDir%/l10n'),
+			'dictionaryFolders' => array('%appDir%/l10n'),
 			'provider' => 'gettext'
 		)
 	;
 
+	private static $providerMap = array(
+		'gettext' => '\Translation\Providers\Gettext',
+		'neon' => '\Translation\Providers\Neon',
+		'ini' => '\Translation\Providers\Ini',
+	);
+	
 	/**
 	 * Processes configuration data
 	 *
@@ -26,11 +35,29 @@ class Extension extends \Nette\Config\CompilerExtension
 		
 		$config = $this->getConfig($this->defaults);
 		
+		$builder->addDefinition($this->prefix('provider'))
+			->setFactory('Translation\DI\Extension::createProvider', array($config));
+		
+		$builder->addDefinition($this->prefix('translator'))
+			->setFactory('Translation\DI\Extension::createTranslator', array('@container'));
 	}
 	
-	public static function register()
+	public static function createProvider($config)
 	{
-		
+		$providerClass = self::$providerMap[$config['provider']];
+		return new $providerClass($config['dictionaryFolders']);
+	}
+	
+	public static function createTranslator(Container $container)
+	{
+		return new \Translation\Translator($container->{$this->prefix()}->provider);
+	}
+	
+	public static function register(Configurator $config)
+	{
+		$config->onCompile[] = function (Configurator $config, Compiler $compiler) {
+			$compiler->addExtension('translation', new Extension);
+		};
 	}
 	
 }
