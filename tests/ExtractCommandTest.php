@@ -15,6 +15,8 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 			
 		$outputFile,
 			
+		$poOutputFile,
+			
 		$lang = 'sk'
 	;
 	
@@ -34,6 +36,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		$this->dataDir = __DIR__.'/data';
 		$this->outputFolder = __DIR__.'/output';
 		$this->outputFile = $this->outputFolder.'/template.pot';
+		$this->poOutputFile = $this->outputFolder.'/'.$this->lang.'.po';
     }
 	
 	protected function tearDown()
@@ -41,7 +44,12 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		parent::tearDown();
 		if(file_exists($this->outputFile))
 		{
-			//unlink($this->outputFile);
+			unlink($this->outputFile);
+		}
+		
+		if(file_exists($this->poOutputFile))
+		{
+			unlink($this->poOutputFile);
 		}
 	}
 	
@@ -70,16 +78,30 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		//var_dump(realpath($this->dataDir.'/header.latte'));exit;
 		
 		$parameters = array(
-			'command' => 'translation:createVersion',
+			'command' => 'translation:extract',
+			'--m' => 'test:test prd:prd',
+			'--f' => $this->dataDir.'/header.latte',
 			'--o' => $this->outputFolder,
 			'lang' => $this->lang
 		);
 		
 		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
 		$output = new \Symfony\Component\Console\Output\ConsoleOutput;
+		$this->app->find('translation:extract')->run($input, $output);
+		
+		$parameters = array(
+			'command' => 'translation:createVersion',
+			'--o' => $this->outputFolder,
+			'lang' => $this->lang
+		);
+		
+		$outputFile = $this->poOutputFile;
+		
+		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
+		$output = new \Symfony\Component\Console\Output\ConsoleOutput;
 		$this->app->find('translation:createVersion')->run($input, $output);
 		
-		//$this->assertFileExists($this->outputFile);
+		$this->assertFileExists($outputFile);
 		 
 	}
 }

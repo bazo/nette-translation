@@ -2,7 +2,7 @@
 
 namespace Translation\Extraction\Filters;
 
-use Translation\Extraction\Extractor;
+use Translation\Extraction\Context;
 
 /**
  * Extractor
@@ -132,7 +132,7 @@ class NetteLatte extends AFilter implements IFilter
 					}
 				}
 				$result = array(
-					Extractor::LINE => $line + 1
+					Context::LINE => $line + 1
 				);
 				foreach($prefix as $position => $type)
 				{

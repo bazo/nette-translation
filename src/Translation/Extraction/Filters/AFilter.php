@@ -1,7 +1,7 @@
 <?php
 namespace Translation\Extraction\Filters;
 
-use Translation\Extraction\Extractor;
+use Translation\Extraction\Context;
 
 /**
  * Extractor
@@ -44,7 +44,7 @@ abstract class AFilter
 			throw new \InvalidArgumentException('Invalid argument type or value given for paramater $singular.');
 		}
 		$function = array(
-			$singular => Extractor::SINGULAR
+			$singular => Context::SINGULAR
 		);
 		if($plural !== null)
 		{
@@ -52,7 +52,7 @@ abstract class AFilter
 			{
 				throw new \InvalidArgumentException('Invalid argument type or value given for paramater $plural.');
 			}
-			$function[$plural] = Extractor::PLURAL;
+			$function[$plural] = Context::PLURAL;
 		}
 		if($context !== null)
 		{
@@ -60,7 +60,7 @@ abstract class AFilter
 			{
 				throw new \InvalidArgumentException('Invalid argument type or value given for paramater $context.');
 			}
-			$function[$context] = Extractor::CONTEXT;
+			$function[$context] = Context::CONTEXT;
 		}
 		$this->functions[$functionName][] = $function;
 		return $this;

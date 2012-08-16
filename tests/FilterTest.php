@@ -1,6 +1,6 @@
 <?php
 namespace Translation;
-use Translation\Extraction\Extractor;
+use Translation\Extraction\Context;
 /**
  * Description of FilterTest
  *
@@ -20,27 +20,27 @@ abstract class FilterTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInternalType('array', $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 2,
-			Extractor::SINGULAR => 'A message!'
+			Context::LINE => 2,
+			Context::SINGULAR => 'A message!'
 		), $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 3,
-			Extractor::SINGULAR => 'Another message!',
-			Extractor::CONTEXT => 'context'
+			Context::LINE => 3,
+			Context::SINGULAR => 'Another message!',
+			Context::CONTEXT => 'context'
 		), $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 4,
-			Extractor::SINGULAR => 'I see %d little indian!',
-			Extractor::PLURAL => 'I see %d little indians!'
+			Context::LINE => 4,
+			Context::SINGULAR => 'I see %d little indian!',
+			Context::PLURAL => 'I see %d little indians!'
 		), $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 5,
-			Extractor::SINGULAR => 'I see %d little indian!',
-			Extractor::PLURAL => 'I see %d little indians!',
-			Extractor::CONTEXT => 'context'
+			Context::LINE => 5,
+			Context::SINGULAR => 'I see %d little indian!',
+			Context::PLURAL => 'I see %d little indians!',
+			Context::CONTEXT => 'context'
 		), $messages);
 	}
 

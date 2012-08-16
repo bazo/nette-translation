@@ -143,10 +143,26 @@ class POParser implements Parser
 					return FALSE;
 				}
 			}
+			
+			/**
+			 * added by me
+			 */
+			
+			$newEntry = $this->convertEntry($entry);
+			
 			$hash[$entry['msgid']] = $entry;
 		}
 
 		return $hash;
 	}
 
+	private function convertEntry($entry)
+	{
+		$newEntry = array(
+			'files' => array()
+		);
+		
+		//if()
+	}
+	
 }

@@ -69,15 +69,13 @@ class CreateLangFile extends Console\Command\Command
 		}
 		
 		$inputFile = $outputFolder.'/template.pot';
-		$outputFile = $outputFolder.'/'.$lang.'po';
+		$outputFile = $outputFolder.'/'.$lang.'.po';
 		
-		$parser = new \Translation\Parsers\Gettext;
+		//$parser = new \Translation\Parsers\Gettext;
 		
 		$poParser = new \Translation\Parsers\POParser;
 		
 		$data = $poParser->parse($inputFile);
-		
-		var_dump($data);exit;
 		
 		$pluralRule = \Translation\Langs::getPluralRule($lang);
 		

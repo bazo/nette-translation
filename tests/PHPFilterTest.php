@@ -2,7 +2,7 @@
 
 namespace Translation;
 
-use Translation\Extraction\Extractor;
+use Translation\Extraction\Context;
 use Translation\Extraction\Filters;
 
 /**
@@ -24,18 +24,18 @@ class PHPFilterTest extends FilterTest
 		$messages = $this->object->extract($this->file);
 
 		$this->assertNotContains(array(
-			Extractor::LINE => 7
+			Context::LINE => 7
 				), $messages);
 
 		$this->assertNotContains(array(
-			Extractor::LINE => 8,
-			Extractor::CONTEXT => 'context'
+			Context::LINE => 8,
+			Context::CONTEXT => 'context'
 				), $messages);
 
 		$this->assertNotContains(array(
-			Extractor::LINE => 9,
-			Extractor::SINGULAR => 'I see %d little indian!',
-			Extractor::PLURAL => 'I see %d little indians!'
+			Context::LINE => 9,
+			Context::SINGULAR => 'I see %d little indian!',
+			Context::PLURAL => 'I see %d little indians!'
 				), $messages);
 	}
 
@@ -44,42 +44,42 @@ class PHPFilterTest extends FilterTest
 		$messages = $this->object->extract($this->file);
 
 		$this->assertNotContains(array(
-			Extractor::LINE => 11,
-			Extractor::SINGULAR => 'Some string.'
+			Context::LINE => 11,
+			Context::SINGULAR => 'Some string.'
 				), $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 12,
-			Extractor::SINGULAR => 'Nested function.'
+			Context::LINE => 12,
+			Context::SINGULAR => 'Nested function.'
 				), $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 13,
-			Extractor::SINGULAR => 'Nested function 2.',
-			Extractor::CONTEXT => 'context'
+			Context::LINE => 13,
+			Context::SINGULAR => 'Nested function 2.',
+			Context::CONTEXT => 'context'
 				), $messages);
 		$this->assertNotContains(array(
-			Extractor::LINE => 13,
-			Extractor::SINGULAR => 'context'
+			Context::LINE => 13,
+			Context::SINGULAR => 'context'
 				), $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 14,
-			Extractor::SINGULAR => "%d meeting wasn't imported.",
-			Extractor::PLURAL => "%d meetings weren't importeded."
+			Context::LINE => 14,
+			Context::SINGULAR => "%d meeting wasn't imported.",
+			Context::PLURAL => "%d meetings weren't importeded."
 				), $messages);
 		$this->assertNotContains(array(
-			Extractor::LINE => 14,
-			Extractor::SINGULAR => "%d meeting wasn't imported."
+			Context::LINE => 14,
+			Context::SINGULAR => "%d meeting wasn't imported."
 				), $messages);
 
 		$this->assertContains(array(
-			Extractor::LINE => 17,
-			Extractor::SINGULAR => "Please provide a text 2."
+			Context::LINE => 17,
+			Context::SINGULAR => "Please provide a text 2."
 				), $messages);
 		$this->assertContains(array(
-			Extractor::LINE => 18,
-			Extractor::SINGULAR => "Please provide a text 3."
+			Context::LINE => 18,
+			Context::SINGULAR => "Please provide a text 3."
 				), $messages);
 	}
 
@@ -88,8 +88,8 @@ class PHPFilterTest extends FilterTest
 		$messages = $this->object->extract($this->file);
 
 		$this->assertContains(array(
-			Extractor::LINE => 16,
-			Extractor::SINGULAR => "Please provide a text."
+			Context::LINE => 16,
+			Context::SINGULAR => "Please provide a text."
 				), $messages);
 	}
 
@@ -100,8 +100,8 @@ class PHPFilterTest extends FilterTest
 		
 		
 		$this->assertContains(array(
-			Extractor::LINE => 22,
-			Extractor::SINGULAR => "A\nmessage!"
+			Context::LINE => 22,
+			Context::SINGULAR => "A\nmessage!"
 				), $messages);
 	}
 
@@ -111,8 +111,8 @@ class PHPFilterTest extends FilterTest
 		$messages = $this->object->extract($this->file);
 
 		$this->assertContains(array(
-			Extractor::LINE => 25,
-			Extractor::SINGULAR => "Really delete?"
+			Context::LINE => 25,
+			Context::SINGULAR => "Really delete?"
 				), $messages);
 	}
 
@@ -125,12 +125,12 @@ class PHPFilterTest extends FilterTest
 		$messages = $this->object->extract($this->file);
 
 		$this->assertContains(array(
-			Extractor::LINE => 26,
-			Extractor::SINGULAR => "item 1"
+			Context::LINE => 26,
+			Context::SINGULAR => "item 1"
 				), $messages);
 		$this->assertContains(array(
-			Extractor::LINE => 26,
-			Extractor::SINGULAR => "item 2"
+			Context::LINE => 26,
+			Context::SINGULAR => "item 2"
 				), $messages);
 	}
 
@@ -144,12 +144,12 @@ class PHPFilterTest extends FilterTest
 		$messages = $this->object->extract($this->file);
 
 		$this->assertContains(array(
-			Extractor::LINE => 30,
-			Extractor::SINGULAR => "Value A"
+			Context::LINE => 30,
+			Context::SINGULAR => "Value A"
 				), $messages);
 		$this->assertContains(array(
-			Extractor::LINE => 30,
-			Extractor::SINGULAR => "Value B"
+			Context::LINE => 30,
+			Context::SINGULAR => "Value B"
 				), $messages);
 	}
 
@@ -163,8 +163,8 @@ class PHPFilterTest extends FilterTest
 		$messages = $this->object->extract($this->file);
 
 		$this->assertContains(array(
-			Extractor::LINE => 31,
-			Extractor::SINGULAR => "Static function"
+			Context::LINE => 31,
+			Context::SINGULAR => "Static function"
 				), $messages);
 	}
 

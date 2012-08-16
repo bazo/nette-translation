@@ -1,7 +1,7 @@
 <?php
 namespace Translation\Extraction\Filters;
 
-use Translation\Extraction\Extractor;
+use Translation\Extraction\Context;
 use Nette\Utils\Strings;
 /**
  * GettextExtractor
@@ -83,7 +83,7 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 	private function processFunction(array $definition, \PHPParser_Node $node)
 	{
 		$message = array(
-			Extractor::LINE => $node->getLine()
+			Context::LINE => $node->getLine()
 		);
 		foreach($definition as $position => $type)
 		{
@@ -111,18 +111,18 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 				return;
 			}
 		}
-		if(is_array($message[Extractor::SINGULAR]))
+		if(is_array($message[Context::SINGULAR]))
 		{
-			foreach($message[Extractor::SINGULAR] as $value)
+			foreach($message[Context::SINGULAR] as $value)
 			{
 				$tmp = $message;
-				$tmp[Extractor::SINGULAR] = Strings::normalize($value);
+				$tmp[Context::SINGULAR] = Strings::normalize($value);
 				$this->data[] = $tmp;
 			}
 		}
 		else
 		{
-			$message['singular'] = Strings::normalize($message['singular']);
+			$message[Context::SINGULAR] = Strings::normalize($message[Context::SINGULAR]);
 			$this->data[] = $message;
 		}
 	}

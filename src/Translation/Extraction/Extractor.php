@@ -25,15 +25,6 @@ use Translation\Extraction\Filters;
  */
 class Extractor
 {
-	const ESCAPE_CHARS = '"';
-	const OUTPUT_PO = 'PO';
-	const OUTPUT_POT = 'POT';
-	const CONTEXT = 'context';
-	const SINGULAR = 'singular';
-	const PLURAL = 'plural';
-	const LINE = 'line';
-	const FILE = 'file';
-	
 	protected
 		/** @var array */
 		$inputFiles = array(),
@@ -49,9 +40,6 @@ class Extractor
 		/** @var array */
 		$data = array(),
 
-		/** @var string */
-		$outputMode = self::OUTPUT_PO,
-		
 		/** @var \Translation\Builders\Builder */	
 		$builder
 	;
@@ -164,31 +152,31 @@ class Extractor
 		foreach($messages as $message)
 		{
 			$key = '';
-			if(isset($message[self::CONTEXT]))
+			if(isset($message[Context::CONTEXT]))
 			{
-				$key .= $message[self::CONTEXT];
+				$key .= $message[Context::CONTEXT];
 			}
 			$key .= chr(4);
-			$key .= $message[self::SINGULAR];
+			$key .= $message[Context::SINGULAR];
 			$key .= chr(4);
-			if(isset($message[self::PLURAL]))
+			if(isset($message[Context::PLURAL]))
 			{
-				$key .= $message[self::PLURAL];
+				$key .= $message[Context::PLURAL];
 			}
 			if($key === chr(4) . chr(4))
 			{
 				continue;
 			}
-			$line = $message[self::LINE];
+			$line = $message[Context::LINE];
 			if(!isset($this->data[$key]))
 			{
-				unset($message[self::LINE]);
+				unset($message[Context::LINE]);
 				$this->data[$key] = $message;
 				$this->data[$key]['files'] = array();
 			}
 			$this->data[$key]['files'][] = array(
-				self::FILE => $file,
-				self::LINE => $line
+				Context::FILE => $file,
+				Context::LINE => $line
 			);
 		}
 		return $this;

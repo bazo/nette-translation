@@ -1,5 +1,6 @@
 <?php
 namespace Translation\Builders;
+use Translation\Extraction\Context;
 /**
  * Gettext
  *
@@ -7,14 +8,8 @@ namespace Translation\Builders;
  */
 class Gettext
 {
-	const ESCAPE_CHARS = '"';
 	const OUTPUT_PO = 'PO';
 	const OUTPUT_POT = 'POT';
-	const CONTEXT = 'context';
-	const SINGULAR = 'singular';
-	const PLURAL = 'plural';
-	const LINE = 'line';
-	const FILE = 'file';
 	
 	private
 		/** @var array */
@@ -79,22 +74,23 @@ class Gettext
 		}
 		$output[] = '';
 
-		var_dump($data);
-		
 		foreach($data as $message)
 		{
-			foreach($message['files'] as $file)
+			if(isset($message['files']))
 			{
-				$output[] = '#: ' . $file[self::FILE] . ':' . $file[self::LINE];
+				foreach($message['files'] as $file)
+				{
+					$output[] = '#: ' . $file[Context::FILE] . ':' . $file[Context::LINE];
+				}
 			}
-			if(isset($message[self::CONTEXT]))
+			if(isset($message[Context::CONTEXT]))
 			{
-				$output[] = $this->formatMessage($message[self::CONTEXT], "msgctxt");
+				$output[] = $this->formatMessage($message[Context::CONTEXT], "msgctxt");
 			}
-			$output[] = $this->formatMessage($message[self::SINGULAR], 'msgid');
-			if(isset($message[self::PLURAL]))
+			$output[] = $this->formatMessage($message[Context::SINGULAR], 'msgid');
+			if(isset($message[Context::PLURAL]))
 			{
-				$output[] = $this->formatMessage($message[self::PLURAL], 'msgid_plural');
+				$output[] = $this->formatMessage($message[Context::PLURAL], 'msgid_plural');
 				switch($this->outputMode)
 				{
 					case self::OUTPUT_POT:
@@ -104,8 +100,8 @@ class Gettext
 					case self::OUTPUT_PO:
 					// fallthrough
 					default:
-						$output[] = $this->formatMessage($message[self::SINGULAR], 'msgstr[0]');
-						$output[] = $this->formatMessage($message[self::PLURAL], 'msgstr[1]');
+						$output[] = $this->formatMessage($message[Context::SINGULAR], 'msgstr[0]');
+						$output[] = $this->formatMessage($message[Context::PLURAL], 'msgstr[1]');
 				}
 			}
 			else
@@ -118,7 +114,7 @@ class Gettext
 					case self::OUTPUT_PO:
 					// fallthrough
 					default:
-						$output[] = $this->formatMessage($message[self::SINGULAR], 'msgstr');
+						$output[] = $this->formatMessage($message[Context::SINGULAR], 'msgstr');
 				}
 			}
 
@@ -136,7 +132,7 @@ class Gettext
 	 */
 	protected function addSlashes($string)
 	{
-		return addcslashes($string, self::ESCAPE_CHARS);
+		return addcslashes($string, Context::ESCAPE_CHARS);
 	}
 	
 	protected function formatMessage($message, $prefix = null)
