@@ -13,7 +13,9 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 			
 		$dataDir,
 			
-		$outputFile
+		$outputFile,
+			
+		$lang = 'sk'
 	;
 	
 	protected function setUp()
@@ -27,7 +29,8 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		$this->app = $app;
 		
 		$this->dataDir = __DIR__.'/data';
-		$this->outputFile = __DIR__.'/output/template.pot';
+		$this->outputFolder = __DIR__.'/output';
+		$this->outputFile = $this->outputFolder.'/'.$this->lang.'.po';
     }
 	
 	protected function tearDown()
@@ -47,7 +50,8 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 			'command' => 'translation:extract',
 			'--m' => 'test:test prd:prd',
 			'--f' => $this->dataDir.'/header.latte',
-			'--o' => $this->outputFile
+			'--o' => $this->outputFolder,
+			'lang' => $this->lang
 		);
 		
 		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);

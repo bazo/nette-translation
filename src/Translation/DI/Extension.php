@@ -13,10 +13,9 @@ class Extension extends \Nette\Config\CompilerExtension
 	public 
 		/** @var array */	
 		$defaults = array(
-			'dictionaryFolders' => array('%appDir%/l10n'),
 			'provider' => 'gettext',
 			'scanFile' => '%appDir%',
-			'templateFile' => '%appDir%/l10n/template.pot'
+			'localizationFolder' => '%appDir%/l10n/'
 		)
 	;
 
@@ -46,19 +45,30 @@ class Extension extends \Nette\Config\CompilerExtension
 		$builder->addDefinition($this->prefix('consoleCommandExtract'))
 			->setFactory('Translation\DI\Extension::createConsoleCommandExtract', array($config))
 			->addTag('consoleCommand');
+		
+		$builder->addDefinition($this->prefix('consoleCommandUpdate'))
+			->setFactory('Translation\DI\Extension::createConsoleCommandUpdate', array($config))
+			->addTag('consoleCommand');
 	}
 	
 	public static function createConsoleCommandExtract($config)
 	{
 		$command = new \Translation\Console\Commands\Extract;
-		$command->setExtractDirs($config['scanFile'])->setOutputFile($config['templateFile']);
+		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
+		return $command;
+	}
+	
+	public static function createConsoleCommandUpdate($config)
+	{
+		$command = new \Translation\Console\Commands\Update;
+		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
 	
 	public static function createProvider($config)
 	{
 		$providerClass = self::$providerMap[$config['provider']];
-		return new $providerClass($config['dictionaryFolders']);
+		return new $providerClass($config['localizationFolder']);
 	}
 	
 	public static function createTranslator(Container $container)

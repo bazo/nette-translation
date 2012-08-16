@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument,
  *
  * @author martin.bazik
  */
-class Extract extends Console\Command\Command
+class Update extends Console\Command\Command
 {
 
 	private
