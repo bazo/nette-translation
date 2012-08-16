@@ -44,7 +44,7 @@ class Update extends Console\Command\Command
 	protected function configure()
     {
         $this
-            ->setName('translation:extract')
+            ->setName('translation:update')
             ->setDescription('extracts tokens from files')
 			->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
 			->addOption('o', null, InputOption::VALUE_OPTIONAL, 'output folder')
