@@ -49,9 +49,7 @@ class Gettext extends Base
 				if(file_exists($dir . "/" . $this->lang . ".mo"))
 				{
 					$dictionary = $this->parser->parseMo($dir . "/" . $this->lang . ".mo");
-					var_dump(__METHOD__,$this->parser);
 					$this->dictionary = array_merge($this->dictionary, $dictionary);
-					//var_dump($this->parser);exit;
 					$this->metadata = array_merge($this->metadata, $this->parser->getMetadata());
 					$files[] = $dir . "/" . $this->lang . ".mo";
 				}
@@ -82,9 +80,6 @@ class Gettext extends Base
 		{
 			$form = 1;
 		}
-		
-		//var_dump($message, $this->dictionary, $this->metadata);
-		//exit;
 		
 		if(!empty($message) && isset($this->dictionary[$message]))
 		{

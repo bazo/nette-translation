@@ -55,8 +55,6 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	
 	public function testExtractCommandRuns()
 	{
-		//var_dump(realpath($this->dataDir.'/header.latte'));exit;
-		
 		$parameters = array(
 			'command' => 'translation:extract',
 			'--m' => 'test:test prd:prd',
@@ -75,8 +73,6 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	
 	public function testCreateCommandRuns()
 	{
-		//var_dump(realpath($this->dataDir.'/header.latte'));exit;
-		
 		$parameters = array(
 			'command' => 'translation:extract',
 			'--m' => 'test:test prd:prd',

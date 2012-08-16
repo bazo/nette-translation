@@ -84,7 +84,6 @@ class Gettext implements Parser
 				if($original === "")
 				{
 					$this->metadata = $this->parseMetadata($translation);
-					var_dump(__METHOD__,$this->metadata);
 					continue;
 				}
 
