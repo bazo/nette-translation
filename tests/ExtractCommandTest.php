@@ -56,7 +56,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	{
 		$parameters = array(
 			'command' => 'translation:extract',
-			'--f' => $this->dataDir.'/header.latte',
+			'--f' => $this->dataDir.'/test.latte',
 			'--o' => $this->outputFolder,
 		);
 		
@@ -72,7 +72,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	{
 		$parameters = array(
 			'command' => 'translation:extract',
-			'--f' => $this->dataDir.'/header.latte',
+			'--f' => $this->dataDir.'/test.latte',
 			'--o' => $this->outputFolder
 		);
 		
