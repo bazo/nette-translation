@@ -67,7 +67,6 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 			
 			if(isset($entry['translations'][$pluralForm]))
 			{
-				var_dump($entry);
 				$message = $entry['translations'][$pluralForm];
 			}
 			elseif($count > 1)

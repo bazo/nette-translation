@@ -41,14 +41,14 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	protected function tearDown()
 	{
 		parent::tearDown();
-		if(file_exists($this->languageOutputFile))
+		if(file_exists($this->templateOutputFile))
 		{
-			//unlink($this->templateOutputFile);
+			unlink($this->templateOutputFile);
 		}
 		
 		if(file_exists($this->languageOutputFile))
 		{
-			//unlink($this->templateOutputFile);
+			unlink($this->languageOutputFile);
 		}
 	}
 	

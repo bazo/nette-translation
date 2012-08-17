@@ -11,8 +11,6 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		/** @var \Symfony\Component\Console\Application */	
 		$app,
 			
-		$dataDir,
-
 		$lang = 'sk',	
 			
 		$outputFile
@@ -28,8 +26,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		
 		$this->app = $app;
 		
-		$this->dataDir = __DIR__.'/data';
-		$this->outputFolder = __DIR__.'/output';
+		$this->outputFolder = __DIR__.'/data/compilation';
 		$this->outputFile = $this->outputFolder.'/'.$this->lang.'.dict';
     }
 	
@@ -38,7 +35,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		parent::tearDown();
 		if(file_exists($this->outputFile))
 		{
-			//unlink($this->templateOutputFile);
+			unlink($this->outputFile);
 		}
 	}
 	
