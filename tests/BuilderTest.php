@@ -23,8 +23,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
 		$this->outputDir = __DIR__.'/output';
 		
-		$this->potOutput = $this->outputDir.'/dict.pot';
-		$this->poOutput = $this->outputDir.'/dict.po';
+		$this->output = $this->outputDir.'/template.neont';
 		
 		$inputFile = __DIR__.'/data/filesToScan/default.latte';
 		
@@ -36,30 +35,18 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 	{
 		parent::tearDown();
 		
-		if(file_exists($this->potOutput))
+		if(file_exists($this->output))
 		{
-			unlink($this->potOutput);
-		}
-		
-		if(file_exists($this->poOutput))
-		{
-			unlink($this->poOutput);
+			unlink($this->output);
 		}
 	}
 	
-	public function testGettextBuilderBuildPot()
+	public function testBuilder()
 	{
-		$builder = new Builders\Gettext;
-		$builder->buildPot($this->potOutput, $this->data);
+		$builder = new Builder;
+		$builder->buildTemplate($this->output, $this->data);
 		
-		$this->assertFileExists($this->potOutput);
+		$this->assertFileExists($this->output);
 	}
 	
-	public function testGettextBuilderBuildPo()
-	{
-		$builder = new Builders\Gettext;
-		$builder->buildPo($this->poOutput, $this->data);
-		
-		$this->assertFileExists($this->poOutput);
-	}
 }

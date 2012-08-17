@@ -11,7 +11,6 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 		$dirs
 	;
 
-
 	protected function setUp()
     {
 		$this->dirs = array(
@@ -43,39 +42,17 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 	}
 	
 	/** @dataProvider gettextMessagesProvider */
-	public function testTranslateWithGettext($message, $translation, $count = 1)
+	public function testTranslat($message, $translation, $count = 1)
 	{
 		$args = func_get_args();
 		
 		unset($args[1]); //unset translation
 		
-		$provider = new Providers\Gettext($this->dirs);
-		
-		$translator = new Translator($provider);
-		$translator->setLang('sk');
-		
-		$this->assertEquals($translation, call_user_func_array(array($translator, "translate"), $args));
-	}
-	
-	/** @dataProvider messagesProvider */
-	public function testTranslateWithNeon($message, $translation)
-	{
 		$provider = new Providers\Neon($this->dirs);
 		
 		$translator = new Translator($provider);
 		$translator->setLang('sk');
 		
-		$this->assertEquals($translation, $translator->translate($message));
-	}
-	
-	/** @dataProvider messagesProvider */
-	public function testTranslateWithIni($message, $translation)
-	{
-		$provider = new Providers\Ini($this->dirs);
-		
-		$translator = new Translator($provider);
-		$translator->setLang('sk');
-		
-		$this->assertEquals($translation, $translator->translate($message));
+		$this->assertEquals($translation, call_user_func_array(array($translator, "translate"), $args));
 	}
 }

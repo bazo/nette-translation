@@ -142,6 +142,15 @@ class Langs
 		return self::$plurals[$iso];
 	}
 	
+	public static function getPluralsCount($iso)
+	{
+		$rule = self::$plurals[$iso];
+		$tmp = preg_replace('/([a-z]+)/', '$$1', "n=1;" . $rule);
+		eval($tmp);
+		
+		return $nplurals;
+	}
+	
 	public static function verifyLang($iso)
 	{
 		return array_key_exists($iso, self::$plurals);

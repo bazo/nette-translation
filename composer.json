@@ -25,6 +25,7 @@
 		"nikic/php-parser": "*"
     },
 	"autoload": {
-        "psr-0": { "Translation": "src/" }
+        "psr-0": { "Translation": "src/" },
+		"files": ["src/shortcuts.php"]
     }
 }

@@ -13,9 +13,8 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 			
 		$dataDir,
 			
-		$outputFile,
-			
-		$poOutputFile,
+		$templateOutputFile,
+		$languageOutputFile,
 			
 		$lang = 'sk'
 	;
@@ -35,21 +34,21 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		
 		$this->dataDir = __DIR__.'/data';
 		$this->outputFolder = __DIR__.'/output';
-		$this->outputFile = $this->outputFolder.'/template.pot';
-		$this->poOutputFile = $this->outputFolder.'/'.$this->lang.'.po';
+		$this->templateOutputFile = $this->outputFolder.'/template.neont';
+		$this->languageOutputFile = $this->outputFolder.'/'.$this->lang.'.neon';
     }
 	
 	protected function tearDown()
 	{
 		parent::tearDown();
-		if(file_exists($this->outputFile))
+		if(file_exists($this->languageOutputFile))
 		{
-			unlink($this->outputFile);
+			//unlink($this->templateOutputFile);
 		}
 		
-		if(file_exists($this->poOutputFile))
+		if(file_exists($this->languageOutputFile))
 		{
-			unlink($this->poOutputFile);
+			//unlink($this->templateOutputFile);
 		}
 	}
 	
@@ -57,17 +56,15 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	{
 		$parameters = array(
 			'command' => 'translation:extract',
-			'--m' => 'test:test prd:prd',
 			'--f' => $this->dataDir.'/header.latte',
 			'--o' => $this->outputFolder,
-			'lang' => $this->lang
 		);
 		
 		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
 		$output = new \Symfony\Component\Console\Output\ConsoleOutput;
 		$this->app->find('translation:extract')->run($input, $output);
 		
-		$this->assertFileExists($this->outputFile);
+		$this->assertFileExists($this->templateOutputFile);
 		 
 	}
 	
@@ -75,10 +72,8 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 	{
 		$parameters = array(
 			'command' => 'translation:extract',
-			'--m' => 'test:test prd:prd',
 			'--f' => $this->dataDir.'/header.latte',
-			'--o' => $this->outputFolder,
-			'lang' => $this->lang
+			'--o' => $this->outputFolder
 		);
 		
 		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
@@ -91,13 +86,12 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 			'lang' => $this->lang
 		);
 		
-		$outputFile = $this->poOutputFile;
-		
 		$input = new \Symfony\Component\Console\Input\ArrayInput($parameters);
 		$output = new \Symfony\Component\Console\Output\ConsoleOutput;
 		$this->app->find('translation:createVersion')->run($input, $output);
 		
-		$this->assertFileExists($outputFile);
+		$this->assertFileExists($this->languageOutputFile);
 		 
 	}
+	 
 }

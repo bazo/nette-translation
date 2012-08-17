@@ -40,20 +40,18 @@ class CreateLangFile extends Command
 			$outputFolder = $this->outputFolder;
 		}
 		
-		$inputFile = $outputFolder.'/template.pot';
-		$outputFile = $outputFolder.'/'.$lang.'.po';
+		$inputFile = $outputFolder.'/template.neont';
+		$outputFile = $outputFolder.'/'.$lang.'.neon';
 		
-		//$parser = new \Translation\Parsers\Gettext;
+		$parser = new \Translation\Parser;
 		
-		$poParser = new \Translation\Parsers\POParser;
-		
-		$data = $poParser->parse($inputFile);
+		$data = $parser->parse($inputFile);
 		
 		$pluralRule = \Translation\Langs::getPluralRule($lang);
-		
-		$builder = new \Translation\Builders\Gettext;
-		$builder->setMeta('Plural-Forms', $pluralRule);
-		$builder->buildPo($outputFile, $data);
+		$pluralCount = \Translation\Langs::getPluralsCount($lang);
+		$builder = new \Translation\Builder;
+		$builder->addMetadata('plural-count', $pluralCount)->addMetadata('plural-rule', $pluralRule)->addMetadata('creation-date', date('d.m.Y H:i:s'));
+		$builder->build($outputFile, $lang, $data);
 		
 		$output->writeln(sprintf('<info>Created language file for lang: %s. Output saved in: %s.</info>', $lang, $outputFile));
 	}
