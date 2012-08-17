@@ -155,4 +155,9 @@ class Langs
 	{
 		return array_key_exists($iso, self::$plurals);
 	}
+	
+	public static function getLangs()
+	{
+		return self::$plurals;
+	}
 }
