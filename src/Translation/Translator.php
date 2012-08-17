@@ -31,6 +31,6 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 		
 	public function translate($message, $count = 1)
 	{
-		return $this->provider->translate($message, $count);
+		return call_user_func_array(array($this->provider, 'translate'), func_get_args());
 	}
 }

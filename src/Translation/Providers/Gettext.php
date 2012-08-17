@@ -76,6 +76,24 @@ class Gettext extends Base
 		eval($tmp);
 		
 		$translation = $entry['translation'][$plural];
+		
+		$args = func_get_args();
+		if (count($args) > 1) {
+			array_shift($args);
+			if (is_array(current($args)) || current($args) === NULL)
+				array_shift($args);
+
+			if (count($args) == 1 && is_array(current($args)))
+				$args = current($args);
+
+			$translation = str_replace(array("%label", "%name", "%value"), array("#label", "#name", "#value"), $translation);
+			if (count($args) > 0 && $args != NULL)
+			{
+				$translation = vsprintf($translation, $args);
+			}
+			$translation = str_replace(array("#label", "#name", "#value"), array("%label", "%name", "%value"), $translation);
+		}
+		
 		return $translation;
 	}
 

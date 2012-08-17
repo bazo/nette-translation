@@ -36,21 +36,25 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 			array('order', 'objednávka'),
 			array('new', 'nový'),
 			array('old', 'starý'),
-			array('I see %d little indian!', 'vidim %d maleho indiana', 1),
-			array('I see %d little indian!', 'vidim %d malych indianov', 2),
-			array('I see %d little indian!', 'vidim %d malych indianov', 5)
+			array('I see %d little indian!', 'vidim 1 maleho indiana', 1, 'cierny', 'kokot'),
+			array('I see %d little indian!', 'vidim 2 malych indianov', 2),
+			array('I see %d little indian!', 'vidim 5 malych indianov', 5)
 		);
 	}
 	
 	/** @dataProvider gettextMessagesProvider */
 	public function testTranslateWithGettext($message, $translation, $count = 1)
 	{
+		$args = func_get_args();
+		
+		unset($args[1]); //unset translation
+		
 		$provider = new Providers\Gettext($this->dirs);
 		
 		$translator = new Translator($provider);
 		$translator->setLang('sk');
 		
-		$this->assertEquals($translation, $translator->translate($message, $count));
+		$this->assertEquals($translation, call_user_func_array(array($translator, "translate"), $args));
 	}
 	
 	/** @dataProvider messagesProvider */
