@@ -6,7 +6,7 @@ use Translation\Parsers\Parser;
  *
  * @author martin.bazik
  */
-abstract class Base implements Provider
+abstract class Base
 {
 	protected
 		/** @var string */

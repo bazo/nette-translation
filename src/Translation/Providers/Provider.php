@@ -1,14 +1,35 @@
 <?php
 namespace Translation\Providers;
+use Nette\Utils\Neon;
 /**
  *
  * @author martin.bazik
  */
-interface Provider
+class Provider extends Base
 {
-	function setLang($lang);
+	protected
+		$dictionaryLoaded
+	;
 	
-	function setContext($context);
+	public function __construct($dirs)
+	{
+		parent::__construct($dirs);
+	}
 	
-	function translate($message, $count = NULL);
+	protected function loadDictionary()
+	{
+		if(!$this->dictionaryLoaded)
+		{
+			foreach($this->dirs as $dir)
+			{
+				if(file_exists($dir . "/" . $this->lang . ".neon"))
+				{
+					$dictionary = Neon::decode($dir . "/" . $this->lang . ".neon");
+					$this->dictionary = array_merge($this->dictionary, $dictionary);
+				}
+			}
+
+			$this->dictionaryLoaded = TRUE;
+		}
+	}
 }

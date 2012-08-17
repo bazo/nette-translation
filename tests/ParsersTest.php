@@ -19,7 +19,7 @@ class ParsersTest extends \PHPUnit_Framework_TestCase
 	
 	public function testParsing()
 	{
-		$parser = new Parsers\Gettext;
+		$parser = new Parser;
 		$dictionary = $parser->parse($this->dataDir.'/sk.mo');
 		
 		$this->assertTrue(is_array($dictionary));

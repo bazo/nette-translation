@@ -48,9 +48,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 		
 		unset($args[1]); //unset translation
 		
-		$provider = new Providers\Neon($this->dirs);
-		
-		$translator = new Translator($provider);
+		$translator = new Translator($this->dirs);
 		$translator->setLang('sk');
 		
 		$this->assertEquals($translation, call_user_func_array(array($translator, "translate"), $args));
