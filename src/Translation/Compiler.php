@@ -23,6 +23,11 @@ class Compiler
 	public function compile($inputFile, $outputFile)
 	{
 		$data = $this->parser->parse($inputFile);
+		$this->compileData($data, $outputFile);
+	}
+	
+	public function compileData($data, $outputFile)
+	{
 		$dictionary = new Dictionary($data);
 		file_put_contents($outputFile, serialize($dictionary));
 	}
