@@ -19,7 +19,7 @@ class Langs
 			'ast' => 'nplurals=2; plural=(n != 1);', 
 			'ay' => 'nplurals=1; plural=0;', 
 			'az' => 'nplurals=2; plural=(n != 1);', 
-			'be' => 'nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);', 
+			'be' => 'nplurals=3; plural=((n%10==1 && n%100!=11) ? 0 : (n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2));', 
 			'bg' => 'nplurals=2; plural=(n != 1);', 
 			'bn' => 'nplurals=2; plural=(n != 1);', 
 			'bo' => 'nplurals=1; plural=0;', 
