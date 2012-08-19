@@ -1,6 +1,6 @@
 <?php
-namespace Translation\Extraction;
-use Translation\Extraction\Filters;
+namespace Mazagran\Translation\Extraction;
+use Mazagran\Translation\Extraction\Filters;
 /**
  * GettextExtractor
  *

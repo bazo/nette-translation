@@ -1,5 +1,5 @@
 <?php
-namespace Translation;
+namespace Mazagran\Translation;
 /**
  * ExtractCommandTest
  *
@@ -20,7 +20,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
     {
 		$app = new \Symfony\Component\Console\Application;
 		
-		$compileCommand = new \Translation\Console\Commands\Compile;
+		$compileCommand = new Console\Commands\Compile;
 		
 		$app->add($compileCommand);
 		

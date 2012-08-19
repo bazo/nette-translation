@@ -1,20 +1,14 @@
 {
-    "name": "bazo/nette-translation",
+    "name": "mazaran/translation",
     "type": "nette-addon",
     "description": "Nette gettext translation addon",
-    "keywords": ["nette", "gettext", "translation"],
+    "keywords": ["nette", "mazagran", "neon", "translation"],
     "homepage": "https://github.com/bazo/nette-translation",
     "authors": [
         {
             "name": "Martin Bažík",
             "email": "martin@bazo.sk",
             "homepage": "http://bazo.sk"
-        }
-    ],
-	"repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/bazo/gettext-extractor"
         }
     ],
 	"minimum-stability": "dev",
@@ -25,7 +19,7 @@
 		"nikic/php-parser": "*"
     },
 	"autoload": {
-        "psr-0": { "Translation": "src/" },
+        "psr-0": { "Mazagran\\Translation": "src/" },
 		"files": ["src/shortcuts.php"]
     }
 }

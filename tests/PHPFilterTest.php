@@ -1,9 +1,9 @@
 <?php
 
-namespace Translation;
+namespace Mazagran\Translation;
 
-use Translation\Extraction\Context;
-use Translation\Extraction\Filters;
+use Mazagran\Translation\Extraction\Context;
+use Mazagran\Translation\Extraction\Filters;
 
 /**
  * Test class for PHPFilter.

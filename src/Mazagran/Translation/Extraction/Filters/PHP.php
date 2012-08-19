@@ -1,7 +1,7 @@
 <?php
-namespace Translation\Extraction\Filters;
+namespace Mazagran\Translation\Extraction\Filters;
 
-use Translation\Extraction\Context;
+use Mazagran\Translation\Extraction\Context;
 use Nette\Utils\Strings;
 /**
  * GettextExtractor

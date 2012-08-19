@@ -1,5 +1,5 @@
 <?php
-namespace Translation\Console\Commands;
+namespace Mazagran\Translation\Console\Commands;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -61,7 +61,7 @@ class Extract extends Command
 			exit;
 		}
 
-		$extractor = new \Translation\Extraction\NetteExtractor;
+		$extractor = new \Mazagran\Translation\Extraction\NetteExtractor;
 		
 		$extractor->setupForms()->setupDataGrid();
 		
@@ -70,7 +70,7 @@ class Extract extends Command
 		
 		$outputFile = $outputFolder.'/template.neont';
 		
-		$builder = new \Translation\Builder;
+		$builder = new \Mazagran\Translation\Builder;
 		$builder->buildTemplate($outputFile, $data);
 		
 		$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFile));

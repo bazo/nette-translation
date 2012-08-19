@@ -1,5 +1,5 @@
 <?php
-namespace Translation;
+namespace Mazagran\Translation;
 
 use Nette\Utils\Neon;
 /**
@@ -16,7 +16,7 @@ class Compiler
 		
 	function __construct()
 	{
-		$this->parser = new \Translation\Parser;
+		$this->parser = new Parser;
 	}
 
 	

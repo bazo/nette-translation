@@ -1,5 +1,5 @@
 <?php
-namespace Translation;
+namespace Mazagran\Translation;
 
 use Nette\Object;
 

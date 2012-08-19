@@ -1,6 +1,6 @@
 <?php
-namespace Translation;
-use Translation\Extraction\Context;
+namespace Mazagran\Translation;
+use Mazagran\Translation\Extraction\Context;
 /**
  * Description of FilterTest
  *

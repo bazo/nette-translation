@@ -1,5 +1,5 @@
 <?php
-namespace Translation\Extraction;
+namespace Mazagran\Translation\Extraction;
 
 /**
  * Context

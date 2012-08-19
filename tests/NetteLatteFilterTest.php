@@ -1,9 +1,9 @@
 <?php
 
-namespace Translation;
+namespace Mazagran\Translation;
 
-use Translation\Extraction\Filters;
-use Translation\Extraction\Context;
+use Mazagran\Translation\Extraction\Filters;
+use Mazagran\Translation\Extraction\Context;
 
 /**
  * Test class for GettextContext_Filters_NetteLatteFilter.

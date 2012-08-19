@@ -1,5 +1,5 @@
 <?php
-namespace Translation\Console\Commands;
+namespace Mazagran\Translation\Console\Commands;
 
 use Symfony\Component\Console;
 

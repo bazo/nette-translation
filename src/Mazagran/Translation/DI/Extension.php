@@ -1,5 +1,5 @@
 <?php
-namespace Translation\DI;
+namespace Mazagran\Translation\DI;
 use Nette\Config\Configurator;
 use Nette\DI\Container;
 use Nette\Config\Compiler;
@@ -43,21 +43,21 @@ class Extension extends \Nette\Config\CompilerExtension
 		$config = $this->getConfig($this->defaults, true);
 		
 		$builder->addDefinition($this->prefix('provider'))
-			->setFactory('Translation\DI\Extension::createProvider', array($config));
+			->setFactory('Mazagran\Translation\DI\Extension::createProvider', array($config));
 		
 		$builder->addDefinition($this->prefix('translator'))
-			->setFactory('Translation\DI\Extension::createTranslator', array('@container'));
+			->setFactory('Mazagran\Translation\DI\Extension::createTranslator', array('@container'));
 		
 		$builder->addDefinition($this->prefix('consoleCommandExtract'))
-			->setFactory('Translation\DI\Extension::createConsoleCommandExtract', array($config))
+			->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandExtract', array($config))
 			->addTag('consoleCommand');
 		
 		$builder->addDefinition($this->prefix('consoleCommandCreateLangFile'))
-			->setFactory('Translation\DI\Extension::createConsoleCommandCreateLangFile', array($config))
+			->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandCreateLangFile', array($config))
 			->addTag('consoleCommand');
 		
 		$builder->addDefinition($this->prefix('consoleCommandUpdate'))
-			->setFactory('Translation\DI\Extension::createConsoleCommandUpdate', array($config))
+			->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandUpdate', array($config))
 			->addTag('consoleCommand');
 	}
 	

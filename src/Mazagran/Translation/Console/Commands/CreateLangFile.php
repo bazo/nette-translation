@@ -1,5 +1,5 @@
 <?php
-namespace Translation\Console\Commands;
+namespace Mazagran\Translation\Console\Commands;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -29,7 +29,7 @@ class CreateLangFile extends Command
 		
 		$lang = $input->getArgument('lang');
 		
-		if(!\Translation\Langs::verifyLang($lang))
+		if(!\Mazagran\Translation\Langs::verifyLang($lang))
 		{
 			$output->writeln(sprintf('<error>Language %s is not a valid language</error>', $lang));
 		}
@@ -43,13 +43,13 @@ class CreateLangFile extends Command
 		$inputFile = $outputFolder.'/template.neont';
 		$outputFile = $outputFolder.'/'.$lang.'.neon';
 		
-		$parser = new \Translation\Parser;
+		$parser = new \Mazagran\Translation\Parser;
 		
 		$data = $parser->parse($inputFile);
 		
-		$pluralRule = \Translation\Langs::getPluralRule($lang);
-		$pluralCount = \Translation\Langs::getPluralsCount($lang);
-		$builder = new \Translation\Builder;
+		$pluralRule = \Mazagran\Translation\Langs::getPluralRule($lang);
+		$pluralCount = \Mazagran\Translation\Langs::getPluralsCount($lang);
+		$builder = new \Mazagran\Translation\Builder;
 		$builder->addMetadata('plural-count', $pluralCount)->addMetadata('plural-rule', $pluralRule)->addMetadata('creation-date', date('d.m.Y H:i:s'));
 		$builder->build($outputFile, $lang, $data);
 		

@@ -1,5 +1,5 @@
 <?php
-namespace Translation\Extraction\Filters;
+namespace Mazagran\Translation\Extraction\Filters;
 
 /**
  * Extractor

@@ -1,5 +1,5 @@
 <?php
-namespace Translation\Console\Commands;
+namespace Mazagran\Translation\Console\Commands;
 
 use Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Console\Input\InputOption,
@@ -38,7 +38,7 @@ class Compile extends Command
 		$inputFile = $outputFolder.'/'.$lang.'.neon';
 		$outputFile = $outputFolder.'/'.$lang.'.dict';
 		
-		$compiler = new \Translation\Compiler();
+		$compiler = new \Mazagran\Translation\Compiler();
 		$compiler->compile($inputFile, $outputFile);
 		
 		$output->writeln(sprintf('<info>Compiled %s to %s.</info>', $inputFile, $outputFile));
