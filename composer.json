@@ -1,5 +1,5 @@
 {
-    "name": "mazaran/translation",
+    "name": "mazagran/translation",
     "type": "nette-addon",
     "description": "Nette gettext translation addon",
     "keywords": ["nette", "mazagran", "neon", "translation"],
