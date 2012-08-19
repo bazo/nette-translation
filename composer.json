@@ -1,7 +1,7 @@
 {
     "name": "mazagran/translation",
     "type": "nette-addon",
-    "description": "Nette gettext translation addon",
+    "description": "Mazagran client and translation addon for Nette Framework",
     "keywords": ["nette", "mazagran", "neon", "translation"],
     "homepage": "https://github.com/bazo/nette-translation",
     "authors": [
