@@ -19,12 +19,24 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 		/** @var \Translation\Dictionary */	
 		$dictionary,
 			
-		$dir
+		$dir,
+			
+		$id,
+			
+		$secret,
+			
+		$connect = false
 	;
 	
 	function __construct($dir)
 	{
 		$this->dir = $dir;
+	}
+	
+	public function enableRemoteConnection($id = null, $secret = null)
+	{
+		$this->connect = true;
+		return $this;
 	}
 	
 	public function setLang($lang)

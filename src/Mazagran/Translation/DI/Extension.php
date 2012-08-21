@@ -13,9 +13,11 @@ class Extension extends \Nette\Config\CompilerExtension
 	public 
 		/** @var array */	
 		$defaults = array(
-			'provider' => 'gettext',
 			'scanFile' => '%appDir%',
 			'localizationFolder' => '%appDir%/l10n/',
+			'connect' => false,
+			'projectId' => null,
+			'secret' => null,
 			'meta' => array(
 				'Project-Id-Version' => '',
 				'PO-Revision-Date' => '',
@@ -46,7 +48,7 @@ class Extension extends \Nette\Config\CompilerExtension
 			->setFactory('Mazagran\Translation\DI\Extension::createProvider', array($config));
 		
 		$builder->addDefinition($this->prefix('translator'))
-			->setFactory('Mazagran\Translation\DI\Extension::createTranslator', array('@container'));
+			->setFactory('Mazagran\Translation\DI\Extension::createTranslator', array('@container', $config));
 		
 		$builder->addDefinition($this->prefix('consoleCommandExtract'))
 			->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandExtract', array($config))
@@ -96,9 +98,14 @@ class Extension extends \Nette\Config\CompilerExtension
 		return new $providerClass($config['localizationFolder']);
 	}
 	
-	public static function createTranslator(Container $container)
+	public static function createTranslator(Container $container, $config)
 	{
-		return new \Translation\Translator($container->translation->provider);
+		$translator = new \Translation\Translator($config['localizationFolder']);
+		if($config['connect'] === true)
+		{
+			$translator->enableRemoteConnection($config['projectId'], $config['secret']);
+		}
+		return $translator;
 	}
 	
 	public static function register(Configurator $configurator)

@@ -50,7 +50,7 @@ class Panel extends Nette\Object implements Nette\Diagnostics\IBarPanel
 
 
 	/**
-	 * @return \static
+	 * @return Panel
 	 */
 	public static function register()
 	{
