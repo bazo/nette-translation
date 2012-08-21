@@ -73,21 +73,21 @@ class Extension extends \Nette\Config\CompilerExtension
 	
 	public static function createConsoleCommandExtract($config)
 	{
-		$command = new \Translation\Console\Commands\Extract;
+		$command = new \Mazagran\Translation\Console\Commands\Extract;
 		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
 	
 	public static function createConsoleCommandCreateLangFile($config)
 	{
-		$command = new \Translation\Console\Commands\CreateLangFile;
+		$command = new \Mazagran\Translation\Console\Commands\CreateLangFile;
 		$command->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
 	
 	public static function createConsoleCommandUpdate($config)
 	{
-		$command = new \Translation\Console\Commands\Update;
+		$command = new \Mazagran\Translation\Console\Commands\Update;
 		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
@@ -100,7 +100,7 @@ class Extension extends \Nette\Config\CompilerExtension
 	
 	public static function createTranslator(Container $container, $config)
 	{
-		$translator = new \Translation\Translator($config['localizationFolder']);
+		$translator = new \Mazagran\Translation\Translator($config['localizationFolder']);
 		if($config['connect'] === true)
 		{
 			$translator->enableRemoteConnection($config['projectId'], $config['secret']);
