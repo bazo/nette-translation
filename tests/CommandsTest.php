@@ -43,7 +43,7 @@ class ExtractCommandTest extends \PHPUnit_Framework_TestCase
 		parent::tearDown();
 		if(file_exists($this->templateOutputFile))
 		{
-			unlink($this->templateOutputFile);
+			//unlink($this->templateOutputFile);
 		}
 		
 		if(file_exists($this->languageOutputFile))

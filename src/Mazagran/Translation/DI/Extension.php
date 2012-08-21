@@ -59,6 +59,14 @@ class Extension extends \Nette\Config\CompilerExtension
 		$builder->addDefinition($this->prefix('consoleCommandUpdate'))
 			->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandUpdate', array($config))
 			->addTag('consoleCommand');
+		
+		$builder->addDefinition($this->prefix('panel'))
+			->setFactory('Mazagran\Translation\Diagnostics\Panel::register');
+		
+		if($config['connect'] === true)
+		{
+			$builder->getDefinition('application')->addSetup('$service->onShutdown[] = ?;', array(array('@translator', 'uploadMessages')));
+		}
 	}
 	
 	public static function createConsoleCommandExtract($config)

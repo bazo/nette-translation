@@ -2,6 +2,7 @@
 namespace Mazagran\Translation;
 
 use Nette\Object;
+use Nette\Utils\Finder;
 
 /**
  * Translator
@@ -18,12 +19,12 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 		/** @var \Translation\Dictionary */	
 		$dictionary,
 			
-		$dirs
+		$dir
 	;
 	
-	function __construct($dirs)
+	function __construct($dir)
 	{
-		$this->dirs = $dirs;
+		$this->dir = $dir;
 	}
 	
 	public function setLang($lang)
@@ -41,16 +42,12 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 	{
 		if(!$this->dictionaryLoaded)
 		{
-			foreach($this->dirs as $dir)
+			$dictionaryFile = $this->dir . "/" . $this->lang . ".dict";
+			if(file_exists($dictionaryFile))
 			{
-				$dictionaryFile = $dir . "/" . $this->lang . ".dict";
-				if(file_exists($dictionaryFile))
-				{
-					$this->dictionary = unserialize(file_get_contents($dictionaryFile));
-				}
+				$this->dictionary = unserialize(file_get_contents($dictionaryFile));
+				$this->dictionaryLoaded = TRUE;
 			}
-
-			$this->dictionaryLoaded = TRUE;
 		}
 	}
 	
@@ -59,7 +56,12 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 		$this->loadDictionary();
 		$message = (string) $message;
 
-		$entry = $this->dictionary->find($message);
+		$entry = null;
+		
+		if($this->dictionaryLoaded)
+		{
+			$entry = $this->dictionary->find($message);
+		}
 		
 		if($entry !== null)
 		{
