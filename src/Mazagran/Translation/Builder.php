@@ -66,6 +66,12 @@ class Builder
 		
 		foreach($data as $entry)
 		{
+			$id = $entry[Context::SINGULAR];
+			if(strlen($id) < 2)
+			{
+				continue;
+			}
+			
 			$message = array();
 			
 			if(isset($entry[Context::CONTEXT]))
@@ -73,8 +79,7 @@ class Builder
 				$message['context'] = $entry[Context::CONTEXT];
 			}
 			
-			$id = $message['singular'] = $entry[Context::SINGULAR];
-			
+			$message['singular'] = $id;
 			if(isset($entry[Context::PLURAL]))
 			{
 				$message['plural'] = $entry[Context::PLURAL];
