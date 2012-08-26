@@ -64,7 +64,7 @@ class Extract extends Command
 			exit;
 		}
 
-		$remote = $input->getOption('r');
+		$remote = (bool)$input->getOption('r');
 		
 		if($remote === null)
 		{
