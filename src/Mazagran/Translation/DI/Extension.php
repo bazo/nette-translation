@@ -67,7 +67,7 @@ class Extension extends \Nette\Config\CompilerExtension
 		
 		if($config['connect'] === true)
 		{
-			$builder->getDefinition('application')->addSetup('$service->onShutdown[] = ?;', array(array('@translator', 'uploadMessages')));
+			$builder->getDefinition('application')->addSetup('$service->onShutdown[] = ?;', array(array('@translation.translator', 'uploadMessages')));
 		}
 	}
 	
