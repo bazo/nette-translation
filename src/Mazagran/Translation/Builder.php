@@ -60,7 +60,7 @@ class Builder
 		return $struct;
 	}
 	
-	private function formatTemplateData($data)
+	public function formatTemplateData($data)
 	{
 		$messages = array();
 		

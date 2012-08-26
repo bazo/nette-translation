@@ -14,7 +14,9 @@ class Extract extends Command
 {
 
 	private
-		$extractDirs
+		$extractDirs,
+			
+		$remote = false
 	;
 	
 	public function getExtractDirs()
@@ -35,6 +37,7 @@ class Extract extends Command
             ->setDescription('extracts tokens from files')
 			->addOption('o', null, InputOption::VALUE_OPTIONAL, 'output folder')
 			->addOption('f', null, InputOption::VALUE_OPTIONAL, 'file to extract, can be specified several times')
+			->addOption('r', null, InputOption::VALUE_OPTIONAL, 'upload to remote server?')	
         ;
     }
 	
@@ -61,18 +64,32 @@ class Extract extends Command
 			exit;
 		}
 
+		$remote = $input->getOption('r');
+		
+		if($remote === null)
+		{
+			$remote = $this->remote;
+		}
+		
 		$extractor = new \Mazagran\Translation\Extraction\NetteExtractor;
 		
 		$extractor->setupForms()->setupDataGrid();
-		
-		
 		$data = $extractor->scan($files);
-		
-		$outputFile = $outputFolder.'/template.neont';
-		
 		$builder = new \Mazagran\Translation\Builder;
-		$builder->buildTemplate($outputFile, $data);
+		if($remote === true)
+		{
+			$templateData = $builder->formatTemplateData($data);
+			$uploader = new \Mazagran\Translation\Uploader;
+			$uploader->upload($templateData);
+			$output->writeln(sprintf('<info>Extracted %d tokens. Uploaded to remote server.</info>', count($data)));
+		}
+		else
+		{
+			$outputFile = $outputFolder.'/template.neont';
+			$builder->buildTemplate($outputFile, $data);
+
+			$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFile));
+		}
 		
-		$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFile));
 	}
 }
