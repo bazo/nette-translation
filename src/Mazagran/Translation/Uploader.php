@@ -23,7 +23,7 @@ class Uploader
 	
 	public function upload($messageData)
 	{
-		
+		$messageData = json_encode($messageData);
 		$hash = hash_hmac('sha256', $messageData, $this->key);
 		
 		$data = array(
