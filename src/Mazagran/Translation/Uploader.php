@@ -31,7 +31,7 @@ class Uploader
 			'hash' => $hash
 		);
 		
-		$response = $this->makeRequest($data);
+		return $this->makeRequest($data);
 	}
 	
 	protected function makeRequest($data)
