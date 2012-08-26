@@ -109,4 +109,9 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 		return $message;
 	}
 	
+	public function uploadMessages()
+	{
+		
+	}
+	
 }
