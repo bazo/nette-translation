@@ -36,10 +36,12 @@ class Uploader
 	
 	protected function makeRequest($data)
 	{
+		$query = http_build_query($data);
+		
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, sprintf($this->endpoint, $this->id));
-		curl_setopt($ch, CURLOPT_PUT, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
 		curl_close($ch);
