@@ -98,7 +98,7 @@ class Extract extends Command
 		{
 			$templateData = $builder->formatTemplateData($data);
 			$response = $this->uploader->upload($templateData);
-			$output->writeln(sprintf('<info>Extracted %d tokens. Uploaded to remote server.</info>', count($data)));
+			$output->writeln(sprintf('<info>Extracted %d tokens. Uploaded to remote server. Response: %s</info>', count($data), $response->message));
 		}
 		else
 		{
