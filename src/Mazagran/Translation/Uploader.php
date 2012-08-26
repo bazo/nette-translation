@@ -23,7 +23,7 @@ class Uploader
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $this->endpoint);
 		curl_setopt($ch, CURLOPT_PUT, true);
-		cur_setopt($ch, CURLOPT_POSTFIELDS, json_encode('data'));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode('data'));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
 		curl_close($ch);
