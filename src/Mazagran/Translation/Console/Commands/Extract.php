@@ -78,11 +78,15 @@ class Extract extends Command
 			exit;
 		}
 
-		$remote = (bool)$input->getOption('r');
+		$remote = $input->getOption('r');
 		
 		if($remote === null)
 		{
 			$remote = $this->remote;
+		}
+		else
+		{
+			$remote = (bool)$remote;
 		}
 		
 		$extractor = new \Mazagran\Translation\Extraction\NetteExtractor;
