@@ -93,8 +93,7 @@ class Extract extends Command
 		if($remote === true)
 		{
 			$templateData = $builder->formatTemplateData($data);
-			$uploader = new \Mazagran\Translation\Uploader;
-			$uploader->upload($templateData);
+			$this->uploader->upload($templateData);
 			$output->writeln(sprintf('<info>Extracted %d tokens. Uploaded to remote server.</info>', count($data)));
 		}
 		else
