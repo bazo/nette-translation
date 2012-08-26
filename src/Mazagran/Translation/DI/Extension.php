@@ -26,12 +26,6 @@ class Extension extends \Nette\Config\CompilerExtension
 			)
 		)
 	;
-
-	private static $providerMap = array(
-		'gettext' => '\Translation\Providers\Gettext',
-		'neon' => '\Translation\Providers\Neon',
-		'ini' => '\Translation\Providers\Ini',
-	);
 	
 	/**
 	 * Processes configuration data
@@ -44,14 +38,14 @@ class Extension extends \Nette\Config\CompilerExtension
 		
 		$config = $this->getConfig($this->defaults, true);
 		
-		$builder->addDefinition($this->prefix('provider'))
-			->setFactory('Mazagran\Translation\DI\Extension::createProvider', array($config));
+		$builder->addDefinition($this->prefix('uploader'))
+			->setFactory('Mazagran\Translation\DI\Extension::createUploader', array($config));
 		
 		$builder->addDefinition($this->prefix('translator'))
 			->setFactory('Mazagran\Translation\DI\Extension::createTranslator', array('@container', $config));
 		
 		$builder->addDefinition($this->prefix('consoleCommandExtract'))
-			->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandExtract', array($config))
+			->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandExtract', array('@container', $config))
 			->addTag('consoleCommand');
 		
 		$builder->addDefinition($this->prefix('consoleCommandCreateLangFile'))
@@ -71,10 +65,11 @@ class Extension extends \Nette\Config\CompilerExtension
 		}
 	}
 	
-	public static function createConsoleCommandExtract($config)
+	public static function createConsoleCommandExtract(Container $container, $config)
 	{
 		$command = new \Mazagran\Translation\Console\Commands\Extract;
-		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
+		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder'])->setRemote($config['connect'])
+				->setUploader($container->getService('translation.uploader'));
 		return $command;
 	}
 	
@@ -92,10 +87,9 @@ class Extension extends \Nette\Config\CompilerExtension
 		return $command;
 	}
 	
-	public static function createProvider($config)
+	public static function createUploader($config)
 	{
-		$providerClass = self::$providerMap[$config['provider']];
-		return new $providerClass($config['localizationFolder']);
+		return new \Mazagran\Translation\Uploader($config['projectId'], $config['secret']);
 	}
 	
 	public static function createTranslator(Container $container, $config)

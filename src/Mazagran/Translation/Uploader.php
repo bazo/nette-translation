@@ -10,8 +10,16 @@ use Nette\Utils\Neon;
 class Uploader
 {
 	private
-		$endpoint = 'http://mazagran.local/api/translations'
+		$endpoint = 'http://mazagran.local/api/translations',
+		$id,
+		$key
 	;
+
+	function __construct($id, $key)
+	{
+		$this->id = $id;
+		$this->key = $key;
+	}
 	
 	public function upload($data)
 	{

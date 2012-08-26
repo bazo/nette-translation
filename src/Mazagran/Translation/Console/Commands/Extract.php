@@ -16,8 +16,22 @@ class Extract extends Command
 	private
 		$extractDirs,
 			
-		$remote = false
+		$remote = false,
+			
+		$uploader
 	;
+	
+	public function setUploader($uploader)
+	{
+		$this->uploader = $uploader;
+		return $this;
+	}
+		
+	public function setRemote($remote)
+	{
+		$this->remote = $remote;
+		return $this;
+	}
 	
 	public function getExtractDirs()
 	{
