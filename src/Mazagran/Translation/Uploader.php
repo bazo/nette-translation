@@ -10,7 +10,7 @@ use Nette\Utils\Neon;
 class Uploader
 {
 	private
-		$endpoint = 'http://mazagran.local/api/translations',
+		$endpoint = 'http://mazagran.local/api/translations/%s',
 		$id,
 		$key
 	;
@@ -21,17 +21,25 @@ class Uploader
 		$this->key = $key;
 	}
 	
-	public function upload($data)
+	public function upload($messageData)
 	{
+		
+		$hash = hash_hmac('sha256', $messageData, $this->key);
+		
+		$data = array(
+			'messageData' => $messageData,
+			'hash' => $hash
+		);
+		
 		$response = $this->makeRequest($data);
 	}
 	
 	protected function makeRequest($data)
 	{
 		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $this->endpoint);
+		curl_setopt($ch, CURLOPT_URL, sprintf($this->endpoint, $this->id));
 		curl_setopt($ch, CURLOPT_PUT, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode('data'));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
 		curl_close($ch);
