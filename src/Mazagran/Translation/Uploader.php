@@ -10,7 +10,7 @@ use Nette\Utils\Neon;
 class Uploader
 {
 	private
-		$endpoint = 'http://mazagran.local/api/translations/%s',
+		$endpoint = 'http://mazagran.eu/api/projects/%s',
 		$id,
 		$key
 	;
