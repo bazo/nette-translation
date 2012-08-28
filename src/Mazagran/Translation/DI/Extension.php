@@ -64,7 +64,12 @@ class Extension extends \Nette\Config\CompilerExtension
 			$builder->getDefinition('application')->addSetup('$service->onShutdown[] = ?;', array(array('@translation.translator', 'uploadMessages')));
 		}
 	}
-	
+
+	/**
+	 * @param \Nette\DI\Container $container
+	 * @param array $config
+	 * @return \Mazagran\Translation\Console\Commands\Extract
+	 */
 	public static function createConsoleCommandExtract(Container $container, $config)
 	{
 		$command = new \Mazagran\Translation\Console\Commands\Extract;
@@ -72,26 +77,43 @@ class Extension extends \Nette\Config\CompilerExtension
 				->setUploader($container->getService('translation.uploader'));
 		return $command;
 	}
-	
+
+	/**
+	 * @param array $config
+	 * @return \Mazagran\Translation\Console\Commands\CreateLangFile
+	 */
 	public static function createConsoleCommandCreateLangFile($config)
 	{
 		$command = new \Mazagran\Translation\Console\Commands\CreateLangFile;
 		$command->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
-	
+
+	/**
+	 * @param array $config
+	 * @return \Mazagran\Translation\Console\Commands\Update
+	 */
 	public static function createConsoleCommandUpdate($config)
 	{
 		$command = new \Mazagran\Translation\Console\Commands\Update;
 		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
-	
+
+	/**
+	 * @param array $config
+	 * @return \Mazagran\Translation\Uploader
+	 */
 	public static function createUploader($config)
 	{
 		return new \Mazagran\Translation\Uploader($config['projectId'], $config['secret']);
 	}
 	
+	/**
+	 * @param \Nette\DI\Container $container
+	 * @param array $config
+	 * @return \Mazagran\Translation\Translator
+	 */
 	public static function createTranslator(Container $container, $config)
 	{
 		$translator = new \Mazagran\Translation\Translator($config['localizationFolder']);
