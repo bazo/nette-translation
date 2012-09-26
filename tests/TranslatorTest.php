@@ -13,9 +13,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 
 	protected function setUp()
     {
-		$this->dirs = array(
-			__DIR__.'/data/dictionaries'
-		);
+		$this->dir = __DIR__.'/data/dictionaries';
     }
 	
 	public function messagesProvider()
@@ -53,9 +51,26 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 		
 		unset($args[1]); //unset translation
 		
-		$translator = new Translator($this->dirs);
+		$translator = new Translator($this->dir);
 		$translator->setLang('sk');
 		
 		$this->assertEquals($translation, call_user_func_array(array($translator, "translate"), $args));
+	}
+	
+	public function testDictionary()
+	{
+		$file = $this->dirs[0].'/test.dict';
+		$file2 = __DIR__.'/data/test-en.dict';
+		
+		$data = \Nette\Utils\Neon::decode(file_get_contents(__DIR__.'/data/compilation/sk.neon'));
+		$dictionary = new Dictionary($data);
+		
+		$serialized = serialize($dictionary);
+		file_put_contents($file, $serialized);
+		
+		$savedData = file_get_contents($file2);
+		$unserialedDictionary = unserialize($savedData);
+		
+		$this->assertTrue($unserialedDictionary instanceof Dictionary);
 	}
 }
