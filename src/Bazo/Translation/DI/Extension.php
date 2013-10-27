@@ -57,10 +57,6 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('panel'))
 				->setFactory('Bazo\Translation\Diagnostics\Panel::register');
-
-		if ($config['connect'] === TRUE) {
-			$builder->getDefinition('application')->addSetup('$service->onShutdown[] = ?;', array(array('@translation.translator', 'uploadMessages')));
-		}
 	}
 
 
