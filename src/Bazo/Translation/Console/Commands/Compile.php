@@ -20,6 +20,7 @@ class Compile extends Command
 				->setName('translation:compile')
 				->setDescription('compiles language file')
 				->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
+				->addOption('o', NULL, InputOption::VALUE_OPTIONAL, 'output folder')
 		;
 	}
 
@@ -30,8 +31,11 @@ class Compile extends Command
 
 		$lang = $input->getArgument('lang');
 
-		$outputFolder = $this->outputFolder;
-
+		$outputFolder = $input->getOption('o');
+		if ($outputFolder === NULL) {
+			$outputFolder = $this->outputFolder;
+		}
+		
 		$inputFile = $outputFolder . '/' . $lang . '.neon';
 		
 		if(!file_exists($inputFile)) {
