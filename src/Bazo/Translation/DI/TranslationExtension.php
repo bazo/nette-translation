@@ -20,6 +20,8 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		'localizationFolder' => '%appDir%/l10n/',
 		'projectId' => NULL,
 		'secret' => NULL,
+		'connect' => FALSE,
+		'remoteServer' => NULL,
 		'meta' => [
 			'Project-Id-Version' => '',
 			'PO-Revision-Date' => '',
@@ -57,6 +59,10 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('panel'))
 				->setFactory('Bazo\Translation\Diagnostics\Panel::register');
+
+		if ($config['connect'] === TRUE) {
+			$builder->getDefinition('application')->addSetup('$service->onShutdown[] = ?;', [['@translation.translator', 'uploadMessages']]);
+		}
 	}
 
 
@@ -68,8 +74,12 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	public static function createConsoleCommandExtract(Container $container, $config)
 	{
 		$command = new \Bazo\Translation\Console\Commands\Extract;
-		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder'])->setRemote($config['connect'])
-				->setUploader($container->getService('translation.uploader'));
+		$command
+			->setExtractDirs($config['scanFile'])
+			->setOutputFolder($config['localizationFolder'])
+			->setRemote($config['connect'])
+			->setUploader($container->getService('translation.uploader'))
+		;
 		return $command;
 	}
 
@@ -93,7 +103,10 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	public static function createConsoleCommandUpdate($config)
 	{
 		$command = new \Bazo\Translation\Console\Commands\Update;
-		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
+		$command
+			->setExtractDirs($config['scanFile'])
+			->setOutputFolder($config['localizationFolder'])
+		;
 		return $command;
 	}
 
@@ -107,6 +120,16 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	{
 		$translator = new \Bazo\Translation\Translator($config['localizationFolder']);
 		return $translator;
+	}
+
+
+	/**
+	 * @param array $config
+	 * @return \Bazo\Translation\Uploader
+	 */
+	public static function createUploader($config)
+	{
+		return new \Bazo\Translation\Uploader($config['remoteServer'], $config['projectId'], $config['secret']);
 	}
 
 
