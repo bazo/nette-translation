@@ -59,6 +59,10 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('console.commandUpdate'))
 				->setFactory('Bazo\Translation\DI\TranslationExtension::createConsoleCommandUpdate', array($config))
 				->addTag('console.command');
+		
+		$builder->addDefinition($this->prefix('console.commandCompile'))
+				->setFactory('Bazo\Translation\DI\TranslationExtension::createConsoleCommandCompile', array($config))
+				->addTag('console.command');
 
 		$builder->addDefinition($this->prefix('panel'))
 				->setFactory('Bazo\Translation\Diagnostics\Panel::register');
@@ -106,6 +110,20 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	public static function createConsoleCommandUpdate($config)
 	{
 		$command = new \Bazo\Translation\Console\Commands\Update;
+		$command
+			->setExtractDirs($config['scanFile'])
+			->setOutputFolder($config['localizationFolder'])
+		;
+		return $command;
+	}
+	
+	/**
+	 * @param array $config
+	 * @return \Bazo\Translation\Console\Commands\Compile
+	 */
+	public static function createConsoleCommandCompile($config)
+	{
+		$command = new \Bazo\Translation\Console\Commands\Compile;
 		$command
 			->setExtractDirs($config['scanFile'])
 			->setOutputFolder($config['localizationFolder'])

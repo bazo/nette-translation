@@ -37,6 +37,12 @@ class Compile extends Command
 		}
 
 		$inputFile = $outputFolder . '/' . $lang . '.neon';
+		
+		if(!file_exists($inputFile)) {
+			$output->writeln(sprintf('Translation file for language "%s" doesn\'t exist.', $lang));
+			return;
+		}
+		
 		$outputFile = $outputFolder . '/' . $lang . '.dict';
 
 		$compiler = new \Bazo\Translation\Compiler();

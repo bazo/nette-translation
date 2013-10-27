@@ -18,7 +18,7 @@ class CreateLangFile extends Command
 	{
 		$this
 				->setName('translation:createVersion')
-				->setDescription('extracts tokens from files')
+				->setDescription('creates a translation file for given language')
 				->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
 				->addOption('o', NULL, InputOption::VALUE_OPTIONAL, 'output folder')
 		;

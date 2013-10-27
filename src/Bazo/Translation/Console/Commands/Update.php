@@ -34,7 +34,7 @@ class Update extends Command
 	{
 		$this
 				->setName('translation:update')
-				->setDescription('extracts tokens from files')
+				->setDescription('update translation files')
 				->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
 		;
 	}
