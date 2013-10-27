@@ -41,18 +41,18 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		$config = $this->getConfig($this->defaults, TRUE);
 
 		$builder->addDefinition($this->prefix('translator'))
-				->setFactory('Bazo\Translation\DI\Extension::createTranslator', array('@container', $config));
+				->setFactory('Bazo\Translation\DI\TranslationExtension::createTranslator', array('@container', $config));
 
 		$builder->addDefinition($this->prefix('consoleCommandExtract'))
-				->setFactory('Bazo\Translation\DI\Extension::createConsoleCommandExtract', array('@container', $config))
+				->setFactory('Bazo\Translation\DI\TranslationExtension::createConsoleCommandExtract', array('@container', $config))
 				->addTag('consoleCommand');
 
 		$builder->addDefinition($this->prefix('consoleCommandCreateLangFile'))
-				->setFactory('Bazo\Translation\DI\Extension::createConsoleCommandCreateLangFile', array($config))
+				->setFactory('Bazo\Translation\DI\TranslationExtension::createConsoleCommandCreateLangFile', array($config))
 				->addTag('consoleCommand');
 
 		$builder->addDefinition($this->prefix('consoleCommandUpdate'))
-				->setFactory('Bazo\Translation\DI\Extension::createConsoleCommandUpdate', array($config))
+				->setFactory('Bazo\Translation\DI\TranslationExtension::createConsoleCommandUpdate', array($config))
 				->addTag('consoleCommand');
 
 		$builder->addDefinition($this->prefix('panel'))
