@@ -124,6 +124,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	public static function createConsoleCommandCompile($config)
 	{
 		$command = new \Bazo\Translation\Console\Commands\Compile;
+		$command->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
 
