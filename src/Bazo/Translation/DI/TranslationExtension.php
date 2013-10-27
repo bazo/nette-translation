@@ -43,7 +43,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		$config = $this->getConfig($this->defaults, TRUE);
 
 		$builder->addDefinition($this->prefix('uploader'))
-				->setFactory('Bazo\Translation\DI\Extension::createUploader', array($config));
+				->setFactory('Bazo\Translation\DI\TranslationExtension::createUploader', array($config));
 		
 		$builder->addDefinition($this->prefix('translator'))
 				->setFactory('Bazo\Translation\DI\TranslationExtension::createTranslator', array('@container', $config));
