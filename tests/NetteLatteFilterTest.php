@@ -1,9 +1,9 @@
 <?php
 
-namespace Mazagran\Translation;
+namespace Bazo\Translation;
 
-use Mazagran\Translation\Extraction\Filters;
-use Mazagran\Translation\Extraction\Context;
+use Bazo\Translation\Extraction\Filters;
+use Bazo\Translation\Extraction\Context;
 
 /**
  * Test class for GettextContext_Filters_NetteLatteFilter.

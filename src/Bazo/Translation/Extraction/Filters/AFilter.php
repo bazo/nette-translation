@@ -1,7 +1,8 @@
 <?php
-namespace Mazagran\Translation\Extraction\Filters;
 
-use Mazagran\Translation\Extraction\Context;
+namespace Bazo\Translation\Extraction\Filters;
+
+use Bazo\Translation\Extraction\Context;
 
 /**
  * Extractor
@@ -26,38 +27,34 @@ abstract class AFilter
 {
 
 	/** @var array */
-	protected $functions = array();
+	protected $functions = [];
+
 
 	/**
 	 * Includes a function to parse gettext phrases from
 	 *
 	 * @param $functionName string
 	 * @param $singular int
-	 * @param $plural int|null
-	 * @param $context int|null
+	 * @param $plural int|NULL
+	 * @param $context int|NULL
 	 * @return AFilter
 	 */
-	public function addFunction($functionName, $singular = 1, $plural = null, $context = null)
+	public function addFunction($functionName, $singular = 1, $plural = NULL, $context = NULL)
 	{
-		if(!is_int($singular) || $singular <= 0)
-		{
+		if (!is_int($singular) || $singular <= 0) {
 			throw new \InvalidArgumentException('Invalid argument type or value given for paramater $singular.');
 		}
 		$function = array(
 			$singular => Context::SINGULAR
 		);
-		if($plural !== null)
-		{
-			if(!is_int($plural) || $plural <= 0)
-			{
+		if ($plural !== NULL) {
+			if (!is_int($plural) || $plural <= 0) {
 				throw new \InvalidArgumentException('Invalid argument type or value given for paramater $plural.');
 			}
 			$function[$plural] = Context::PLURAL;
 		}
-		if($context !== null)
-		{
-			if(!is_int($context) || $context <= 0)
-			{
+		if ($context !== NULL) {
+			if (!is_int($context) || $context <= 0) {
 				throw new \InvalidArgumentException('Invalid argument type or value given for paramater $context.');
 			}
 			$function[$context] = Context::CONTEXT;
@@ -65,6 +62,7 @@ abstract class AFilter
 		$this->functions[$functionName][] = $function;
 		return $this;
 	}
+
 
 	/**
 	 * Excludes a function from the function list
@@ -78,6 +76,7 @@ abstract class AFilter
 		return $this;
 	}
 
+
 	/**
 	 * Excludes all functions from the function list
 	 *
@@ -85,9 +84,10 @@ abstract class AFilter
 	 */
 	public function removeAllFunctions()
 	{
-		$this->functions = array();
+		$this->functions = [];
 		return $this;
 	}
+
 
 	/**
 	 * Removes backslashes from before primes and double primes in primed or double primed strings respectively
@@ -103,6 +103,7 @@ abstract class AFilter
 		return $string;
 	}
 
+
 	/**
 	 * Remove single or double quotes from begin and end of the string.
 	 *
@@ -112,14 +113,14 @@ abstract class AFilter
 	protected function stripQuotes($string)
 	{
 		$prime = substr($string, 0, 1);
-		if($prime === "'" || $prime === '"')
-		{
-			if(substr($string, -1, 1) === $prime)
-			{
+		if ($prime === "'" || $prime === '"') {
+			if (substr($string, -1, 1) === $prime) {
 				$string = substr($string, 1, -1);
 			}
 		}
 		return $string;
 	}
 
+
 }
+

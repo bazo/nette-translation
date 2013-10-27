@@ -1,25 +1,24 @@
 {
-    "name": "mazagran/translation",
-    "type": "nette-addon",
-    "description": "Mazagran client and translation addon for Nette Framework",
-    "keywords": ["nette", "mazagran", "neon", "translation"],
-    "homepage": "https://github.com/bazo/nette-translation",
-    "authors": [
-        {
-            "name": "Martin Bažík",
-            "email": "martin@bazo.sk",
-            "homepage": "http://bazo.sk"
-        }
-    ],
-	"minimum-stability": "dev",
-    "require": {
-        "php": ">=5.3.0",
-		"nette/nette": "*",
-		"symfony/console": "*",
-		"nikic/php-parser": "*"
-    },
+	"name": "bazo/nette-translation",
+	"type": "nette-addon",
+	"description": "Translation extension for Nette Framework",
+	"keywords": ["nette", "neon", "translation"],
+	"homepage": "https://github.com/bazo/nette-translation",
+	"authors": [
+		{
+			"name": "Martin Bažík",
+			"email": "martin@bazo.sk",
+			"homepage": "http://bazo.sk"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"nette/nette": "@dev",
+		"symfony/console": "@dev",
+		"nikic/php-parser": "@dev"
+	},
 	"autoload": {
-        "psr-0": { "Mazagran\\Translation": "src/" },
+		"psr-0": {"Bazo\\Translation": "src/"},
 		"files": ["src/shortcuts.php"]
-    }
+	}
 }

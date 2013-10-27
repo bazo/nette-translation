@@ -1,5 +1,6 @@
 <?php
-namespace Mazagran\Translation\Extraction\Filters;
+
+namespace Bazo\Translation\Extraction\Filters;
 
 /**
  * Extractor
@@ -32,3 +33,4 @@ interface IFilter
 	 */
 	public function extract($file);
 }
+

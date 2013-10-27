@@ -1,9 +1,10 @@
 <?php
-namespace Mazagran\Translation\Console\Commands;
+
+namespace Bazo\Translation\Console\Commands;
 
 use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console;
+	Symfony\Component\Console\Input\InputOption,
+	Symfony\Component\Console;
 
 /**
  * Extract
@@ -13,30 +14,30 @@ use Symfony\Component\Console\Input\InputArgument,
 class Extract extends Command
 {
 
-	private
-		$extractDirs,
-			
-		$remote = false,
-			
-		$uploader
-	;
-	
+	private $extractDirs;
+	private $remote = FALSE;
+	private $uploader;
+
+
 	public function setUploader($uploader)
 	{
 		$this->uploader = $uploader;
 		return $this;
 	}
-		
+
+
 	public function setRemote($remote)
 	{
 		$this->remote = $remote;
 		return $this;
 	}
-	
+
+
 	public function getExtractDirs()
 	{
 		return $this->extractDirs;
 	}
+
 
 	public function setExtractDirs($extractDirs)
 	{
@@ -44,69 +45,65 @@ class Extract extends Command
 		return $this;
 	}
 
+
 	protected function configure()
-    {
-        $this
-            ->setName('translation:extract')
-            ->setDescription('extracts tokens from files')
-			->addOption('o', null, InputOption::VALUE_OPTIONAL, 'output folder')
-			->addOption('f', null, InputOption::VALUE_OPTIONAL, 'file to extract, can be specified several times')
-			->addOption('r', null, InputOption::VALUE_OPTIONAL, 'upload to remote server?')	
-        ;
-    }
-	
+	{
+		$this
+				->setName('translation:extract')
+				->setDescription('extracts tokens from files')
+				->addOption('o', NULL, InputOption::VALUE_OPTIONAL, 'output folder')
+				->addOption('f', NULL, InputOption::VALUE_OPTIONAL, 'file to extract, can be specified several times')
+				->addOption('r', NULL, InputOption::VALUE_OPTIONAL, 'upload to remote server?')
+		;
+	}
+
+
 	protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
-    {
+	{
 		$output->writeln('Extracting files');
-		
+
 		$outputFolder = $input->getOption('o');
-		
-		if($outputFolder === null)
-		{
+
+		if ($outputFolder === NULL) {
 			$outputFolder = $this->outputFolder;
 		}
-		
+
 		$files = $input->getOption('f');
-		
-		if($files === null)
-		{
+
+		if ($files === NULL) {
 			$files = $this->extractDirs;
 		}
-		
+
 		if (!isset($files)) {
 			$output->writeln('No input files given.');
 			exit;
 		}
 
 		$remote = $input->getOption('r');
-		
-		if($remote === null)
-		{
+
+		if ($remote === NULL) {
 			$remote = $this->remote;
+		} else {
+			$remote = (bool) $remote;
 		}
-		else
-		{
-			$remote = (bool)$remote;
-		}
-		
-		$extractor = new \Mazagran\Translation\Extraction\NetteExtractor;
-		
+
+		$extractor = new \Bazo\Translation\Extraction\NetteExtractor;
+
 		$extractor->setupForms()->setupDataGrid();
 		$data = $extractor->scan($files);
-		$builder = new \Mazagran\Translation\Builder;
-		if($remote === true)
-		{
+		$builder = new \Bazo\Translation\Builder;
+		if ($remote === TRUE) {
 			$templateData = $builder->formatTemplateData($data);
 			$response = $this->uploader->upload($templateData);
 			$output->writeln(sprintf('<info>Extracted %d tokens. Uploaded to remote server. Response: %s</info>', count($data), $response->message));
-		}
-		else
-		{
-			$outputFile = $outputFolder.'/template.neont';
+		} else {
+			$outputFile = $outputFolder . '/template.neont';
 			$builder->buildTemplate($outputFile, $data);
 
 			$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFile));
 		}
-		
 	}
+
+
 }
+

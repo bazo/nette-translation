@@ -1,5 +1,6 @@
 <?php
-namespace Mazagran\Translation;
+
+namespace Bazo\Translation;
 
 use Nette\Object;
 use Nette\Utils\Finder;
@@ -11,80 +12,63 @@ use Nette\Utils\Finder;
  */
 class Translator extends Object implements \Nette\Localization\ITranslator
 {
-	private
-		$lang,
-			
-		$dictionaryLoaded,
-		
-		/** @var \Translation\Dictionary */	
-		$dictionary,
-			
-		$dir,
-			
-		$id,
-			
-		$secret,
-			
-		$connect = false
-	;
-	
+
+	private $lang;
+	private $dictionaryLoaded;
+
+	/** @var \Translation\Dictionary */
+	private $dictionary;
+	private $dir;
+
+
 	function __construct($dir)
 	{
 		$this->dir = $dir;
 	}
-	
-	public function enableRemoteConnection($id = null, $secret = null)
-	{
-		$this->connect = true;
-		return $this;
-	}
-	
+
+
 	public function setLang($lang)
 	{
-		if ($this->lang === $lang)
+		if ($this->lang === $lang) {
 			return;
+		}
 
 		$this->lang = $lang;
-		$this->dictionary = array();
+		$this->dictionary = [];
 		$this->dictionaryLoaded = FALSE;
 		$this->loadDictionary();
 	}
-		
+
+
 	private function loadDictionary()
 	{
-		if(!$this->dictionaryLoaded)
-		{
+		if (!$this->dictionaryLoaded) {
 			$dictionaryFile = $this->dir . "/" . $this->lang . ".dict";
-			if(file_exists($dictionaryFile))
-			{
+			if (file_exists($dictionaryFile)) {
 				$this->dictionary = unserialize(file_get_contents($dictionaryFile));
 				$this->dictionaryLoaded = TRUE;
 			}
 		}
 	}
-	
+
+
 	public function translate($message, $count = 1)
 	{
 		$this->loadDictionary();
 		$message = (string) $message;
 
-		$entry = null;
-		
-		if($this->dictionaryLoaded)
-		{
+		$entry = NULL;
+
+		if ($this->dictionaryLoaded) {
 			$entry = $this->dictionary->find($message);
 		}
-		
-		if($entry !== null)
-		{
+
+		if ($entry !== NULL) {
 			$pluralForm = $this->dictionary->getPluralForm($count);
-			
-			if(isset($entry['translations'][$pluralForm]))
-			{
+
+			if (isset($entry['translations'][$pluralForm])) {
 				$message = $entry['translations'][$pluralForm];
-			}
-			elseif($count > 1)
-			{
+			} elseif ($count > 1) {
 				$message = $entry['plural'];
 			}
 		}
@@ -92,15 +76,16 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 		$args = func_get_args();
 		if (count($args) > 1) {
 			array_shift($args);
-			if (is_array(current($args)) || current($args) === NULL)
+			if (is_array(current($args)) || current($args) === NULL) {
 				array_shift($args);
+			}
 
-			if (count($args) == 1 && is_array(current($args)))
+			if (count($args) == 1 && is_array(current($args))) {
 				$args = current($args);
+			}
 
 			$message = str_replace(array("%label", "%name", "%value"), array("#label", "#name", "#value"), $message);
-			if (count($args) > 0 && $args != NULL)
-			{
+			if (count($args) > 0 && $args != NULL) {
 				$message = vsprintf($message, $args);
 			}
 			$message = str_replace(array("#label", "#name", "#value"), array("%label", "%name", "%value"), $message);
@@ -108,10 +93,7 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 
 		return $message;
 	}
-	
-	public function uploadMessages()
-	{
-		
-	}
-	
+
+
 }
+

@@ -1,8 +1,8 @@
 <?php
 
-namespace Mazagran\Translation\Extraction\Filters;
+namespace Bazo\Translation\Extraction\Filters;
 
-use Mazagran\Translation\Extraction\Context;
+use Bazo\Translation\Extraction\Context;
 
 /**
  * Extractor
@@ -26,8 +26,8 @@ use Mazagran\Translation\Extraction\Context;
  */
 class NetteLatte extends AFilter implements IFilter
 {
-	/** @internal single & double quoted PHP string, from Nette\Templates\LatteFilter */
 
+	/** @internal single & double quoted PHP string, from Nette\Templates\LatteFilter */
 	const RE_STRING = '\'(?:\\\\.|[^\'\\\\])*\'|"(?:\\\\.|[^"\\\\])*"';
 
 	/** @internal PHP identifier, from Nette\Templates\LatteFilter */
@@ -43,10 +43,12 @@ class NetteLatte extends AFilter implements IFilter
 	/** @link http://doc.nette.org/cs/rozsireni-lattefilter */
 	const RE_TAG = '\{(__MACRO__)\s*(__PARAM__)((?:,\s*__PARAM__)+)?(?:__MODIFIER__)*\}';
 
+
 	protected static $regexForParam;
 
 	/** @var array */
-	protected $prefixes = array();
+	protected $prefixes = [];
+
 
 	public function __construct()
 	{
@@ -54,11 +56,12 @@ class NetteLatte extends AFilter implements IFilter
 		$this->addFunction('!_');
 		$this->addFunction('_n', 1, 2);
 		$this->addFunction('!_n', 1, 2);
-		$this->addFunction('_p', 2, null, 1);
-		$this->addFunction('!_p', 2, null, 1);
+		$this->addFunction('_p', 2, NULL, 1);
+		$this->addFunction('!_p', 2, NULL, 1);
 		$this->addFunction('_np', 2, 3, 1);
 		$this->addFunction('!_np', 2, 3, 1);
 	}
+
 
 	/**
 	 * Includes a prefix to match in { }
@@ -66,15 +69,16 @@ class NetteLatte extends AFilter implements IFilter
 	 *
 	 * @param $prefix string
 	 * @param $singular int
-	 * @param $plural int|null
-	 * @param $context int|null
+	 * @param $plural int|NULL
+	 * @param $context int|NULL
 	 * @return NetteLatte
 	 */
-	public function addPrefix($prefix, $singular = 1, $plural = null, $context = null)
+	public function addPrefix($prefix, $singular = 1, $plural = NULL, $context = NULL)
 	{
 		parent::addFunction($prefix, $singular, $plural, $context);
 		return $this;
 	}
+
 
 	/**
 	 * Excludes a prefix from { }
@@ -89,6 +93,7 @@ class NetteLatte extends AFilter implements IFilter
 		return $this;
 	}
 
+
 	/**
 	 * Parses given file and returns found gettext phrases
 	 *
@@ -97,22 +102,20 @@ class NetteLatte extends AFilter implements IFilter
 	 */
 	public function extract($file)
 	{
-		if(count($this->functions) === 0)
+		if (count($this->functions) === 0)
 			return;
-		$data = array();
+		$data = [];
 
 		$regex = $this->createRegex(array_keys($this->functions));
 		$paramsRegex = '/,\s*(__PARAM__)/';
 		$paramsRegex = str_replace('__PARAM__', $this->createRegexForParam(), $paramsRegex);
 
 		// parse file by lines
-		foreach(file($file) as $line => $contents)
-		{
-			$matches = array();
+		foreach (file($file) as $line => $contents) {
+			$matches = [];
 			preg_match_all($regex, $contents, $matches, PREG_SET_ORDER);
 
-			foreach($matches as $message)
-			{
+			foreach ($matches as $message) {
 				/* $message[0] = complete macro
 				 * $message[1] = prefix
 				 * $message[2] = 1. parameter
@@ -122,22 +125,18 @@ class NetteLatte extends AFilter implements IFilter
 				$params = array(
 					1 => $message[2]
 				);
-				if(isset($message[3]))
-				{
-					$m = array();
+				if (isset($message[3])) {
+					$m = [];
 					preg_match_all($paramsRegex, $message[3], $m, PREG_SET_ORDER);
-					foreach($m as $index => $match)
-					{
+					foreach ($m as $index => $match) {
 						$params[$index + 2] = $match[1];
 					}
 				}
 				$result = array(
 					Context::LINE => $line + 1
 				);
-				foreach($prefix as $position => $type)
-				{
-					if(!isset($params[$position]) || !$this->isStaticString($params[$position]))
-					{
+				foreach ($prefix as $position => $type) {
+					if (!isset($params[$position]) || !$this->isStaticString($params[$position])) {
 						continue 2; // continue with next message
 					}
 					$result[$type] = $this->stripQuotes($this->fixEscaping($params[$position]));
@@ -148,6 +147,7 @@ class NetteLatte extends AFilter implements IFilter
 		return $data;
 	}
 
+
 	/**
 	 * Return a regular expression for matching a parameter.
 	 *
@@ -155,8 +155,7 @@ class NetteLatte extends AFilter implements IFilter
 	 */
 	private function createRegexForParam()
 	{
-		if(!isset(self::$regexForParam))
-		{
+		if (!isset(self::$regexForParam)) {
 			self::$regexForParam = '(?:' . self::RE_NUMBER . '|' . self::RE_STRING . '|' . self::RE_STATIC . '|' . self::RE_VARIABLE . '|' . self::RE_FUNCTION . ')';
 			$replace = array(
 				'__STATIC__' => self::RE_STATIC,
@@ -172,6 +171,7 @@ class NetteLatte extends AFilter implements IFilter
 		return self::$regexForParam;
 	}
 
+
 	/**
 	 * Return a regular expression for matching macro.
 	 *
@@ -180,9 +180,8 @@ class NetteLatte extends AFilter implements IFilter
 	 */
 	private function createRegex(array $macros)
 	{
-		$quotedMacros = array();
-		foreach($macros as $prefix)
-		{
+		$quotedMacros = [];
+		foreach ($macros as $prefix) {
 			$quotedMacros[] = preg_quote($prefix);
 		}
 		$replace = array(
@@ -198,6 +197,7 @@ class NetteLatte extends AFilter implements IFilter
 		return "/$regex/";
 	}
 
+
 	/**
 	 * Check if string is static. No variables, no composing.
 	 *
@@ -207,12 +207,13 @@ class NetteLatte extends AFilter implements IFilter
 	private function isStaticString($string)
 	{
 		$prime = substr($string, 0, 1);
-		if(($prime === "'" || $prime === '"') && substr($string, -1, 1) === $prime)
-		{
-			return true;
+		if (($prime === "'" || $prime === '"') && substr($string, -1, 1) === $prime) {
+			return TRUE;
 		}
 		/** @todo more tests needed: "some$string" "{$object->method()}" */
-		return false;
+		return FALSE;
 	}
 
+
 }
+

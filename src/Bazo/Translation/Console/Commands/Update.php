@@ -1,9 +1,10 @@
 <?php
-namespace Mazagran\Translation\Console\Commands;
+
+namespace Bazo\Translation\Console\Commands;
 
 use Symfony\Component\Console\Input\InputArgument,
-    Symfony\Component\Console\Input\InputOption,
-    Symfony\Component\Console;
+	Symfony\Component\Console\Input\InputOption,
+	Symfony\Component\Console;
 
 /**
  * Extract
@@ -13,14 +14,14 @@ use Symfony\Component\Console\Input\InputArgument,
 class Update extends Command
 {
 
-	private
-		$extractDirs
-	;
-	
+	private $extractDirs;
+
+
 	public function getExtractDirs()
 	{
 		return $this->extractDirs;
 	}
+
 
 	public function setExtractDirs($extractDirs)
 	{
@@ -28,28 +29,33 @@ class Update extends Command
 		return $this;
 	}
 
+
 	protected function configure()
-    {
-        $this
-            ->setName('translation:update')
-            ->setDescription('extracts tokens from files')
-			->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
-        ;
-    }
-	
+	{
+		$this
+				->setName('translation:update')
+				->setDescription('extracts tokens from files')
+				->addArgument('lang', InputArgument::OPTIONAL, 'the language for which to generate language file', 'en')
+		;
+	}
+
+
 	protected function execute(Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
-    {
+	{
 		$output->writeln('Extracting files');
-		
+
 		$lang = $input->getArgument('lang');
-		
-		
+
+
 		$data = $extractor->scan($files);
-		
-		$outputFile = $outputFolder.'/'.$lang.'.po';
-		
+
+		$outputFile = $outputFolder . '/' . $lang . '.po';
+
 		$builder->buildPo($outputFile, $data);
-		
+
 		$output->writeln(sprintf('<info>Extracted %d tokens. Output saved in: %s.</info>', count($data), $outputFolder));
 	}
+
+
 }
+

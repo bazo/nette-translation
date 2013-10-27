@@ -1,6 +1,9 @@
 <?php
-namespace Mazagran\Translation\Extraction;
-use Mazagran\Translation\Extraction\Filters;
+
+namespace Bazo\Translation\Extraction;
+
+use Bazo\Translation\Extraction\Filters;
+
 /**
  * GettextExtractor
  *
@@ -55,6 +58,7 @@ class NetteExtractor extends Extractor
 				->addPrefix('_');
 	}
 
+
 	/**
 	 * Optional setup of Forms translations
 	 *
@@ -87,6 +91,7 @@ class NetteExtractor extends Extractor
 		return $this;
 	}
 
+
 	/**
 	 * Optional setup of DataGrid component translations
 	 *
@@ -107,4 +112,6 @@ class NetteExtractor extends Extractor
 		return $this;
 	}
 
+
 }
+

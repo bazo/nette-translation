@@ -1,7 +1,9 @@
 <?php
 
-namespace Mazagran\Translation\Extraction;
-use Mazagran\Translation\Extraction\Filters;
+namespace Bazo\Translation\Extraction;
+
+use Bazo\Translation\Extraction\Filters;
+
 /**
  * Extractor
  *
@@ -25,29 +27,29 @@ use Mazagran\Translation\Extraction\Filters;
  */
 class Extractor
 {
+
 	protected
-		/** @var array */
-		$inputFiles = array(),
+	/** @var array */
+			$inputFiles = [],
+			/** @var array */
+			$filters = array(
+				'php' => array('PHP')
+					),
+			/** @var array */
+			$filterStore = [],
+			/** @var array */
+			$data = [],
+			/** @var \Translation\Builders\Builder */
+			$builder
 
-		/** @var array */
-		$filters = array(
-			'php' => array('PHP')
-		),
 
-		/** @var array */
-		$filterStore = array(),
-
-		/** @var array */
-		$data = array(),
-
-		/** @var \Translation\Builders\Builder */	
-		$builder
 	;
 
 	public function __construct()
 	{
 		$this->addFilter('PHP', new Filters\PHP);
 	}
+
 
 	/**
 	 * Exception factory
@@ -61,6 +63,7 @@ class Extractor
 		throw new \Exception($message);
 	}
 
+
 	/**
 	 * Scans given files or directories and extracts gettext keys from the content
 	 *
@@ -69,17 +72,16 @@ class Extractor
 	 */
 	public function scan($resource)
 	{
-		$this->inputFiles = array();
-		if(!is_array($resource))
-		{
+		$this->inputFiles = [];
+		if (!is_array($resource)) {
 			$resource = array($resource);
 		}
-		foreach($resource as $item)
-		{
+		foreach ($resource as $item) {
 			$this->_scan($item);
 		}
 		return $this->_extract($this->inputFiles);
 	}
+
 
 	/**
 	 * Scans given files or directories (recursively)
@@ -88,25 +90,20 @@ class Extractor
 	 */
 	protected function _scan($resource)
 	{
-		if(is_file($resource))
-		{
+		if (is_file($resource)) {
 			$this->inputFiles[] = $resource;
-		}
-		elseif(is_dir($resource))
-		{
+		} elseif (is_dir($resource)) {
 			$iterator = new \RecursiveIteratorIterator(
-							new \RecursiveDirectoryIterator($resource, \RecursiveDirectoryIterator::SKIP_DOTS)
+					new \RecursiveDirectoryIterator($resource, \RecursiveDirectoryIterator::SKIP_DOTS)
 			);
-			foreach($iterator as $file)
-			{
+			foreach ($iterator as $file) {
 				$this->inputFiles[] = $file->getPathName();
 			}
-		}
-		else
-		{
+		} else {
 			$this->throwException("Resource '$resource' is not a directory or file");
 		}
 	}
+
 
 	/**
 	 * Extracts gettext keys from input files
@@ -118,26 +115,21 @@ class Extractor
 	{
 		$inputFiles = array_unique($inputFiles);
 		sort($inputFiles);
-		foreach($inputFiles as $inputFile)
-		{
-			if(!file_exists($inputFile))
-			{
+		foreach ($inputFiles as $inputFile) {
+			if (!file_exists($inputFile)) {
 				$this->throwException('ERROR: Invalid input file specified: ' . $inputFile);
 			}
-			if(!is_readable($inputFile))
-			{
+			if (!is_readable($inputFile)) {
 				$this->throwException('ERROR: Input file is not readable: ' . $inputFile);
 			}
 
 			$fileExtension = pathinfo($inputFile, PATHINFO_EXTENSION);
-			foreach($this->filters as $extension => $filters)
-			{
+			foreach ($this->filters as $extension => $filters) {
 				// Check file extension
-				if($fileExtension !== $extension)
+				if ($fileExtension !== $extension)
 					continue;
 
-				foreach($filters as $filterName)
-				{
+				foreach ($filters as $filterName) {
 					$filter = $this->getFilter($filterName);
 					$filterData = $filter->extract($inputFile);
 					$this->addMessages($filterData, $inputFile);
@@ -147,32 +139,28 @@ class Extractor
 		return $this->data;
 	}
 
+
 	public function addMessages(array $messages, $file)
 	{
-		foreach($messages as $message)
-		{
+		foreach ($messages as $message) {
 			$key = '';
-			if(isset($message[Context::CONTEXT]))
-			{
+			if (isset($message[Context::CONTEXT])) {
 				$key .= $message[Context::CONTEXT];
 			}
 			$key .= chr(4);
 			$key .= $message[Context::SINGULAR];
 			$key .= chr(4);
-			if(isset($message[Context::PLURAL]))
-			{
+			if (isset($message[Context::PLURAL])) {
 				$key .= $message[Context::PLURAL];
 			}
-			if($key === chr(4) . chr(4))
-			{
+			if ($key === chr(4) . chr(4)) {
 				continue;
 			}
 			$line = $message[Context::LINE];
-			if(!isset($this->data[$key]))
-			{
+			if (!isset($this->data[$key])) {
 				unset($message[Context::LINE]);
 				$this->data[$key] = $message;
-				$this->data[$key]['files'] = array();
+				$this->data[$key]['files'] = [];
 			}
 			$this->data[$key]['files'][] = array(
 				Context::FILE => $file,
@@ -181,7 +169,8 @@ class Extractor
 		}
 		return $this;
 	}
-	
+
+
 	/**
 	 * Gets an instance of a Extractor filter
 	 *
@@ -190,12 +179,12 @@ class Extractor
 	 */
 	public function getFilter($filterName)
 	{
-		if(isset($this->filterStore[$filterName]))
-		{
+		if (isset($this->filterStore[$filterName])) {
 			return $this->filterStore[$filterName];
 		}
 		$this->throwException("ERROR: Filter '$filterName' not found.");
 	}
+
 
 	/**
 	 * Assigns a filter to an extension
@@ -206,11 +195,12 @@ class Extractor
 	 */
 	public function setFilter($extension, $filterName)
 	{
-		if(isset($this->filters[$extension]) && in_array($filterName, $this->filters[$extension]))
+		if (isset($this->filters[$extension]) && in_array($filterName, $this->filters[$extension]))
 			return $this;
 		$this->filters[$extension][] = $filterName;
 		return $this;
 	}
+
 
 	/**
 	 * Add a filter object
@@ -223,6 +213,7 @@ class Extractor
 		$this->filterStore[$filterName] = $filter;
 	}
 
+
 	/**
 	 * Removes all filter settings in case we want to define a brand new one
 	 *
@@ -230,13 +221,17 @@ class Extractor
 	 */
 	public function removeAllFilters()
 	{
-		$this->filters = array();
+		$this->filters = [];
 		return $this;
 	}
+
 
 	public function save($outputFile)
 	{
 		$this->builder->save($outputFile, $this->data);
 		return $this;
 	}
+
+
 }
+

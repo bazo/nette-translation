@@ -1,5 +1,7 @@
 <?php
-namespace Mazagran\Translation;
+
+namespace Bazo\Translation;
+
 /**
  * ExtractCommandTest
  *
@@ -7,15 +9,15 @@ namespace Mazagran\Translation;
  */
 class TranslatorTest extends \PHPUnit_Framework_TestCase
 {
-	private
-		$dirs
-	;
+
+	private $dir;
 
 	protected function setUp()
-    {
-		$this->dir = __DIR__.'/data/dictionaries';
-    }
-	
+	{
+		$this->dir = __DIR__ . '/data/dictionaries';
+	}
+
+
 	public function messagesProvider()
 	{
 		return array(
@@ -25,7 +27,8 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 			array('old', 'starý'),
 		);
 	}
-	
+
+
 	public function gettextMessagesProvider()
 	{
 		return array(
@@ -43,34 +46,43 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
 			array('little %s cat jumped on %s', '5 malych ciernych maciek vyskocilo na stol', 5, 'ciernych', 'stol'),
 		);
 	}
-	
+
+
 	/** @dataProvider gettextMessagesProvider */
 	public function testTranslate($message, $translation, $count = 1)
 	{
 		$args = func_get_args();
-		
+
 		unset($args[1]); //unset translation
-		
+
 		$translator = new Translator($this->dir);
 		$translator->setLang('sk');
-		
+
 		$this->assertEquals($translation, call_user_func_array(array($translator, "translate"), $args));
 	}
-	
+
+
 	public function testDictionary()
 	{
-		$file = $this->dirs[0].'/test.dict';
-		$file2 = __DIR__.'/data/test-en.dict';
-		
-		$data = \Nette\Utils\Neon::decode(file_get_contents(__DIR__.'/data/compilation/sk.neon'));
+		$dictionaryFile = $this->dir . '/sk.dict';
+		$file2 = __DIR__ . '/data/test-en.dict';
+
+		$data = \Nette\Utils\Neon::decode(file_get_contents(__DIR__ . '/data/compilation/sk.neon'));
 		$dictionary = new Dictionary($data);
-		
+
 		$serialized = serialize($dictionary);
-		file_put_contents($file, $serialized);
+		$savedData = file_get_contents($dictionaryFile);
 		
-		$savedData = file_get_contents($file2);
-		$unserialedDictionary = unserialize($savedData);
+		$this->assertEquals($savedData, $serialized);
+
 		
+		file_put_contents($file2, $serialized);
+		$unserialedDictionary = unserialize(file_get_contents($file2));
+		
+		unlink($file2);
 		$this->assertTrue($unserialedDictionary instanceof Dictionary);
 	}
+
+
 }
+

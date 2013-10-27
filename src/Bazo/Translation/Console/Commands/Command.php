@@ -1,5 +1,6 @@
 <?php
-namespace Mazagran\Translation\Console\Commands;
+
+namespace Bazo\Translation\Console\Commands;
 
 use Symfony\Component\Console;
 
@@ -11,18 +12,21 @@ use Symfony\Component\Console;
 abstract class Command extends Console\Command\Command
 {
 
-	protected
-		$outputFolder
-	;
-	
+	protected $outputFolder;
+
+
 	public function getOutputFolder()
 	{
 		return $this->outputFolder;
 	}
+
 
 	public function setOutputFolder($outputFolder)
 	{
 		$this->outputFolder = $outputFolder;
 		return $this;
 	}
+
+
 }
+

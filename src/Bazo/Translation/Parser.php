@@ -1,5 +1,5 @@
 <?php
-namespace Mazagran\Translation;
+namespace Bazo\Translation;
 
 use Nette\Utils\Neon;
 /**
