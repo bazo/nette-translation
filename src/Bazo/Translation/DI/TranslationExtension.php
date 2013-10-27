@@ -124,10 +124,6 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	public static function createConsoleCommandCompile($config)
 	{
 		$command = new \Bazo\Translation\Console\Commands\Compile;
-		$command
-			->setExtractDirs($config['scanFile'])
-			->setOutputFolder($config['localizationFolder'])
-		;
 		return $command;
 	}
 
