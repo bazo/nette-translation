@@ -18,7 +18,6 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	private $defaults = [
 		'scanFile' => '%appDir%',
 		'localizationFolder' => '%appDir%/l10n/',
-		'connect' => FALSE,
 		'projectId' => NULL,
 		'secret' => NULL,
 		'meta' => [
@@ -41,26 +40,23 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 		$config = $this->getConfig($this->defaults, TRUE);
 
-		$builder->addDefinition($this->prefix('uploader'))
-				->setFactory('Mazagran\Translation\DI\Extension::createUploader', array($config));
-
 		$builder->addDefinition($this->prefix('translator'))
-				->setFactory('Mazagran\Translation\DI\Extension::createTranslator', array('@container', $config));
+				->setFactory('Bazo\Translation\DI\Extension::createTranslator', array('@container', $config));
 
 		$builder->addDefinition($this->prefix('consoleCommandExtract'))
-				->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandExtract', array('@container', $config))
+				->setFactory('Bazo\Translation\DI\Extension::createConsoleCommandExtract', array('@container', $config))
 				->addTag('consoleCommand');
 
 		$builder->addDefinition($this->prefix('consoleCommandCreateLangFile'))
-				->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandCreateLangFile', array($config))
+				->setFactory('Bazo\Translation\DI\Extension::createConsoleCommandCreateLangFile', array($config))
 				->addTag('consoleCommand');
 
 		$builder->addDefinition($this->prefix('consoleCommandUpdate'))
-				->setFactory('Mazagran\Translation\DI\Extension::createConsoleCommandUpdate', array($config))
+				->setFactory('Bazo\Translation\DI\Extension::createConsoleCommandUpdate', array($config))
 				->addTag('consoleCommand');
 
 		$builder->addDefinition($this->prefix('panel'))
-				->setFactory('Mazagran\Translation\Diagnostics\Panel::register');
+				->setFactory('Bazo\Translation\Diagnostics\Panel::register');
 
 		if ($config['connect'] === TRUE) {
 			$builder->getDefinition('application')->addSetup('$service->onShutdown[] = ?;', array(array('@translation.translator', 'uploadMessages')));
@@ -71,11 +67,11 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	/**
 	 * @param \Nette\DI\Container $container
 	 * @param array $config
-	 * @return \Mazagran\Translation\Console\Commands\Extract
+	 * @return \Bazo\Translation\Console\Commands\Extract
 	 */
 	public static function createConsoleCommandExtract(Container $container, $config)
 	{
-		$command = new \Mazagran\Translation\Console\Commands\Extract;
+		$command = new \Bazo\Translation\Console\Commands\Extract;
 		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder'])->setRemote($config['connect'])
 				->setUploader($container->getService('translation.uploader'));
 		return $command;
@@ -84,11 +80,11 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 	/**
 	 * @param array $config
-	 * @return \Mazagran\Translation\Console\Commands\CreateLangFile
+	 * @return \Bazo\Translation\Console\Commands\CreateLangFile
 	 */
 	public static function createConsoleCommandCreateLangFile($config)
 	{
-		$command = new \Mazagran\Translation\Console\Commands\CreateLangFile;
+		$command = new \Bazo\Translation\Console\Commands\CreateLangFile;
 		$command->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
@@ -96,37 +92,24 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 	/**
 	 * @param array $config
-	 * @return \Mazagran\Translation\Console\Commands\Update
+	 * @return \Bazo\Translation\Console\Commands\Update
 	 */
 	public static function createConsoleCommandUpdate($config)
 	{
-		$command = new \Mazagran\Translation\Console\Commands\Update;
+		$command = new \Bazo\Translation\Console\Commands\Update;
 		$command->setExtractDirs($config['scanFile'])->setOutputFolder($config['localizationFolder']);
 		return $command;
 	}
 
 
 	/**
-	 * @param array $config
-	 * @return \Mazagran\Translation\Uploader
-	 */
-	public static function createUploader($config)
-	{
-		return new \Mazagran\Translation\Uploader($config['projectId'], $config['secret']);
-	}
-
-
-	/**
 	 * @param \Nette\DI\Container $container
 	 * @param array $config
-	 * @return \Mazagran\Translation\Translator
+	 * @return \Bazo\Translation\Translator
 	 */
 	public static function createTranslator(Container $container, $config)
 	{
-		$translator = new \Mazagran\Translation\Translator($config['localizationFolder']);
-		if ($config['connect'] === TRUE) {
-			$translator->enableRemoteConnection($config['projectId'], $config['secret']);
-		}
+		$translator = new \Bazo\Translation\Translator($config['localizationFolder']);
 		return $translator;
 	}
 
