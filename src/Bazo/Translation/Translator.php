@@ -52,8 +52,12 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 	}
 
 
-	public function translate($message, $count = 1)
+	public function translate($message, $count = NULL)
 	{
+		if(is_null($count)) {
+			$count = 1; //fix for form translations
+		}
+		
 		$this->loadDictionary();
 		$message = (string) $message;
 
