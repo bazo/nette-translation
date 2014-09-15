@@ -25,6 +25,7 @@ use Bazo\Translation\Extraction\Filters;
  *
  * @author Karel Klima
  * @author Ondřej Vodáček
+ * @author Martin Bažík <martin@bazik.sk>
  */
 class Extractor
 {

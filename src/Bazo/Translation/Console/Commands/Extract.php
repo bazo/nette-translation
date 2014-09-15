@@ -2,16 +2,14 @@
 
 namespace Bazo\Translation\Console\Commands;
 
-use Symfony\Component\Console\Input\InputArgument,
-	Symfony\Component\Console\Input\InputOption,
-	Symfony\Component\Console;
 
-
+use Bazo\Translation\Builder\TemplateBuilder;
+use Bazo\Translation\Extraction\NetteExtractor;
+use Symfony\Component\Console;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Extract
- *
- * @author martin.bazik
+ * @author Martin Bažík <martin@bazik.sk>
  */
 class Extract extends Command
 {
@@ -19,8 +17,6 @@ class Extract extends Command
 	private $extractDirs;
 	private $remote = FALSE;
 	private $uploader;
-
-
 
 	public function setUploader($uploader)
 	{
@@ -90,14 +86,14 @@ class Extract extends Command
 			$remote = (bool) $remote;
 		}
 
-		$extractor = new \Bazo\Translation\Extraction\NetteExtractor;
+		$extractor = new NetteExtractor;
 
 		$extractor->setupForms()->setupDataGrid();
-		$data = $extractor->scan($files);
-		$builder = new \Bazo\Translation\Builder;
+		$data	 = $extractor->scan($files);
+		$builder = new TemplateBuilder;
 		if ($remote === TRUE) {
-			$templateData = $builder->formatTemplateData($data);
-			$response = $this->uploader->upload($templateData);
+			$templateData	 = $builder->formatTemplateData($data);
+			$response		 = $this->uploader->upload($templateData);
 			$output->writeln(sprintf('<info>Extracted %d tokens. Uploaded to remote server. Response: %s</info>', count($data), $response->message));
 		} else {
 			$outputFile = $outputFolder . '/template.neont';

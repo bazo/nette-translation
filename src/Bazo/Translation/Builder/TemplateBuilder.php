@@ -1,23 +1,18 @@
 <?php
 
-namespace Bazo\Translation;
+namespace Bazo\Translation\Builder;
+
 
 use Bazo\Translation\Extraction\Context;
 use Nette\Utils\Neon;
 
-
-
 /**
- * Gettext
- *
- * @author martin.bazik
+ * @author Martin Bažík <martin@bazik.sk>
  */
-class Builder
+class TemplateBuilder
 {
 
 	private $metadata;
-
-
 
 	public function addMetadata($key, $value)
 	{
@@ -30,39 +25,6 @@ class Builder
 	{
 		$data = $this->formatTemplateData($data);
 		file_put_contents($file, $this->dump($data));
-	}
-
-
-	public function build($file, $lang, $data)
-	{
-		$data = $this->formatLanguageFileData($lang, $data, $this->metadata);
-		file_put_contents($file, $this->dump($data));
-	}
-
-
-	public function formatLanguageFileData($lang, $data, $metadata)
-	{
-		$pluralCount = $this->metadata['plural-count'];
-
-		foreach ($data['messages'] as $index => $message) {
-			if (isset($message['plural'])) {
-				$translations = [];
-
-				for ($i = 0; $i < $pluralCount; $i++) {
-					$translations[$i] = '';
-				}
-				$message['translations'] = $translations;
-				$data['messages'][$index] = $message;
-			}
-		}
-
-		$struct = array(
-			'lang' => $lang,
-			'metadata' => $metadata,
-			'messages' => $data['messages']
-		);
-
-		return $struct;
 	}
 
 

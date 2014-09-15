@@ -25,6 +25,7 @@ use Bazo\Translation\Extraction\Filters;
  *
  * @author Karel Klima
  * @author Ondřej Vodáček
+ * @author Martin Bažík <martin@bazik.sk>
  * @package Nette Extras
  */
 class NetteExtractor extends Extractor
@@ -54,7 +55,8 @@ class NetteExtractor extends Extractor
 				->addFunction('_t')
 				->addFunction('_')
 				->addFunction('__')
-				->addFunction('translate');
+				->addFunction('translate')
+		;
 
 		$this->getFilter('NetteLatte')
 				->addPrefix('!_')
@@ -90,7 +92,8 @@ class NetteExtractor extends Extractor
 				->addFunction('addTextArea', 2)
 				->addFunction('setRequired')
 				->addFunction('skipFirst')
-				->addFunction('addProtection');
+				->addFunction('addProtection')
+		;
 
 		return $this;
 	}
@@ -111,7 +114,8 @@ class NetteExtractor extends Extractor
 				->addFunction('addImageColumn', 2)
 				->addFunction('addPositionColumn', 2)
 				->addFunction('addActionColumn')
-				->addFunction('addAction');
+				->addFunction('addAction')
+		;
 
 		return $this;
 	}

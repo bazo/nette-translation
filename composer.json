@@ -12,14 +12,16 @@
 		}
 	],
 	"require": {
-		"php": ">=5.4.0",
-		"nikic/php-parser": "@dev"
+		"php": ">=5.5.0",
+		"nikic/php-parser": "*",
+		"symfony/console": "*",
+		"nette/neon": "*"
 	},
 	"suggest": {
-		"bazo/nette-console-extension": "Running the CLI commands"
+		"bazo/nette-console-extension": "Running the CLI commands",
+		"kdyby/console": "Running the CLI commands"
 	},
 	"autoload": {
-		"psr-0": {"Bazo\\Translation": "src/"},
-		"files": ["src/shortcuts.php"]
+		"psr-0": {"Bazo\\Translation": "src/"}
 	}
 }
