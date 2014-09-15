@@ -16,7 +16,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	/** @var array */
 	private $defaults = [
 		'scanFile'		 => '%appDir%',
-		'outputFolder'	 => '%appDir%/l10n',
+		'outputFolder'	 => '%appDir%/lang',
 		'projectId'		 => NULL,
 		'secret'		 => NULL,
 		'connect'		 => FALSE,
