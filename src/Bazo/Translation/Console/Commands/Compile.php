@@ -53,7 +53,7 @@ class Compile extends Command
 		$builder = new \Bazo\Translation\Builder\KdybyBuilder;
 		$outputFiles = $builder->build($outputFileMask, $data, $defaultDomain, $overwrite);
 
-		$output->writeln(sprintf('<info>Created localeuage file for locale: %s. Output saved in: %s.</info>', $locale, implode(', ', $outputFiles)));
+		$output->writeln(sprintf('<info>Created files for locale: %s. Output saved in: %s.</info>', $locale, implode(', ', $outputFiles)));
 	}
 
 

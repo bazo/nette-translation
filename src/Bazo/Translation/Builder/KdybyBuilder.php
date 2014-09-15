@@ -48,10 +48,10 @@ class KdybyBuilder
 
 			$file = sprintf($fileMask, $domain);
 
-			if ($overwrite && file_exists($file)) {
-				$this->overwriteFile($file, $data);
-			} else {
+			if (!$overwrite && file_exists($file)) {
 				$this->mergeFile($file, $data);
+			} else {
+				$this->overwriteFile($file, $data);
 			}
 
 
