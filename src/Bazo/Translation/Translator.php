@@ -20,8 +20,7 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 	private $dictionary;
 	private $dir;
 
-
-	function __construct($dir)
+	public function __construct($dir)
 	{
 		$this->dir = $dir;
 	}
@@ -54,10 +53,10 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 
 	public function translate($message, $count = NULL)
 	{
-		if(is_null($count)) {
+		if (is_null($count)) {
 			$count = 1; //fix for form translations
 		}
-		
+
 		$this->loadDictionary();
 		$message = (string) $message;
 
@@ -100,4 +99,3 @@ class Translator extends Object implements \Nette\Localization\ITranslator
 
 
 }
-

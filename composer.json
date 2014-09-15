@@ -13,9 +13,10 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"nette/nette": "@dev",
-		"nikic/php-parser": "@dev",
-		"bazo/nette-console-extension": "@dev"
+		"nikic/php-parser": "@dev"
+	},
+	"suggest": {
+		"bazo/nette-console-extension": "Running the CLI commands"
 	},
 	"autoload": {
 		"psr-0": {"Bazo\\Translation": "src/"},

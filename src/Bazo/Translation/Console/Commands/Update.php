@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputArgument,
 	Symfony\Component\Console\Input\InputOption,
 	Symfony\Component\Console;
 
+
+
 /**
  * Extract
  *
@@ -17,16 +19,17 @@ class Update extends Command
 	private $extractDirs;
 
 
-	public function getExtractDirs()
+
+	public function __construct($extractDirs)
 	{
-		return $this->extractDirs;
+		parent::__construct();
+		$this->extractDirs = $extractDirs;
 	}
 
 
-	public function setExtractDirs($extractDirs)
+	public function getExtractDirs()
 	{
-		$this->extractDirs = $extractDirs;
-		return $this;
+		return $this->extractDirs;
 	}
 
 
@@ -58,4 +61,3 @@ class Update extends Command
 
 
 }
-

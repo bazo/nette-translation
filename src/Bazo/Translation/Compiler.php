@@ -4,6 +4,8 @@ namespace Bazo\Translation;
 
 use Nette\Utils\Neon;
 
+
+
 /**
  * GettextParser
  *
@@ -14,6 +16,7 @@ class Compiler
 
 	/** @var Parser */
 	private $parser;
+
 
 
 	function __construct()
@@ -43,4 +46,3 @@ class Compiler
 
 
 }
-

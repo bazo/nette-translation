@@ -14,7 +14,6 @@ class Uploader
 	private $id;
 	private $key;
 
-
 	function __construct($endpoint, $id, $key)
 	{
 		$this->endpoint = $endpoint;
@@ -53,4 +52,3 @@ class Uploader
 
 
 }
-

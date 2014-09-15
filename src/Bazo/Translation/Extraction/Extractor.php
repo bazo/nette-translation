@@ -2,6 +2,7 @@
 
 namespace Bazo\Translation\Extraction;
 
+
 use Bazo\Translation\Extraction\Filters;
 
 /**
@@ -28,22 +29,22 @@ use Bazo\Translation\Extraction\Filters;
 class Extractor
 {
 
-	protected
 	/** @var array */
-			$inputFiles = [],
-			/** @var array */
-			$filters = array(
-				'php' => array('PHP')
-					),
-			/** @var array */
-			$filterStore = [],
-			/** @var array */
-			$data = [],
-			/** @var \Translation\Builders\Builder */
-			$builder
+	protected $inputFiles = [];
 
+	/** @var array */
+	protected $filters = array(
+		'php' => ['PHP']
+	);
 
-	;
+	/** @var array */
+	protected $filterStore = [];
+
+	/** @var array */
+	protected $data = [];
+
+	/** @var \Translation\Builders\Builder */
+	protected $builder;
 
 	public function __construct()
 	{
@@ -126,12 +127,13 @@ class Extractor
 			$fileExtension = pathinfo($inputFile, PATHINFO_EXTENSION);
 			foreach ($this->filters as $extension => $filters) {
 				// Check file extension
-				if ($fileExtension !== $extension)
+				if ($fileExtension !== $extension) {
 					continue;
+				}
 
 				foreach ($filters as $filterName) {
-					$filter = $this->getFilter($filterName);
-					$filterData = $filter->extract($inputFile);
+					$filter		 = $this->getFilter($filterName);
+					$filterData	 = $filter->extract($inputFile);
 					$this->addMessages($filterData, $inputFile);
 				}
 			}
@@ -159,12 +161,12 @@ class Extractor
 			$line = $message[Context::LINE];
 			if (!isset($this->data[$key])) {
 				unset($message[Context::LINE]);
-				$this->data[$key] = $message;
-				$this->data[$key]['files'] = [];
+				$this->data[$key]			 = $message;
+				$this->data[$key]['files']	 = [];
 			}
 			$this->data[$key]['files'][] = array(
-				Context::FILE => $file,
-				Context::LINE => $line
+				Context::FILE	 => $file,
+				Context::LINE	 => $line
 			);
 		}
 		return $this;
@@ -195,8 +197,9 @@ class Extractor
 	 */
 	public function setFilter($extension, $filterName)
 	{
-		if (isset($this->filters[$extension]) && in_array($filterName, $this->filters[$extension]))
+		if (isset($this->filters[$extension]) && in_array($filterName, $this->filters[$extension])) {
 			return $this;
+		}
 		$this->filters[$extension][] = $filterName;
 		return $this;
 	}
@@ -234,4 +237,3 @@ class Extractor
 
 
 }
-

@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputArgument,
 	Symfony\Component\Console\Input\InputOption,
 	Symfony\Component\Console;
 
+
+
 /**
  * Extract
  *
@@ -17,6 +19,7 @@ class Extract extends Command
 	private $extractDirs;
 	private $remote = FALSE;
 	private $uploader;
+
 
 
 	public function setUploader($uploader)
@@ -106,4 +109,3 @@ class Extract extends Command
 
 
 }
-

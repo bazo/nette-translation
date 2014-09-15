@@ -4,6 +4,8 @@ namespace Bazo\Translation;
 
 use Nette\Object;
 
+
+
 /**
  * Translator
  *
@@ -18,6 +20,7 @@ class Dictionary extends Object
 	private $messagesCatalog;
 	private $contextCatalog;
 	private $lang;
+
 
 
 	public function __construct($data)
@@ -84,4 +87,3 @@ class Dictionary extends Object
 
 
 }
-

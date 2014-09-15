@@ -19,7 +19,7 @@ use Nette\Utils\Strings;
  * Filter to fetch gettext phrases from PHP functions
  * @author Ondřej Vodáček
  */
-class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
+class PHP extends AFilter implements IFilter, \PhpParser\NodeVisitor
 {
 
 	/** @var array */
@@ -48,9 +48,9 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 	public function extract($file)
 	{
 		$this->data = [];
-		$parser = new \PHPParser_Parser(new \PHPParser_Lexer());
+		$parser = new \PHPParser\Parser(new \PHPParser\Lexer());
 		$stmts = $parser->parse(file_get_contents($file));
-		$traverser = new \PHPParser_NodeTraverser();
+		$traverser = new \PHPParser\NodeTraverser();
 		$traverser->addVisitor($this);
 		$traverser->traverse($stmts);
 		$data = $this->data;
@@ -59,12 +59,12 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 	}
 
 
-	public function enterNode(\PHPParser_Node $node)
+	public function enterNode(\PHPParser\Node $node)
 	{
 		$name = NULL;
-		if (($node instanceof \PHPParser_Node_Expr_MethodCall || $node instanceof \PHPParser_Node_Expr_StaticCall) && is_string($node->name)) {
+		if (($node instanceof \PHPParser\Node\Expr_MethodCall || $node instanceof \PHPParser\Node\Expr\StaticCall) && is_string($node->name)) {
 			$name = $node->name;
-		} elseif ($node instanceof \PHPParser_Node_Expr_FuncCall && $node->name instanceof \PHPParser_Node_Name) {
+		} elseif ($node instanceof \PHPParser\Node\Expr\FuncCall && $node->name instanceof \PHPParser\Node\Name) {
 			$parts = $node->name->parts;
 			$name = array_pop($parts);
 		} else {
@@ -79,7 +79,7 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 	}
 
 
-	private function processFunction(array $definition, \PHPParser_Node $node)
+	private function processFunction(array $definition, \PHPParser\Node $node)
 	{
 		$message = array(
 			Context::LINE => $node->getLine()
@@ -89,11 +89,11 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 				return;
 			}
 			$arg = $node->args[$position - 1]->value;
-			if ($arg instanceof \PHPParser_Node_Scalar_String) {
+			if ($arg instanceof \PHPParser\Node\Scalar\String) {
 				$message[$type] = $arg->value;
-			} elseif ($arg instanceof \PHPParser_Node_Expr_Array) {
+			} elseif ($arg instanceof \PHPParser\Node\Expr\Array_) {
 				foreach ($arg->items as $item) {
-					if ($item->value instanceof \PHPParser_Node_Scalar_String) {
+					if ($item->value instanceof \PHPParser\Node\Scalar\String) {
 						$message[$type][] = $item->value->value;
 					}
 				}
@@ -118,19 +118,19 @@ class PHP extends AFilter implements IFilter, \PHPParser_NodeVisitor
 
 	public function afterTraverse(array $nodes)
 	{
-		
+
 	}
 
 
 	public function beforeTraverse(array $nodes)
 	{
-		
+
 	}
 
 
-	public function leaveNode(\PHPParser_Node $node)
+	public function leaveNode(\PHPParser\Node $node)
 	{
-		
+
 	}
 
 

@@ -2,9 +2,11 @@
 
 namespace Bazo\Translation\Console\Commands;
 
-use Symfony\Component\Console\Input\InputArgument,
-	Symfony\Component\Console\Input\InputOption,
-	Symfony\Component\Console;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console;
+
+
 
 /**
  * Extract
@@ -35,14 +37,14 @@ class Compile extends Command
 		if ($outputFolder === NULL) {
 			$outputFolder = $this->outputFolder;
 		}
-		
+
 		$inputFile = $outputFolder . '/' . $lang . '.neon';
-		
-		if(!file_exists($inputFile)) {
+
+		if (!file_exists($inputFile)) {
 			$output->writeln(sprintf('Translation file for language "%s" doesn\'t exist.', $lang));
 			return;
 		}
-		
+
 		$outputFile = $outputFolder . '/' . $lang . '.dict';
 
 		$compiler = new \Bazo\Translation\Compiler();
@@ -53,4 +55,3 @@ class Compile extends Command
 
 
 }
-

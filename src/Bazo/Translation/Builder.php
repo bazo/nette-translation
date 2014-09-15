@@ -5,6 +5,8 @@ namespace Bazo\Translation;
 use Bazo\Translation\Extraction\Context;
 use Nette\Utils\Neon;
 
+
+
 /**
  * Gettext
  *
@@ -14,6 +16,7 @@ class Builder
 {
 
 	private $metadata;
+
 
 
 	public function addMetadata($key, $value)
@@ -88,7 +91,7 @@ class Builder
 				$message['files'][] = $fileReference;
 			}
 
-			$message['translations'] = array("");
+			$message['translations'] = [""];
 
 			$messages[$id] = $message;
 		}
@@ -110,4 +113,3 @@ class Builder
 
 
 }
-

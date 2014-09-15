@@ -1,7 +1,11 @@
 <?php
+
 namespace Bazo\Translation;
 
 use Nette\Utils\Neon;
+
+
+
 /**
  * GettextParser
  *
@@ -9,9 +13,12 @@ use Nette\Utils\Neon;
  */
 class Parser
 {
+
 	public function parse($file)
 	{
 		$input = file_get_contents($file);
 		return Neon::decode($input);
 	}
+
+
 }

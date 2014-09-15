@@ -4,6 +4,8 @@ namespace Bazo\Translation\Console\Commands;
 
 use Symfony\Component\Console;
 
+
+
 /**
  * Extract
  *
@@ -13,6 +15,7 @@ abstract class Command extends Console\Command\Command
 {
 
 	protected $outputFolder;
+
 
 
 	public function getOutputFolder()
@@ -29,4 +32,3 @@ abstract class Command extends Console\Command\Command
 
 
 }
-
