@@ -116,16 +116,19 @@ class Extractor
 	{
 		$inputFiles = array_unique($inputFiles);
 		sort($inputFiles);
-		foreach ($inputFiles as $inputFile) {
-			if (!file_exists($inputFile)) {
-				$this->throwException('ERROR: Invalid input file specified: ' . $inputFile);
-			}
-			if (!is_readable($inputFile)) {
-				$this->throwException('ERROR: Input file is not readable: ' . $inputFile);
-			}
 
-			$fileExtension = pathinfo($inputFile, PATHINFO_EXTENSION);
-			foreach ($this->filters as $extension => $filters) {
+		foreach ($this->filters as $extension => $filters) {
+
+			foreach ($inputFiles as $inputFile) {
+				if (!file_exists($inputFile)) {
+					$this->throwException('ERROR: Invalid input file specified: ' . $inputFile);
+				}
+				if (!is_readable($inputFile)) {
+					$this->throwException('ERROR: Input file is not readable: ' . $inputFile);
+				}
+
+				$fileExtension = pathinfo($inputFile, PATHINFO_EXTENSION);
+
 				// Check file extension
 				if ($fileExtension !== $extension) {
 					continue;

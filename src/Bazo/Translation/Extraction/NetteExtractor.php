@@ -2,6 +2,7 @@
 
 namespace Bazo\Translation\Extraction;
 
+
 use Bazo\Translation\Extraction\Filters;
 
 /**
@@ -44,8 +45,8 @@ class NetteExtractor extends Extractor
 		// Set basic filters
 		$this->setFilter('php', 'PHP')
 				->setFilter('latte', 'PHP')
-				->setFilter('latte', 'NetteLatte');
-
+				->setFilter('latte', 'NetteLatte')
+		;
 		$this->addFilter('NetteLatte', new Filters\NetteLatte);
 
 		$this->getFilter('PHP')
@@ -57,7 +58,8 @@ class NetteExtractor extends Extractor
 
 		$this->getFilter('NetteLatte')
 				->addPrefix('!_')
-				->addPrefix('_');
+				->addPrefix('_')
+		;
 	}
 
 
@@ -116,4 +118,3 @@ class NetteExtractor extends Extractor
 
 
 }
-

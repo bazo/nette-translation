@@ -2,8 +2,20 @@
 
 namespace Bazo\Translation\Extraction\Filters;
 
+
 use Bazo\Translation\Extraction\Context;
 use Nette\Utils\Strings;
+use PhpParser\Lexer;
+use PhpParser\Node;
+use PhpParser\Node\Expr\FuncCall;
+use PhpParser\Node\Expr\MethodCall;
+use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Name;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor;
+use PhpParser\Parser;
+use PhpParser\Node\Scalar\String;
+use PhpParser\Node\Expr\Array_;
 
 /**
  * GettextExtractor
@@ -19,12 +31,11 @@ use Nette\Utils\Strings;
  * Filter to fetch gettext phrases from PHP functions
  * @author Ondřej Vodáček
  */
-class PHP extends AFilter implements IFilter, \PhpParser\NodeVisitor
+class PHP extends AFilter implements IFilter, NodeVisitor
 {
 
 	/** @var array */
 	private $data;
-
 
 	public function __construct()
 	{
@@ -47,29 +58,32 @@ class PHP extends AFilter implements IFilter, \PhpParser\NodeVisitor
 	 */
 	public function extract($file)
 	{
-		$this->data = [];
-		$parser = new \PHPParser\Parser(new \PHPParser\Lexer());
-		$stmts = $parser->parse(file_get_contents($file));
-		$traverser = new \PHPParser\NodeTraverser();
+		$this->data	 = [];
+		$lexer		 = new Lexer;
+		$parser		 = new Parser($lexer);
+		$stmts		 = $parser->parse(file_get_contents($file));
+		$traverser	 = new NodeTraverser();
 		$traverser->addVisitor($this);
 		$traverser->traverse($stmts);
-		$data = $this->data;
-		$this->data = NULL;
+		$data		 = $this->data;
+		$this->data	 = NULL;
 		return $data;
 	}
 
 
-	public function enterNode(\PHPParser\Node $node)
+	public function enterNode(Node $node)
 	{
 		$name = NULL;
-		if (($node instanceof \PHPParser\Node\Expr_MethodCall || $node instanceof \PHPParser\Node\Expr\StaticCall) && is_string($node->name)) {
+
+		if (($node instanceof MethodCall || $node instanceof StaticCall) && is_string($node->name)) {
 			$name = $node->name;
-		} elseif ($node instanceof \PHPParser\Node\Expr\FuncCall && $node->name instanceof \PHPParser\Node\Name) {
-			$parts = $node->name->parts;
-			$name = array_pop($parts);
+		} elseif ($node instanceof FuncCall && $node->name instanceof Name) {
+			$parts	 = $node->name->parts;
+			$name	 = array_pop($parts);
 		} else {
 			return;
 		}
+
 		if (!isset($this->functions[$name])) {
 			return;
 		}
@@ -79,7 +93,7 @@ class PHP extends AFilter implements IFilter, \PhpParser\NodeVisitor
 	}
 
 
-	private function processFunction(array $definition, \PHPParser\Node $node)
+	private function processFunction(array $definition, Node $node)
 	{
 		$message = array(
 			Context::LINE => $node->getLine()
@@ -89,11 +103,11 @@ class PHP extends AFilter implements IFilter, \PhpParser\NodeVisitor
 				return;
 			}
 			$arg = $node->args[$position - 1]->value;
-			if ($arg instanceof \PHPParser\Node\Scalar\String) {
+			if ($arg instanceof String) {
 				$message[$type] = $arg->value;
-			} elseif ($arg instanceof \PHPParser\Node\Expr\Array_) {
+			} elseif ($arg instanceof Array_) {
 				foreach ($arg->items as $item) {
-					if ($item->value instanceof \PHPParser\Node\Scalar\String) {
+					if ($item->value instanceof String) {
 						$message[$type][] = $item->value->value;
 					}
 				}
@@ -103,13 +117,13 @@ class PHP extends AFilter implements IFilter, \PhpParser\NodeVisitor
 		}
 		if (is_array($message[Context::SINGULAR])) {
 			foreach ($message[Context::SINGULAR] as $value) {
-				$tmp = $message;
-				$tmp[Context::SINGULAR] = Strings::normalize($value);
-				$this->data[] = $tmp;
+				$tmp					 = $message;
+				$tmp[Context::SINGULAR]	 = Strings::normalize($value);
+				$this->data[]			 = $tmp;
 			}
 		} else {
-			$message[Context::SINGULAR] = Strings::normalize($message[Context::SINGULAR]);
-			$this->data[] = $message;
+			$message[Context::SINGULAR]	 = Strings::normalize($message[Context::SINGULAR]);
+			$this->data[]				 = $message;
 		}
 	}
 
@@ -135,4 +149,3 @@ class PHP extends AFilter implements IFilter, \PhpParser\NodeVisitor
 
 
 }
-
