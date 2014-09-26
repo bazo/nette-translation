@@ -2,15 +2,18 @@
 
 namespace Bazo\Translation\Builder;
 
-
 use Bazo\Translation\Extraction\Context;
 use Nette\Utils\Neon;
+
+
 
 /**
  * @author Martin Bažík <martin@bazik.sk>
  */
 class TemplateBuilder
 {
+
+	const DEFAULT_DOMAIN = 'messages';
 
 	private $metadata;
 
@@ -36,6 +39,12 @@ class TemplateBuilder
 			$id = $entry[Context::SINGULAR];
 			if (strlen($id) < 2) {
 				continue;
+			}
+
+			if (strpos($id, '.') !== FALSE && strpos($id, ' ') === FALSE) {
+				list($domain, $message) = explode('.', $message, 2);
+			} else {
+				$domain = self::DEFAULT_DOMAIN;
 			}
 
 			$message = [];
