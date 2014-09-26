@@ -143,7 +143,7 @@ class Langs
 
 	public static function getPluralRule($iso)
 	{
-		if (!isset($plurals[$iso])) {
+		if (!isset(self::$plurals[$iso])) {
 			throw new \InvalidArgumentException('Plural rule for "' . $iso . '" not defined');
 		}
 		return self::$plurals[$iso];
