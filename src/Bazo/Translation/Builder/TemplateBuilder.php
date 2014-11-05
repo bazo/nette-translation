@@ -42,7 +42,7 @@ class TemplateBuilder
 			}
 
 			if (strpos($id, '.') !== FALSE && strpos($id, ' ') === FALSE) {
-				list($domain, $message) = explode('.', $message, 2);
+				list($domain, $message) = explode('.', $id, 2);
 			} else {
 				$domain = self::DEFAULT_DOMAIN;
 			}
