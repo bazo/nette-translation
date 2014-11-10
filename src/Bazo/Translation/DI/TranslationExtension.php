@@ -2,6 +2,7 @@
 
 namespace Bazo\Translation\DI;
 
+
 use Bazo\Translation\Console\Commands\Compile;
 use Bazo\Translation\Console\Commands\Download;
 use Bazo\Translation\Console\Commands\Extract;
@@ -37,6 +38,9 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('uploader'))
 				->setClass('Bazo\Translation\Uploader', [$config['remoteServer'], $config['projectId'], $config['secret']]);
+
+		$builder->addDefinition($this->prefix('downloader'))
+				->setClass('Bazo\Translation\Downloader', [$config['remoteServer'], $config['projectId'], $config['secret']]);
 
 		$builder->addDefinition($this->prefix('console.commandExtract'))
 				->setClass(Extract::class)
