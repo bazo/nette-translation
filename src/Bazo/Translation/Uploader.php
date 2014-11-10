@@ -43,7 +43,7 @@ class Uploader
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		$response	 = curl_exec($ch);
 		curl_close($ch);
-		return json_encode($response);
+		return $response;
 	}
 
 
