@@ -2,6 +2,7 @@
 
 namespace Bazo\Translation;
 
+
 /**
  * Uploader
  *
@@ -16,36 +17,31 @@ class Uploader
 
 	function __construct($endpoint, $id, $key)
 	{
-		$this->endpoint = $endpoint;
-		$this->id = $id;
-		$this->key = $key;
+		$this->endpoint	 = $endpoint . '/api.projects/update/%s';
+		$this->id		 = $id;
+		$this->key		 = $key;
 	}
 
 
 	public function upload($messageData)
 	{
-		$messageData = serialize($messageData);
-		$hash = hash_hmac('sha256', $messageData, $this->key);
+		$data	 = serialize($messageData);
+		$hash	 = hash_hmac('sha256', $data, $this->key);
 
-		$data = [
-			'messageData' => $messageData,
-			'hash' => $hash
-		];
-
-		return $this->makeRequest($data);
+		return $this->makeRequest($data, $hash);
 	}
 
 
-	protected function makeRequest($data)
+	protected function makeRequest($data, $hash)
 	{
-		$query = http_build_query($data);
+		$url = sprintf($this->endpoint, $this->id) . '?hash=' . $hash;
 
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL, sprintf($this->endpoint, $this->id));
+		$ch			 = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $query);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$response = curl_exec($ch);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		$response	 = curl_exec($ch);
 		curl_close($ch);
 		return json_encode($response);
 	}
