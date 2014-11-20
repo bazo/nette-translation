@@ -3,7 +3,7 @@
 namespace Bazo\Translation\Builder;
 
 use Bazo\Translation\Extraction\Context;
-use Nette\Utils\Neon;
+use Nette\Neon\Neon;
 
 
 
