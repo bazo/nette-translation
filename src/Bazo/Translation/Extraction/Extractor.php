@@ -4,6 +4,7 @@ namespace Bazo\Translation\Extraction;
 
 
 use Bazo\Translation\Extraction\Filters;
+use Nette\Utils\Finder;
 
 /**
  * Extractor
@@ -69,111 +70,63 @@ class Extractor
 	/**
 	 * Scans given files or directories and extracts gettext keys from the content
 	 *
-	 * @param string|array $resource
+	 * @param string $directory
 	 * @return self
 	 */
-	public function scan($resource)
+	public function scan($directory)
 	{
-		$this->inputFiles = [];
-		if (!is_array($resource)) {
-			$resource = array($resource);
+		foreach (Finder::findFiles('*.latte', '*.php')->from($directory) as $file) {
+			$this->extract($file, $directory);
 		}
-		foreach ($resource as $item) {
-			$this->_scan($item);
-		}
-		return $this->_extract($this->inputFiles);
+		return $this->compactMessages();
 	}
 
 
-	/**
-	 * Scans given files or directories (recursively)
-	 *
-	 * @param string $resource File or directory
-	 */
-	protected function _scan($resource)
+	protected function extract(\SplFileInfo $file, $directory)
 	{
-		if (is_file($resource)) {
-			$this->inputFiles[] = $resource;
-		} elseif (is_dir($resource)) {
-			$iterator = new \RecursiveIteratorIterator(
-					new \RecursiveDirectoryIterator($resource, \RecursiveDirectoryIterator::SKIP_DOTS)
-			);
-			foreach ($iterator as $file) {
-				$this->inputFiles[] = $file->getPathName();
-			}
-		} else {
-			$this->throwException("Resource '$resource' is not a directory or file");
-		}
-	}
+		$fileName	 = substr($file->getPathName(), strlen($directory) + 1);
+		$extension	 = $file->getExtension();
 
+		$messages = [];
+		foreach ($this->filters[$extension] as $filterName) {
+			$filter = $this->getFilter($filterName);
 
-	/**
-	 * Extracts gettext keys from input files
-	 *
-	 * @param array $inputFiles
-	 * @return array
-	 */
-	protected function _extract($inputFiles)
-	{
-		$inputFiles = array_unique($inputFiles);
-		sort($inputFiles);
-
-		foreach ($this->filters as $extension => $filters) {
-
-			foreach ($inputFiles as $inputFile) {
-				if (!file_exists($inputFile)) {
-					$this->throwException('ERROR: Invalid input file specified: ' . $inputFile);
-				}
-				if (!is_readable($inputFile)) {
-					$this->throwException('ERROR: Input file is not readable: ' . $inputFile);
-				}
-
-				$fileExtension = pathinfo($inputFile, PATHINFO_EXTENSION);
-
-				// Check file extension
-				if ($fileExtension !== $extension) {
-					continue;
-				}
-
-				foreach ($filters as $filterName) {
-					$filter		 = $this->getFilter($filterName);
-					$filterData	 = $filter->extract($inputFile);
-					$this->addMessages($filterData, $inputFile);
-				}
-			}
-		}
-		return $this->data;
-	}
-
-
-	public function addMessages(array $messages, $file)
-	{
-		foreach ($messages as $message) {
-			$key = '';
-			if (isset($message[Context::CONTEXT])) {
-				$key .= $message[Context::CONTEXT];
-			}
-			$key .= chr(4);
-			$key .= $message[Context::SINGULAR];
-			$key .= chr(4);
-			if (isset($message[Context::PLURAL])) {
-				$key .= $message[Context::PLURAL];
-			}
-			if ($key === chr(4) . chr(4)) {
+			$filterData = $filter->extract($file->getRealPath());
+			if (!is_array($filterData)) {
 				continue;
 			}
-			$line = $message[Context::LINE];
-			if (!isset($this->data[$key])) {
-				unset($message[Context::LINE]);
-				$this->data[$key]			 = $message;
-				$this->data[$key]['files']	 = [];
-			}
-			$this->data[$key]['files'][] = array(
-				Context::FILE	 => $file,
-				Context::LINE	 => $line
-			);
+			$messages = array_merge($messages, $filterData);
 		}
-		return $this;
+		$this->data[$fileName] = $messages;
+	}
+
+
+	private function compactMessages()
+	{
+		$result = [];
+		foreach ($this->data as $fileName => $messages) {
+			foreach ($messages as $message) {
+				$msgId	 = $message[Context::SINGULAR];
+				$line	 = $message[Context::LINE];
+				$context = isset($message[Context::CONTEXT]) ? $message[Context::CONTEXT] : NULL;
+
+				if (!isset($result[$msgId])) {
+					$result[$msgId] = [
+						Context::SINGULAR	 => $msgId,
+						'translations'		 => [
+						],
+						'files'				 => []
+					];
+				} else {
+					$result[$msgId]['files'][] = [
+						'file'	 => $fileName,
+						'line'	 => $line
+					];
+				}
+			}
+		}
+		
+		return $result;
 	}
 
 

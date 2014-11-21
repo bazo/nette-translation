@@ -36,7 +36,9 @@ class TemplateBuilder
 		$messages = [];
 
 		foreach ($data as $entry) {
+
 			$id = $entry[Context::SINGULAR];
+
 			if (strlen($id) < 2) {
 				continue;
 			}
