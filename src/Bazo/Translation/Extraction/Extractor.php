@@ -73,10 +73,16 @@ class Extractor
 	 * @param string $directory
 	 * @return self
 	 */
-	public function scan($directory)
+	public function scan($directories)
 	{
-		foreach (Finder::findFiles('*.latte', '*.php')->from($directory) as $file) {
-			$this->extract($file, $directory);
+		if (!is_array($directories)) {
+			$directories = [$directories];
+		}
+
+		foreach ($directories as $directory) {
+			foreach (Finder::findFiles('*.latte', '*.php')->from($directory) as $file) {
+				$this->extract($file, $directory);
+			}
 		}
 		return $this->compactMessages();
 	}
@@ -125,7 +131,7 @@ class Extractor
 				}
 			}
 		}
-		
+
 		return $result;
 	}
 
