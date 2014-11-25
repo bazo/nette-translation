@@ -86,6 +86,7 @@ class NetteExtractor extends Extractor
 				->addFunction('addSubmit', 2)
 				->addFunction('addText', 2)
 				->addFunction('addTextArea', 2)
+				->addFunction('addDatePicker', 2)
 				->addFunction('setRequired')
 				->addFunction('skipFirst')
 				->addFunction('addProtection')
