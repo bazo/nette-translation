@@ -56,6 +56,8 @@ class NetteExtractor extends Extractor
 				->addFunction('_')
 				->addFunction('__')
 				->addFunction('translate')
+				->addFunction('flash')
+				->addFunction('flashMessage')
 		;
 	}
 
@@ -78,7 +80,7 @@ class NetteExtractor extends Extractor
 				->addFunction('addUpload', 2)
 				->addFunction('addGroup')
 				->addFunction('addImage', 3)
-				->addFunction('addmultiSelect', 2)
+				->addFunction('addMultiSelect', 2)
 				->addFunction('addPassword', 2)
 				->addFunction('addRadioList', 2)
 				->addFunction('addRule', 2)
