@@ -73,6 +73,7 @@ class NetteExtractor extends Extractor
 		$php->addFunction('setText')
 				->addFunction('setEmptyValue')
 				->addFunction('setValue')
+				->addFunction('setPrompt')
 				->addFunction('addButton', 2)
 				->addFunction('addCheckbox', 2)
 				->addFunction('addError')
