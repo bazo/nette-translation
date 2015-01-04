@@ -93,7 +93,7 @@ class Extract extends Command
 		$builder = new TemplateBuilder;
 		if ($remote === TRUE) {
 			$templateData	 = $builder->formatTemplateData($data);
-			$response		 = $this->uploader->upload($templateData);
+			$response		 = \Nette\Utils\Json::decode($this->uploader->upload($templateData));
 			$output->writeln(sprintf('<info>Extracted %d tokens. Uploaded to remote server. Response: %s</info>', count($data), $response->message));
 		} else {
 			$outputFile = $outputFolder . '/template.neont';

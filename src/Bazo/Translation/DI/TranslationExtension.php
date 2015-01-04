@@ -16,7 +16,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 	/** @var array */
 	private $defaults = [
-		'scanFile'		 => '%appDir%',
+		'scanDirs'		 => ['%appDir%'],
 		'outputFolder'	 => '%appDir%/lang',
 		'projectId'		 => NULL,
 		'secret'		 => NULL,
@@ -45,7 +45,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('console.commandExtract'))
 				->setClass(Extract::class)
 				->addSetup('setUploader', [$this->prefix('@uploader')])
-				->addSetup('setExtractDirs', [$config['scanFile']])
+				->addSetup('setExtractDirs', [$config['scanDirs']])
 				->addSetup('setOutputFolder', [$config['outputFolder']])
 				->addSetup('setRemote', [$config['connect']])
 				->addTag('console.command')
@@ -55,12 +55,6 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('console.commandCompile'))
 				->setClass(Compile::class)
 				->addSetup('setOutputFolder', [$config['outputFolder']])
-				->addTag('console.command')
-				->addTag('kdyby.console.command')
-		;
-
-		$builder->addDefinition($this->prefix('console.commandUpload'))
-				->setClass(Upload::class)
 				->addTag('console.command')
 				->addTag('kdyby.console.command')
 		;
