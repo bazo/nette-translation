@@ -61,6 +61,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 
 		$builder->addDefinition($this->prefix('console.commandDownload'))
 				->setClass(Download::class)
+				->addSetup('setOutputFolder', [$config['outputFolder']])
 				->addTag('console.command')
 				->addTag('kdyby.console.command')
 		;
