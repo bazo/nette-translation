@@ -103,6 +103,9 @@ class Extractor
 			}
 			$messages = array_merge($messages, $filterData);
 		}
+
+		echo sprintf('File: %s, messages: %d', $fileName, count($messages))."\n";
+
 		$this->data[$fileName] = $messages;
 	}
 
