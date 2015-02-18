@@ -90,6 +90,7 @@ class NetteExtractor extends Extractor
 				->addFunction('addText', 2)
 				->addFunction('addTextArea', 2)
 				->addFunction('addDatePicker', 2)
+				->addFunction('addCheckboxList', 2)
 				->addFunction('setRequired')
 				->addFunction('skipFirst')
 				->addFunction('addProtection')
