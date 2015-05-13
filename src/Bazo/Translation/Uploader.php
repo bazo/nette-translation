@@ -41,7 +41,13 @@ class Uploader
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+		curl_setopt($ch, CURLOPT_VERBOSE, TRUE);
 		$response	 = curl_exec($ch);
+		$error		 = curl_error($ch);
+		dump($response);
+		dump($error);
 		curl_close($ch);
 		return $response;
 	}
