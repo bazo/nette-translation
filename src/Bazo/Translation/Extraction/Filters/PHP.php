@@ -14,7 +14,7 @@ use PhpParser\Node\Name;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
 use PhpParser\Parser;
-use PhpParser\Node\Scalar\String;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\Array_;
 
 /**
@@ -103,7 +103,7 @@ class PHP extends AFilter implements IFilter, NodeVisitor
 				return;
 			}
 			$arg = $node->args[$position - 1]->value;
-			if ($arg instanceof String) {
+			if ($arg instanceof String_) {
 				$message[$type] = $arg->value;
 			} elseif ($arg instanceof Array_) {
 				foreach ($arg->items as $item) {
