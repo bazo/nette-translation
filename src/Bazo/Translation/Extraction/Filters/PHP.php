@@ -2,20 +2,21 @@
 
 namespace Bazo\Translation\Extraction\Filters;
 
-
 use Bazo\Translation\Extraction\Context;
 use Nette\Utils\Strings;
 use PhpParser\Lexer;
 use PhpParser\Node;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor;
-use PhpParser\Parser;
-use PhpParser\Node\Scalar\String_;
-use PhpParser\Node\Expr\Array_;
+use PhpParser\Parser\Multiple;
+use PhpParser\Parser\Php5;
+use PhpParser\Parser\Php7;
 
 /**
  * GettextExtractor
@@ -31,7 +32,7 @@ use PhpParser\Node\Expr\Array_;
  * Filter to fetch gettext phrases from PHP functions
  * @author Ondřej Vodáček
  */
-class PHP extends AFilter implements IFilter, NodeVisitor
+class PHP extends \Bazo\Translation\Extraction\Filters\AFilter implements \Bazo\Translation\Extraction\Filters\IFilter, NodeVisitor
 {
 
 	/** @var array */
@@ -60,7 +61,18 @@ class PHP extends AFilter implements IFilter, NodeVisitor
 	{
 		$this->data	 = [];
 		$lexer		 = new Lexer;
-		$parser		 = new Parser($lexer);
+		//$parser		 = new Parser($lexer);
+
+		$php5Parser	 = new Php5($lexer);
+		$php7Parser	 = new Php7($lexer);
+
+		$parsers = [
+			$php5Parser,
+			$php7Parser
+		];
+
+		$parser = new Multiple($parsers);
+
 		$stmts		 = $parser->parse(file_get_contents($file));
 		$traverser	 = new NodeTraverser();
 		$traverser->addVisitor($this);
@@ -107,7 +119,7 @@ class PHP extends AFilter implements IFilter, NodeVisitor
 				$message[$type] = $arg->value;
 			} elseif ($arg instanceof Array_) {
 				foreach ($arg->items as $item) {
-					if ($item->value instanceof String) {
+					if ($item->value instanceof String_) {
 						$message[$type][] = $item->value->value;
 					}
 				}
@@ -132,19 +144,19 @@ class PHP extends AFilter implements IFilter, NodeVisitor
 
 	public function afterTraverse(array $nodes)
 	{
-
+		
 	}
 
 
 	public function beforeTraverse(array $nodes)
 	{
-
+		
 	}
 
 
 	public function leaveNode(\PHPParser\Node $node)
 	{
-
+		
 	}
 
 
