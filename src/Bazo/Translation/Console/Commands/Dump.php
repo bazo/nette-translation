@@ -54,6 +54,10 @@ class Dump extends Command
 		$json = $this->dumper->dump();
 
 		file_put_contents($outputFolder . '/translations.json', $json);
+
+		$js = 'var translations = '.$json.';';
+
+		file_put_contents($outputFolder . '/translations.js', $js);
 	}
 
 
