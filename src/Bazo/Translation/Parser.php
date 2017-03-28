@@ -2,7 +2,7 @@
 
 namespace Bazo\Translation;
 
-use Nette\Utils\Neon;
+use Nette\Neon\Neon;
 
 
 
