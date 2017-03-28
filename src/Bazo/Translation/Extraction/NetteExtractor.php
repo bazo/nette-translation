@@ -118,6 +118,18 @@ class NetteExtractor extends Extractor
 				->addFunction('addAction')
 		;
 
+		//ublaboo
+		if (class_exists(\Ublaboo\DataGrid\DataGrid::class)) {
+			$reflectionClass = new \ReflectionClass(\Ublaboo\DataGrid\DataGrid::class);
+			$methods		 = $reflectionClass->getMethods();
+
+			foreach ($methods as $method) {
+				if (strpos($method->getName(), 'addColumn') === 0 || strpos($method->getName(), 'addFilter') === 0) {
+					$php->addFunction($method->getName(), 2);
+				}
+			}
+		}
+
 		return $this;
 	}
 
