@@ -37,7 +37,7 @@ class TranslationExtension extends \Nette\DI\CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
-		$config = $this->getConfig($this->defaults, TRUE);
+		$config = $this->validateConfig($this->defaults, $this->config);
 
 		$builder->addDefinition($this->prefix('uploader'))
 				->setClass(Uploader::class, [$config['remoteServer'], $config['projectId'], $config['secret']]);
