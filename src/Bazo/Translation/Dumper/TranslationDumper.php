@@ -33,7 +33,7 @@ class TranslationDumper
 			$allMessages[$shortLocale]	 = $messages;
 		}
 
-		return Json::encode($allMessages, Json::PRETTY);
+		return $allMessages;
 	}
 
 

@@ -3,9 +3,9 @@
 namespace Bazo\Translation\Console\Commands;
 
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+use Nette\Utils\Json;
 use Symfony\Component\Console;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Extract
@@ -51,14 +51,14 @@ class Dump extends Command
 			}
 		}
 
-		$json = $this->dumper->dump();
+		$allMessages = $this->dumper->dump();
+		$json		 = Json::encode($allMessages, Json::PRETTY);
 
 		file_put_contents($outputFolder . '/translations.json', $json);
 
 		$js = 'var translations = ' . $json . ';';
 
 		$jsFilePath = $outputFolder . '/translations.js';
-		//file_put_contents($jsFilePath, $js);
 
 		$minifier = new \MatthiasMullie\Minify\JS;
 
@@ -66,6 +66,25 @@ class Dump extends Command
 
 		$minifier->minify($jsFilePath);
 		$minifier->gzip($jsFilePath . '.gz');
+
+		$this->dumpSingleLanguages($allMessages, $outputFolder);
+	}
+
+
+	private function dumpSingleLanguages(array $allMessages, string $outputFolder)
+	{
+		foreach ($allMessages as $lang => $messages) {
+			$data	 = [$lang => $messages];
+			$json	 = Json::encode($data, Json::PRETTY);
+			$js		 = 'var translations = ' . $json . ';';
+
+			$minifier = new \MatthiasMullie\Minify\JS;
+
+			$minifier->add($js);
+			$jsFilePath = $outputFolder . '/translations.' . $lang . '.js';
+			$minifier->minify($jsFilePath);
+			$minifier->gzip($jsFilePath . '.gz');
+		}
 	}
 
 
