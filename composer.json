@@ -16,7 +16,8 @@
 		"nikic/php-parser": "*",
 		"symfony/console": "*",
 		"nette/neon": "*",
-		"vipsoft/unzip": "@dev"
+		"vipsoft/unzip": "@dev",
+		"matthiasmullie/minify": "^1.3"
 	},
 	"suggest": {
 		"bazo/nette-console-extension": "Running the CLI commands",

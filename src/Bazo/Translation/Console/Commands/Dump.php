@@ -55,9 +55,13 @@ class Dump extends Command
 
 		file_put_contents($outputFolder . '/translations.json', $json);
 
-		$js = 'var translations = '.$json.';';
+		$js = 'var translations = ' . $json . ';';
 
-		file_put_contents($outputFolder . '/translations.js', $js);
+		$jsFilePath = $outputFolder . '/translations.js';
+		file_put_contents($jsFilePath, $js);
+
+		$minifier = new \MatthiasMullie\Minify\JS;
+		$minifier->minify($jsFilePath);
 	}
 
 
