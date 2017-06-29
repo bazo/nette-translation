@@ -58,10 +58,14 @@ class Dump extends Command
 		$js = 'var translations = ' . $json . ';';
 
 		$jsFilePath = $outputFolder . '/translations.js';
-		file_put_contents($jsFilePath, $js);
+		//file_put_contents($jsFilePath, $js);
 
 		$minifier = new \MatthiasMullie\Minify\JS;
+
+		$minifier->add($js);
+
 		$minifier->minify($jsFilePath);
+		$minifier->gzip($jsFilePath . '.gz');
 	}
 
 
