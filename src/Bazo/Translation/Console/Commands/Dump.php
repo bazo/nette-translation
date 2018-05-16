@@ -71,7 +71,7 @@ class Dump extends Command
 	}
 
 
-	private function dumpSingleLanguages(array $allMessages, string $outputFolder)
+	private function dumpSingleLanguages(array $allMessages, string $outputFolder, Console\Output\OutputInterface $output)
 	{
 		foreach ($allMessages as $lang => $messages) {
 			$data	 = [$lang => $messages];
@@ -82,6 +82,7 @@ class Dump extends Command
 
 			$minifier->add($js);
 			$jsFilePath = $outputFolder . '/translations.' . $lang . '.js';
+			$output->writeln(sprintf('Dumping: %s', $jsFilePath));
 			$minifier->minify($jsFilePath);
 			$minifier->gzip($jsFilePath . '.gz');
 		}
