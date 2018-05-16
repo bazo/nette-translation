@@ -83,8 +83,12 @@ class Dump extends Command
 			$minifier->add($js);
 			$jsFilePath = $outputFolder . '/translations.' . $lang . '.js';
 			$output->writeln(sprintf('Dumping: %s', $jsFilePath));
-			$minifier->minify($jsFilePath);
-			$minifier->gzip($jsFilePath . '.gz');
+			try {
+				$minifier->minify($jsFilePath);
+				$minifier->gzip($jsFilePath . '.gz');
+			} catch (\Throwable $e) {
+				$output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+			}
 		}
 	}
 
