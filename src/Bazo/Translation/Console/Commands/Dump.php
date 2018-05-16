@@ -67,7 +67,7 @@ class Dump extends Command
 		$minifier->minify($jsFilePath);
 		$minifier->gzip($jsFilePath . '.gz');
 
-		$this->dumpSingleLanguages($allMessages, $outputFolder);
+		$this->dumpSingleLanguages($allMessages, $outputFolder, $output);
 	}
 
 
