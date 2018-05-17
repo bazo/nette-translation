@@ -81,7 +81,7 @@ class Dump extends Command
 			$minifier = new \MatthiasMullie\Minify\JS;
 
 			$minifier->add($js);
-			$jsFilePath = realpath($outputFolder . '/translations.' . $lang . '.js');
+			$jsFilePath = $outputFolder . '/translations.' . $lang . '.js';
 			$output->writeln(sprintf('Dumping: %s', $jsFilePath));
 			try {
 				$minifier->minify($jsFilePath);
